@@ -1,0 +1,720 @@
+// ═══════════════════════════════════════════════════
+//  TOXISCAN — Static client-side app
+//  Calls Gemini Vision directly from the browser.
+//  No backend required.
+// ═══════════════════════════════════════════════════
+
+// ── TOXIN DATABASE ──────────────────────────────────
+const TOXIN_DB = {
+  pescado: {
+    nombre: 'Pescado', emoji: '🐟',
+    toxinas: [
+      { nombre: 'Mercurio (MeHg)', tipo: 'Metal pesado', riesgo: 'alto',
+        efecto: 'Neurotóxico. Daño al sistema nervioso central, especialmente grave en fetos y niños pequeños.',
+        fuente: 'Bioacumulación en la cadena trófica marina. Máximo en atún, pez espada y tiburón.',
+        recomendacion: 'Máx. 2 raciones/semana. Embarazadas y niños <10 años deben evitar especies grandes.' },
+      { nombre: 'PCB (Bifenilos Policlorados)', tipo: 'Contaminante orgánico persistente', riesgo: 'alto',
+        efecto: 'Disruptor endocrino. Posiblemente cancerígeno (Grupo 2A IARC). Daño hepático.',
+        fuente: 'Vertidos industriales históricos acumulados en sedimentos marinos.',
+        recomendacion: 'Preferir pescado de aguas limpias certificadas. Retirar piel y grasa visible.' },
+      { nombre: 'Anisakis simplex', tipo: 'Parásito', riesgo: 'medio',
+        efecto: 'Anisakiasis: dolor abdominal agudo, náuseas y reacciones alérgicas severas.',
+        fuente: 'Larvas en músculo de pescado crudo o poco cocinado.',
+        recomendacion: 'Cocinar a >60 °C o congelar a −20 °C durante mínimo 7 días antes de consumir crudo.' },
+      { nombre: 'Microplásticos', tipo: 'Contaminante emergente', riesgo: 'bajo',
+        efecto: 'Efectos crónicos en estudio. Posibles disruptores endocrinos a largo plazo.',
+        fuente: 'Contaminación plástica oceánica ingerida por el pez.',
+        recomendacion: 'Consumir pescado de zonas certificadas. Investigación en curso.' },
+    ]
+  },
+  arroz: {
+    nombre: 'Arroz', emoji: '🍚',
+    toxinas: [
+      { nombre: 'Arsénico inorgánico (iAs)', tipo: 'Metaloide tóxico', riesgo: 'alto',
+        efecto: 'Cancerígeno Grupo 1 (IARC). Daño renal, cardiovascular y pulmonar crónico.',
+        fuente: 'El arroz absorbe arsénico del suelo y del agua de riego de forma muy eficiente.',
+        recomendacion: 'Lavar abundantemente antes de cocer. Cocer con agua extra y escurrir. Variar cereales.' },
+      { nombre: 'Cadmio', tipo: 'Metal pesado', riesgo: 'medio',
+        efecto: 'Nefrotóxico crónico. Daño renal acumulativo e irreversible.',
+        fuente: 'Suelos contaminados por fertilizantes fosfatados y residuos industriales.',
+        recomendacion: 'Diversificar la dieta. Preferir arroz de origen certificado con controles de metales.' },
+      { nombre: 'Plomo (Pb)', tipo: 'Metal pesado', riesgo: 'medio',
+        efecto: 'Neurotóxico. Especialmente dañino en el desarrollo infantil y cognitivo.',
+        fuente: 'Suelos agrícolas próximos a zonas industriales o de tráfico intenso.',
+        recomendacion: 'Preferir arroz con etiquetado de trazabilidad y controles de calidad.' },
+      { nombre: 'Aflatoxinas (B1, B2)', tipo: 'Micotoxina', riesgo: 'alto',
+        efecto: 'Hepatotóxico y cancerígeno hepático (Grupo 1 IARC). Inmunosupresor.',
+        fuente: 'Hongos Aspergillus en almacenamiento con humedad elevada.',
+        recomendacion: 'Almacenar en lugar fresco, seco y ventilado. Descartar si hay manchas o mal olor.' },
+    ]
+  },
+  verduras: {
+    nombre: 'Verduras', emoji: '🥬',
+    toxinas: [
+      { nombre: 'Pesticidas organofosforados', tipo: 'Plaguicida residual', riesgo: 'medio',
+        efecto: 'Inhibición de acetilcolinesterasa. Neurotóxico. Posible disruptor endocrino.',
+        fuente: 'Uso agrícola convencional. Residuos en superficie y tejidos.',
+        recomendacion: 'Lavar con agua abundante. Pelar cuando sea posible. Preferir ecológico.' },
+      { nombre: 'Nitratos (NO₃⁻)', tipo: 'Compuesto inorgánico', riesgo: 'medio',
+        efecto: 'Se convierten en nitritos en el organismo → metahemoglobinemia en bebés.',
+        fuente: 'Fertilizantes nitrogenados. Muy altos en espinacas, rúcula, lechuga y remolacha.',
+        recomendacion: 'No dar espinacas a bebés <6 meses. Consumir frescos. No recalentar purés.' },
+      { nombre: 'Cadmio', tipo: 'Metal pesado', riesgo: 'bajo',
+        efecto: 'Acumulación renal crónica en consumo elevado.',
+        fuente: 'Suelos con historial de abonos fosfatados. Más en raíces y hojas.',
+        recomendacion: 'Rotar cultivos. Lavar bien y pelar raíces.' },
+      { nombre: 'Listeria monocytogenes', tipo: 'Patógeno bacteriano', riesgo: 'medio',
+        efecto: 'Listeriosis: infección grave en embarazadas, ancianos e inmunodeprimidos.',
+        fuente: 'Suelo y agua. Brotes y germinados crudos de alto riesgo.',
+        recomendacion: 'Lavar meticulosamente. Embarazadas deben evitar germinados y vegetales crudos sin lavar.' },
+    ]
+  },
+  carne: {
+    nombre: 'Carne', emoji: '🥩',
+    toxinas: [
+      { nombre: 'Hormonas de crecimiento', tipo: 'Residuo veterinario', riesgo: 'medio',
+        efecto: 'Posibles efectos en sistema hormonal humano. Prohibidas en UE pero no en EE. UU.',
+        fuente: 'Uso en ganadería intensiva para acelerar el engorde.',
+        recomendacion: 'Preferir carne con sello de calidad europeo. Elegir ganadería extensiva.' },
+      { nombre: 'Antibióticos residuales', tipo: 'Residuo veterinario', riesgo: 'medio',
+        efecto: 'Contribuye a la resistencia antimicrobiana. Posibles alergias.',
+        fuente: 'Uso preventivo y terapéutico en ganadería intensiva.',
+        recomendacion: 'Preferir sellos sin uso preventivo de antibióticos. Variar fuentes de proteína.' },
+      { nombre: 'Dioxinas y furanos', tipo: 'Contaminante orgánico persistente', riesgo: 'alto',
+        efecto: 'Cancerígeno (Grupo 1 IARC). Disruptor endocrino severo. Se acumula en grasa.',
+        fuente: 'Contaminación ambiental industrial. Se acumula en tejido graso animal.',
+        recomendacion: 'Retirar grasa visible. Preferir carnes magras. No quemar grasas al cocinar.' },
+      { nombre: 'Acrilamida (carnes procesadas)', tipo: 'Neoformado por calor', riesgo: 'medio',
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Neurotóxico en dosis altas.',
+        fuente: 'Se forma al cocinar a altas temperaturas: fritura, parrilla y ahumado.',
+        recomendacion: 'Evitar carbonizado. Preferir cocción en agua o vapor. Reducir embutidos ahumados.' },
+    ]
+  },
+  lacteos: {
+    nombre: 'Lácteos', emoji: '🥛',
+    toxinas: [
+      { nombre: 'Dioxinas y PCB', tipo: 'Contaminante orgánico persistente', riesgo: 'medio',
+        efecto: 'Disruptores endocrinos. Cancerígenos. Se concentran en la grasa láctea.',
+        fuente: 'Contaminación ambiental en pastos y piensos.',
+        recomendacion: 'Preferir lácteos desnatados o semidesnatados. Control de origen.' },
+      { nombre: 'Aflatoxina M1', tipo: 'Micotoxina', riesgo: 'medio',
+        efecto: 'Metabolito cancerígeno (Grupo 1 IARC) derivado de aflatoxina B1 en piensos.',
+        fuente: 'Piensos contaminados con Aspergillus que el animal metaboliza a la leche.',
+        recomendacion: 'Control estricto de piensos. La pasteurización no destruye las aflatoxinas.' },
+      { nombre: 'Antibióticos residuales', tipo: 'Residuo veterinario', riesgo: 'bajo',
+        efecto: 'Resistencia antimicrobiana. Reacciones alérgicas en personas sensibles.',
+        fuente: 'Tratamientos veterinarios en vacas lecheras.',
+        recomendacion: 'Los controles europeos son estrictos. Riesgo bajo con productos certificados UE.' },
+      { nombre: 'Radionúclidos (Cs-137, Sr-90)', tipo: 'Contaminante radiactivo', riesgo: 'bajo',
+        efecto: 'Riesgo cancerígeno a largo plazo en zonas afectadas por Chernóbil o Fukushima.',
+        fuente: 'Pastos contaminados en zonas de fallout nuclear.',
+        recomendacion: 'Riesgo mínimo en UE. Monitorización continua garantiza seguridad.' },
+    ]
+  },
+  frutas: {
+    nombre: 'Frutas', emoji: '🍎',
+    toxinas: [
+      { nombre: 'Pesticidas (múltiple residuo)', tipo: 'Plaguicida residual', riesgo: 'medio',
+        efecto: 'Efecto cóctel: mezcla de residuos puede tener efecto sinérgico disruptor.',
+        fuente: 'Uso agrícola convencional. Fresas, manzanas, uvas y melocotones son los más afectados.',
+        recomendacion: 'Lavar con agua corriente mínimo 30 s. Pelar cuando sea posible. Priorizar ecológico.' },
+      { nombre: 'Fungicidas post-cosecha', tipo: 'Plaguicida residual', riesgo: 'bajo',
+        efecto: 'Irritación digestiva en altas dosis. Algunos con sospecha de disrupción hormonal.',
+        fuente: 'Aplicados tras la recolección para alargar vida útil en transporte.',
+        recomendacion: 'Lavar bien la piel incluso en frutas que se pelan.' },
+      { nombre: 'Ceras sintéticas', tipo: 'Aditivo tecnológico', riesgo: 'bajo',
+        efecto: 'Generalmente reconocidas como seguras (GRAS). Posibles residuos de fungicidas adheridos.',
+        fuente: 'Aplicadas en manzanas, peras, cítricos y pepinos para mejorar apariencia.',
+        recomendacion: 'Lavar con agua caliente y cepillo. Pelar si se desea eliminar completamente.' },
+      { nombre: 'Patulina (manzanas dañadas)', tipo: 'Micotoxina', riesgo: 'medio',
+        efecto: 'Nefrotóxico y genotóxico. Presente en zonas con moho (podredumbre marrón).',
+        fuente: 'Hongos Penicillium expansum en fruta dañada. Pasa a zumos si hay fruta podrida.',
+        recomendacion: 'Desechar zonas con moho (la toxina penetra la pulpa). Usar solo fruta sana para zumos.' },
+    ]
+  },
+  mariscos: {
+    nombre: 'Mariscos', emoji: '🦐',
+    toxinas: [
+      { nombre: 'Biotoxinas marinas (PSP, ASP, DSP)', tipo: 'Toxina natural', riesgo: 'alto',
+        efecto: 'PSP: parálisis muscular potencialmente mortal. ASP: daño neurológico. DSP: diarrea severa.',
+        fuente: 'Algas tóxicas filtradas por moluscos bivalvos (mejillones, ostras, almejas).',
+        recomendacion: 'Solo consumir de zonas habilitadas con control oficial. No recolectar tras avisos sanitarios.' },
+      { nombre: 'Mercurio y Cadmio', tipo: 'Metales pesados', riesgo: 'medio',
+        efecto: 'Acumulación en hígado y riñones. Neurotóxico (mercurio), nefrotóxico (cadmio).',
+        fuente: 'Bioacumulación. Más elevado en cefalópodos (pulpo, calamar) y crustáceos.',
+        recomendacion: 'Evitar las vísceras en crustáceos. Limitar consumo en embarazadas y niños.' },
+      { nombre: 'Vibrio parahaemolyticus', tipo: 'Patógeno bacteriano', riesgo: 'alto',
+        efecto: 'Gastroenteritis aguda severa. Infecciones sistémicas en inmunodeprimidos.',
+        fuente: 'Bacterias naturales en agua marina caliente. Riesgo alto en verano.',
+        recomendacion: 'No consumir mariscos crudos en verano o procedentes de agua templada sin certificar.' },
+      { nombre: 'Microplásticos y nanoplásticos', tipo: 'Contaminante emergente', riesgo: 'bajo',
+        efecto: 'Los bivalvos filtran agua y concentran plásticos. Efectos crónicos en estudio.',
+        fuente: 'Contaminación plástica marina.',
+        recomendacion: 'Consumir de zonas con agua certificada. Investigación activa sobre efectos.' },
+    ]
+  },
+  cereales: {
+    nombre: 'Cereales y Pan', emoji: '🌾',
+    toxinas: [
+      { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
+        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor.',
+        fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados. Más en trigo y maíz.',
+        recomendacion: 'No consumir cereales con moho visible. Almacenar en seco. Diversificar.' },
+      { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'medio',
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma en almidón + calor seco.',
+        fuente: 'Pan muy tostado, galletas, cereales de desayuno tostados y patatas fritas.',
+        recomendacion: 'Tostar a color dorado, no marrón oscuro. Evitar partes carbonizadas.' },
+      { nombre: 'Deoxinivalenol (DON/Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
+        efecto: 'Náuseas, vómitos y supresión inmune.',
+        fuente: 'Fusarium en trigo y maíz húmedos.',
+        recomendacion: 'Control de calidad en compra. La cocción reduce pero no elimina completamente.' },
+      { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'bajo',
+        efecto: 'Cancerígeno acumulativo. Menor que en arroz pero presente.',
+        fuente: 'Suelos contaminados. Presente en avena integral y cereales integrales.',
+        recomendacion: 'Diversificar cereales. Mayor riesgo en dieta muy basada en un solo cereal.' },
+    ]
+  },
+  huevos: {
+    nombre: 'Huevos', emoji: '🥚',
+    toxinas: [
+      { nombre: 'Salmonella spp.', tipo: 'Patógeno bacteriano', riesgo: 'alto',
+        efecto: 'Salmonelosis: gastroenteritis con fiebre alta. Grave en ancianos, niños y embarazadas.',
+        fuente: 'Contaminación de cáscara o interior. Huevos crudos o poco cocinados.',
+        recomendacion: 'Cocinar completamente (yema sólida). Refrigerar. Lavar manos tras manipular.' },
+      { nombre: 'Dioxinas y PCB', tipo: 'Contaminante orgánico persistente', riesgo: 'medio',
+        efecto: 'Disruptores endocrinos. Se concentran en la yema por ser lipófilos.',
+        fuente: 'Piensos y tierra contaminada en gallinas camperas en zonas industriales.',
+        recomendacion: 'Los sistemas intensivos europeos tienen menores niveles que camperas en suelos contaminados.' },
+      { nombre: 'Residuos de pesticidas', tipo: 'Plaguicida residual', riesgo: 'bajo',
+        efecto: 'Posibles efectos hormonales en exposición crónica.',
+        fuente: 'Piensos tratados con pesticidas que pasan a la yema.',
+        recomendacion: 'Control europeo estricto. Riesgo bajo con productos certificados UE.' },
+      { nombre: 'Fipronil', tipo: 'Insecticida', riesgo: 'medio',
+        efecto: 'Posiblemente nocivo para hígado, riñones y tiroides en exposición elevada.',
+        fuente: 'Uso ilegal como antiparasitario en granjas avícolas (escándalo europeo 2017).',
+        recomendacion: 'Verificar código de origen del huevo. Preferir productores certificados.' },
+    ]
+  },
+  legumbres: {
+    nombre: 'Legumbres', emoji: '🫘',
+    toxinas: [
+      { nombre: 'Lectinas', tipo: 'Antinutriente natural', riesgo: 'medio',
+        efecto: 'Crudas: náuseas, vómitos severos y daño intestinal. Especialmente alubias rojas.',
+        fuente: 'Proteínas naturales de defensa de la planta. Muy altas en judías rojas crudas.',
+        recomendacion: 'NUNCA consumir crudas. Remojar 8-12 h y cocer mínimo 15 min a 100 °C.' },
+      { nombre: 'Aflatoxinas', tipo: 'Micotoxina', riesgo: 'medio',
+        efecto: 'Hepatotóxico y cancerígeno (Grupo 1 IARC). Inmunosupresor.',
+        fuente: 'Aspergillus en almacenamiento húmedo. Frecuente en cacahuetes.',
+        recomendacion: 'Almacenar en fresco y seco. Desechar si hay moho.' },
+      { nombre: 'Fitoestrógenos (soja)', tipo: 'Compuesto bioactivo', riesgo: 'bajo',
+        efecto: 'Debate científico activo. Posible interferencia hormonal en consumo excesivo.',
+        fuente: 'Isoflavonas naturales en soja: genisteína, daidzeína.',
+        recomendacion: 'Consumo moderado sin problema. Precaución con ciertos tratamientos hormonales.' },
+      { nombre: 'Residuos de glifosato', tipo: 'Herbicida residual', riesgo: 'medio',
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC — debate activo). Disbiosis intestinal.',
+        fuente: 'Uso como desecante pre-cosecha en soja y legumbres convencionales.',
+        recomendacion: 'Preferir legumbres ecológicas. Lavar bien antes de cocer.' },
+    ]
+  },
+  procesado: {
+    nombre: 'Alimento procesado', emoji: '🍟',
+    toxinas: [
+      { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'alto',
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Muy alto en fritos y horneados.',
+        fuente: 'Reacción de Maillard: almidón + aminoácidos + calor seco >120 °C.',
+        recomendacion: 'Minimizar patatas fritas, snacks de maíz y galletas muy tostadas.' },
+      { nombre: 'Nitritos (E249-E252)', tipo: 'Aditivo alimentario', riesgo: 'medio',
+        efecto: 'Los nitritos forman nitrosaminas cancerígenas (Grupo 1 IARC) en el organismo.',
+        fuente: 'Conservantes en embutidos, carnes curadas, bacon y jamón tratado.',
+        recomendacion: 'Limitar embutidos procesados. Preferir jamón ibérico curado naturalmente.' },
+      { nombre: 'Ácidos grasos trans (AGT)', tipo: 'Grasa industrial', riesgo: 'alto',
+        efecto: 'Aumenta LDL, reduce HDL. Factor de riesgo cardiovascular demostrado.',
+        fuente: 'Aceites vegetales parcialmente hidrogenados en bollería industrial.',
+        recomendacion: "Evitar 'aceite vegetal parcialmente hidrogenado' en etiquetas. La UE los limita al 2%." },
+      { nombre: 'PFAS (químicos eternos)', tipo: 'Contaminante emergente', riesgo: 'medio',
+        efecto: 'Disruptores endocrinos, inmunosupresores y cancerígenos sospechados.',
+        fuente: 'Envases con recubrimientos antiadherentes (cajas pizza, envases fast food).',
+        recomendacion: 'Evitar calentar en envases de fast food. Preferir vidrio o papel sin recubrimiento.' },
+    ]
+  },
+};
+
+const CATEGORY_KEYWORDS = {
+  pescado:  ['pescado','salmón','atún','bacalao','sardina','merluza','trucha','lubina','dorada','boquerón','anchoa','lenguado','pez','fish','salmon','tuna','cod','tilapia','besugo'],
+  arroz:    ['arroz','rice'],
+  verduras: ['verdura','lechuga','espinaca','brócoli','coliflor','zanahoria','tomate','pepino','pimiento','calabacín','berenjena','apio','vegetable','vegetal','hortaliza','ensalada','rúcula','col','repollo','acelga'],
+  carne:    ['carne','ternera','cerdo','pollo','pavo','cordero','buey','beef','chicken','pork','lamb','filete','chuleta','hamburguesa','burger','embutido','salchicha','jamón','chorizo','bacon','meat'],
+  lacteos:  ['leche','queso','yogur','mantequilla','nata','lácteo','milk','cheese','yogurt','butter','cream','dairy','kefir'],
+  frutas:   ['fruta','manzana','pera','naranja','plátano','uva','fresa','melocotón','cereza','kiwi','mango','piña','fruit','apple','orange','banana','berry','melón','sandía','ciruela','albaricoque','aguacate'],
+  mariscos: ['marisco','gamba','langosta','cangrejo','mejillón','ostra','almeja','calamar','pulpo','sepia','shrimp','lobster','crab','mussel','oyster','clam','squid','octopus','langostino','berberecho'],
+  cereales: ['pan','pasta','trigo','maíz','avena','cebada','centeno','bread','wheat','corn','oat','cereal','harina','galleta','tostada','biscuit'],
+  huevos:   ['huevo','egg','tortilla','omelette'],
+  legumbres:['lenteja','garbanzo','judía','alubia','soja','guisante','haba','legumbre','bean','lentil','chickpea','soybean','pea','tofu','tempeh'],
+  procesado:['procesado','frito','snack','chips','galleta','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva'],
+};
+
+// ── GEMINI API ───────────────────────────────────────
+const GEMINI_MODEL = 'gemini-3-flash-preview';
+const GEMINI_URL   = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+const PROMPT = `Eres un experto en seguridad alimentaria. Analiza la imagen.
+Responde ÚNICAMENTE con un JSON válido, sin texto extra ni bloques markdown.
+{
+  "alimento_detectado": "nombre específico en español",
+  "categoria": "UNA de estas EXACTAS: pescado|arroz|verduras|carne|lacteos|frutas|mariscos|cereales|huevos|legumbres|procesado|desconocido",
+  "confianza": entero_0_a_100,
+  "descripcion": "descripción breve de 1 frase"
+}
+Si la imagen no contiene alimento usa categoria "desconocido" y confianza 0.`;
+
+async function callGemini(apiKey, base64, mimeType) {
+  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [
+        { text: PROMPT },
+        { inline_data: { mime_type: mimeType || 'image/jpeg', data: base64 } },
+      ]}],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 2048,
+      },
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    const msg = err.error?.message || '';
+    if (res.status === 400 && msg.includes('API_KEY')) throw new Error('API Key inválida. Revísala en Configuración.');
+    throw new Error(msg || `Error ${res.status} de la API Gemini`);
+  }
+  const json = await res.json();
+
+  // Log para depuración en consola del navegador
+  console.log('[ToxiScan] Gemini raw response:', JSON.stringify(json, null, 2));
+
+  const candidate = json.candidates?.[0];
+  if (!candidate) throw new Error('Gemini no devolvió ningún resultado.');
+
+  let text = candidate.content?.parts?.[0]?.text ?? '';
+
+  // Limpiar posibles bloques markdown aunque responseMimeType ya debería evitarlos
+  text = text.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    // Intentar cerrar JSON truncado (modelo con thinking que corta la respuesta)
+    const trimmed = text.replace(/,\s*$/, '');
+    try { return JSON.parse(trimmed + '}'); } catch { /* continúa */ }
+
+    // Extraer el primer objeto JSON completo del texto
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m) {
+      try { return JSON.parse(m[0]); } catch { /* continúa */ }
+    }
+
+    // Extracción manual de campos si el JSON está muy truncado
+    const get = (key) => { const r = text.match(new RegExp(`"${key}"\\s*:\\s*"?([^",}\\n]+)"?`)); return r?.[1]?.trim() ?? ''; };
+    const confianza = parseInt(get('confianza')) || 0;
+    if (get('alimento_detectado')) {
+      return {
+        alimento_detectado: get('alimento_detectado'),
+        categoria: get('categoria') || 'desconocido',
+        confianza: Math.max(0, Math.min(100, confianza)),
+        descripcion: get('descripcion') || '',
+      };
+    }
+
+    console.error('[ToxiScan] Texto recibido que no se pudo parsear:', text);
+    throw new Error('No se pudo interpretar la respuesta de Gemini. Revisa la consola (F12).');
+  }
+}
+
+function resolveCategory(foodInfo) {
+  const cat = (foodInfo.categoria || '').toLowerCase().trim();
+  if (TOXIN_DB[cat]) return cat;
+  const name = (foodInfo.alimento_detectado || '').toLowerCase();
+  for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
+    if (kws.some(kw => name.includes(kw))) return key;
+  }
+  return null;
+}
+
+// ── API KEY ──────────────────────────────────────────
+let apiKey = window.TOXISCAN_DEV_KEY || localStorage.getItem('toxi_apikey') || '';
+
+// ── HISTORY ──────────────────────────────────────────
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem('toxi_history') || '[]'); }
+  catch { return []; }
+}
+function pushHistory(foodInfo, dbEntry) {
+  const h = loadHistory();
+  h.unshift({
+    id: Date.now(),
+    date: new Date().toLocaleString('es-ES', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }),
+    nombre: dbEntry.nombre, emoji: dbEntry.emoji,
+    detected: foodInfo.alimento_detectado, confianza: foodInfo.confianza,
+  });
+  localStorage.setItem('toxi_history', JSON.stringify(h.slice(0, 20)));
+}
+
+// ── LOADING STATUS CYCLE ─────────────────────────────
+const LOADING_MSGS = [
+  'Enviando imagen a Gemini Vision...',
+  'Identificando familia alimentaria...',
+  'Consultando base de datos toxicológica...',
+  'Buscando registros EFSA y OMS...',
+  'Compilando perfil de riesgo...',
+];
+let loadCycleId;
+function startLoadCycle() {
+  let i = 0;
+  const el = document.getElementById('load-status');
+  el.textContent = LOADING_MSGS[0];
+  loadCycleId = setInterval(() => { i = (i+1) % LOADING_MSGS.length; el.textContent = LOADING_MSGS[i]; }, 1800);
+}
+function stopLoadCycle() { clearInterval(loadCycleId); }
+
+// ── VIEWS ────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.remove('active', 'hidden');
+    v.style.display = v.id === id ? '' : 'none';
+  });
+  requestAnimationFrame(() => document.getElementById(id).classList.add('active'));
+}
+
+// ── RENDER RESULTS ───────────────────────────────────
+function renderResults(foodInfo, dbEntry) {
+  // Hero card
+  document.getElementById('result-hero').innerHTML = `
+    <div class="rh-top">
+      <div class="rh-emoji">${dbEntry.emoji}</div>
+      <div>
+        <div class="rh-category">${dbEntry.nombre.toUpperCase()}</div>
+        <div class="rh-detected">${foodInfo.alimento_detectado} · ${foodInfo.descripcion}</div>
+      </div>
+    </div>
+    <div class="conf-row">
+      <span class="conf-label">Precisión IA</span>
+      <div class="conf-track"><div class="conf-fill" id="conf-fill"></div></div>
+      <span class="conf-pct" id="conf-pct">0%</span>
+    </div>
+  `;
+  setTimeout(() => {
+    const fill = document.getElementById('conf-fill');
+    const pct  = document.getElementById('conf-pct');
+    if (fill) fill.style.width = `${foodInfo.confianza}%`;
+    if (pct)  pct.textContent  = `${foodInfo.confianza}%`;
+  }, 80);
+
+  // Toxin cards
+  const COLORS = { alto: '#f43f5e', medio: '#f59e0b', bajo: '#10b981' };
+  const LABELS = { alto: 'RIESGO ALTO', medio: 'RIESGO MEDIO', bajo: 'RIESGO BAJO' };
+  const list = document.getElementById('toxins-list');
+  list.innerHTML = '';
+  dbEntry.toxinas.forEach((t, i) => {
+    const color = COLORS[t.riesgo] || '#64748b';
+    const label = LABELS[t.riesgo] || 'DESCONOCIDO';
+    const card = document.createElement('div');
+    card.className = 'toxin-card';
+    card.style.cssText = `--ind-color:${color}; animation-delay:${i*0.1}s`;
+    card.innerHTML = `
+      <div class="tc-head">
+        <div>
+          <div class="tc-name">${t.nombre}</div>
+          <div class="tc-type">${t.tipo}</div>
+        </div>
+        <span class="risk-badge" style="background:${color}1a;color:${color};border:1px solid ${color}33">${label}</span>
+      </div>
+      <p class="tc-detail"><strong>Efecto:</strong> ${t.efecto}</p>
+      <p class="tc-detail"><strong>Fuente:</strong> ${t.fuente}</p>
+      <div class="tc-rec">${t.recomendacion}</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ── TOAST ────────────────────────────────────────────
+function toast(msg, color = 'rgba(0,198,255,0.3)') {
+  document.getElementById('toast')?.remove();
+  const el = document.createElement('div');
+  el.id = 'toast';
+  el.style.borderColor = color;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el?.remove(), 4500);
+}
+
+// ── PROCESS IMAGE ─────────────────────────────────────
+async function processImage(file) {
+  if (!apiKey) { openApiModal(); return; }
+
+  // Mostrar preview de la imagen mientras se analiza
+  const previewEl = document.getElementById('scan-preview');
+  previewEl.src = URL.createObjectURL(file);
+
+  showView('view-loading');
+  startLoadCycle();
+
+  try {
+    const base64 = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload  = () => res(r.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+
+    const foodInfo = await callGemini(apiKey, base64, file.type || 'image/jpeg');
+    foodInfo.confianza = Math.max(0, Math.min(100, parseInt(foodInfo.confianza) || 0));
+    const category = resolveCategory(foodInfo);
+
+    stopLoadCycle();
+
+    if (category) {
+      pushHistory(foodInfo, TOXIN_DB[category]);
+      renderResults(foodInfo, TOXIN_DB[category]);
+      showView('view-results');
+    } else {
+      document.getElementById('result-hero').innerHTML = `
+        <div class="not-found">
+          <div style="font-size:3rem;margin-bottom:1rem">🤔</div>
+          <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:.5rem">No identificado</div>
+          <div style="font-size:.875rem;color:var(--text-muted)">
+            Gemini detectó: <em>"${foodInfo.alimento_detectado || 'sin resultado'}"</em><br>
+            Prueba con otra imagen más clara o de otro ángulo.
+          </div>
+        </div>
+      `;
+      document.getElementById('toxins-list').innerHTML = '';
+      showView('view-results');
+    }
+  } catch (err) {
+    stopLoadCycle();
+    showView('view-upload');
+    toast(`⚠ ${err.message}`, 'rgba(244,63,94,0.4)');
+  }
+}
+
+// ── API MODAL ─────────────────────────────────────────
+function openApiModal() {
+  const modal = document.getElementById('api-modal');
+  modal.classList.remove('hidden');
+  document.getElementById('api-key-input').value = apiKey;
+  document.getElementById('save-key-btn').disabled = apiKey.length < 10;
+}
+function closeApiModal() { document.getElementById('api-modal').classList.add('hidden'); }
+
+// ── HISTORY DRAWER ────────────────────────────────────
+function openDrawer() {
+  const drawer = document.getElementById('history-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  drawer.classList.replace('drawer-closed', 'drawer-open');
+  overlay.classList.add('open');
+  renderHistoryList();
+}
+function closeDrawer() {
+  document.getElementById('history-drawer').classList.replace('drawer-open', 'drawer-closed');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+function renderHistoryList() {
+  const h = loadHistory();
+  const el = document.getElementById('history-list');
+  if (!h.length) {
+    el.innerHTML = `<div class="history-empty"><span class="history-empty-icon">🔬</span>Aún no hay análisis guardados.<br>Escanea tu primer alimento.</div>`;
+    return;
+  }
+  el.innerHTML = h.map(item => `
+    <div class="history-item">
+      <div class="h-emoji">${item.emoji}</div>
+      <div class="h-info">
+        <div class="h-name">${item.nombre} <span style="color:var(--text-muted);font-weight:400">(${item.confianza}%)</span></div>
+        <div class="h-meta">${item.date} · ${item.detected}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── CAMERA ────────────────────────────────────────────
+let cameraStream = null;
+
+async function openCamera() {
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } },
+    });
+    document.getElementById('camera-video').srcObject = cameraStream;
+    document.getElementById('camera-modal').classList.remove('hidden');
+  } catch {
+    toast('⚠ No se pudo acceder a la cámara. Revisa los permisos del navegador.', 'rgba(244,63,94,0.4)');
+  }
+}
+
+function closeCamera() {
+  cameraStream?.getTracks().forEach(t => t.stop());
+  cameraStream = null;
+  document.getElementById('camera-modal').classList.add('hidden');
+}
+
+function capturePhoto() {
+  const video  = document.getElementById('camera-video');
+  const canvas = document.getElementById('camera-canvas');
+  canvas.width  = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    closeCamera();
+    processImage(new File([blob], 'capture.jpg', { type: 'image/jpeg' }));
+  }, 'image/jpeg', 0.88);
+}
+
+// ── INIT ──────────────────────────────────────────────
+function init() {
+  if (apiKey) closeApiModal(); else openApiModal();
+
+  // API key modal
+  const keyInput = document.getElementById('api-key-input');
+  const saveBtn  = document.getElementById('save-key-btn');
+
+  keyInput.addEventListener('input', () => {
+    saveBtn.disabled = keyInput.value.trim().length < 10;
+  });
+  keyInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !saveBtn.disabled) saveBtn.click(); });
+
+  saveBtn.addEventListener('click', () => {
+    const val = keyInput.value.trim();
+    if (val.length < 10) return;
+    apiKey = val;
+    localStorage.setItem('toxi_apikey', apiKey);
+    closeApiModal();
+  });
+
+  document.getElementById('toggle-visibility').addEventListener('click', () => {
+    keyInput.type = keyInput.type === 'password' ? 'text' : 'password';
+  });
+
+  // Nav
+  document.getElementById('settings-btn').addEventListener('click', openApiModal);
+  document.getElementById('history-btn').addEventListener('click', openDrawer);
+  document.getElementById('close-drawer').addEventListener('click', closeDrawer);
+  document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+
+  // File input
+  const fileInput = document.getElementById('file-upload');
+  fileInput.addEventListener('change', e => {
+    const f = e.target.files?.[0];
+    if (f) processImage(f);
+    e.target.value = '';
+  });
+
+  // Drag & drop
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', e => { if (!dz.contains(e.relatedTarget)) dz.classList.remove('drag-over'); });
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files?.[0];
+    if (f?.type.startsWith('image/')) processImage(f);
+  });
+
+  // Camera
+  document.getElementById('open-camera-btn').addEventListener('click', openCamera);
+  document.getElementById('close-camera').addEventListener('click', closeCamera);
+  document.getElementById('shutter-btn').addEventListener('click', capturePhoto);
+  document.getElementById('camera-modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeCamera();
+  });
+
+  // Back button
+  document.getElementById('back-btn').addEventListener('click', () => showView('view-upload'));
+
+  // ESC
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    closeCamera();
+    closeDrawer();
+    if (apiKey) closeApiModal();
+  });
+}
+
+// ── PARTICLE NETWORK BACKGROUND ──────────────────────
+function initParticles() {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;z-index:0;pointer-events:none';
+  document.body.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+
+  const COUNT    = 70;
+  const MAX_DIST = 160;
+  const COLORS   = ['rgba(0,198,255,', 'rgba(168,85,247,', 'rgba(99,102,241,'];
+  let pts = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function spawn() {
+    pts = Array.from({ length: COUNT }, () => ({
+      x:  Math.random() * canvas.width,
+      y:  Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r:  Math.random() * 1.8 + 0.8,
+      c:  COLORS[Math.floor(Math.random() * COLORS.length)],
+    }));
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // connections
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const d  = Math.hypot(dx, dy);
+        if (d < MAX_DIST) {
+          const a = (1 - d / MAX_DIST) * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = `rgba(0,198,255,${a})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // nodes
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.c + '0.55)';
+      ctx.fill();
+      // glow
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = p.c + '0.06)';
+      ctx.fill();
+    });
+
+    // move
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  resize(); spawn(); frame();
+  window.addEventListener('resize', () => { resize(); spawn(); });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', initParticles);
