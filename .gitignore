@@ -1,6 +1,7 @@
 # ── CLAVES Y SECRETOS ──────────────────────────────
 .env
 frontend/config.js
+docs/config.js
 .env.local
 .env.*.local
 .streamlit/secrets.toml
@@ -25,6 +26,8 @@ build/
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+docs/node_modules/
+docs/config.js
 
 # ── EDITORES / IDEs ──────────────────────────────────
 .vscode/

@@ -10,7 +10,7 @@ El usuario sube o captura una foto de un alimento → la IA identifica la catego
 
 ## Demo
 
-🌐 **[Ver aplicación en vivo](https://mandyss10.github.io/ToxiScan/frontend/)**
+🌐 **[Ver aplicación en vivo](https://mandyss10.github.io/ToxiScan/)**
 
 ## Tecnologías
 
