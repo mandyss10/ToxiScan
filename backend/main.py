@@ -34,7 +34,7 @@ else:
 
 def _identify_food_sync(image_bytes: bytes) -> dict:
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    model = genai.GenerativeModel("gemini-3-flash-preview")
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = (
         "Eres un experto en seguridad alimentaria. Analiza esta imagen de alimento.\n"
