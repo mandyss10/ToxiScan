@@ -1,5 +1,19 @@
 // ═══════════════════════════════════════════════════
 //  Base de datos toxicológica y categorización
+//
+//  Estructura de una toxina:
+//   { nombre, tipo, riesgo, efecto, fuente, recomendacion,
+//     aplica_a?: string[]   // opcional. Lista de stems
+//                           //   (en minúsculas, sin tilde no es necesario).
+//                           //   Si NO existe → la toxina aplica a todo
+//                           //   el grupo. Si existe → solo se muestra
+//                           //   cuando alimento_detectado incluye alguno
+//                           //   de esos stems (case-insensitive).
+//   }
+//
+//  Esto resuelve la granularidad "grupo vs alimento concreto":
+//  por ejemplo la patulina solo aparece para manzana/pera/uva, y no
+//  cuando el usuario fotografía un plátano.
 // ═══════════════════════════════════════════════════
 
 export const TOXIN_DB = {
@@ -53,6 +67,7 @@ export const TOXIN_DB = {
         fuente: 'Uso agrícola convencional. Residuos en superficie y tejidos.',
         recomendacion: 'Lavar con agua abundante. Pelar cuando sea posible. Preferir ecológico.' },
       { nombre: 'Nitratos (NO₃⁻)', tipo: 'Compuesto inorgánico', riesgo: 'medio',
+        aplica_a: ['espinaca','rúcula','rucula','lechuga','acelga','remolacha','col','repollo','canónigo','berro'],
         efecto: 'Se convierten en nitritos en el organismo → metahemoglobinemia en bebés.',
         fuente: 'Fertilizantes nitrogenados. Muy altos en espinacas, rúcula, lechuga y remolacha.',
         recomendacion: 'No dar espinacas a bebés <6 meses. Consumir frescos. No recalentar purés.' },
@@ -61,6 +76,7 @@ export const TOXIN_DB = {
         fuente: 'Suelos con historial de abonos fosfatados. Más en raíces y hojas.',
         recomendacion: 'Rotar cultivos. Lavar bien y pelar raíces.' },
       { nombre: 'Listeria monocytogenes', tipo: 'Patógeno bacteriano', riesgo: 'medio',
+        aplica_a: ['brote','germinado','ensalada','lechuga','rúcula','rucula','espinaca','canónigo','col','repollo'],
         efecto: 'Listeriosis: infección grave en embarazadas, ancianos e inmunodeprimidos.',
         fuente: 'Suelo y agua. Brotes y germinados crudos de alto riesgo.',
         recomendacion: 'Lavar meticulosamente. Embarazadas deben evitar germinados y vegetales crudos sin lavar.' },
@@ -81,7 +97,8 @@ export const TOXIN_DB = {
         efecto: 'Cancerígeno (Grupo 1 IARC). Disruptor endocrino severo. Se acumula en grasa.',
         fuente: 'Contaminación ambiental industrial. Se acumula en tejido graso animal.',
         recomendacion: 'Retirar grasa visible. Preferir carnes magras. No quemar grasas al cocinar.' },
-      { nombre: 'Acrilamida (carnes procesadas)', tipo: 'Neoformado por calor', riesgo: 'medio',
+      { nombre: 'Acrilamida y HCA (carnes procesadas)', tipo: 'Neoformado por calor', riesgo: 'medio',
+        aplica_a: ['embutido','salchicha','jamón','jamon','chorizo','bacon','salami','mortadela','ahumado','frito','parrilla','barbacoa','asado','curado','frankfurt'],
         efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Neurotóxico en dosis altas.',
         fuente: 'Se forma al cocinar a altas temperaturas: fritura, parrilla y ahumado.',
         recomendacion: 'Evitar carbonizado. Preferir cocción en agua o vapor. Reducir embutidos ahumados.' },
@@ -102,6 +119,11 @@ export const TOXIN_DB = {
         efecto: 'Resistencia antimicrobiana. Reacciones alérgicas en personas sensibles.',
         fuente: 'Tratamientos veterinarios en vacas lecheras.',
         recomendacion: 'Los controles europeos son estrictos. Riesgo bajo con productos certificados UE.' },
+      { nombre: 'Listeria monocytogenes (quesos)', tipo: 'Patógeno bacteriano', riesgo: 'medio',
+        aplica_a: ['queso','quesito','brie','camembert','roquefort','feta','mozzarella','fresco','cheese'],
+        efecto: 'Listeriosis: grave en embarazadas, ancianos e inmunodeprimidos. Mortalidad ≈ 20–30 %.',
+        fuente: 'Quesos blandos o frescos sin pasteurizar.',
+        recomendacion: 'Embarazadas: evitar quesos blandos sin pasteurizar. Conservar < 4 °C.' },
       { nombre: 'Radionúclidos (Cs-137, Sr-90)', tipo: 'Contaminante radiactivo', riesgo: 'bajo',
         efecto: 'Riesgo cancerígeno a largo plazo en zonas afectadas por Chernóbil o Fukushima.',
         fuente: 'Pastos contaminados en zonas de fallout nuclear.',
@@ -113,17 +135,19 @@ export const TOXIN_DB = {
     toxinas: [
       { nombre: 'Pesticidas (múltiple residuo)', tipo: 'Plaguicida residual', riesgo: 'medio',
         efecto: 'Efecto cóctel: mezcla de residuos puede tener efecto sinérgico disruptor.',
-        fuente: 'Uso agrícola convencional. Fresas, manzanas, uvas y melocotones son los más afectados.',
+        fuente: 'Uso agrícola convencional. Mayor concentración en fresas, manzanas, uvas y melocotones (frutas con piel comestible). Frutas de piel gruesa como plátano o cítricos presentan niveles menores.',
         recomendacion: 'Lavar con agua corriente mínimo 30 s. Pelar cuando sea posible. Priorizar ecológico.' },
       { nombre: 'Fungicidas post-cosecha', tipo: 'Plaguicida residual', riesgo: 'bajo',
         efecto: 'Irritación digestiva en altas dosis. Algunos con sospecha de disrupción hormonal.',
-        fuente: 'Aplicados tras la recolección para alargar vida útil en transporte.',
-        recomendacion: 'Lavar bien la piel incluso en frutas que se pelan.' },
+        fuente: 'Aplicados tras la recolección para alargar la vida útil durante el transporte (especialmente en fruta importada como plátano, mango o cítricos).',
+        recomendacion: 'Lavar bien la piel incluso en frutas que se pelan. Lavarse las manos tras pelar.' },
       { nombre: 'Ceras sintéticas', tipo: 'Aditivo tecnológico', riesgo: 'bajo',
+        aplica_a: ['manzana','pera','naranja','limón','limon','mandarina','cítrico','citrico','pomelo','lima','clementina'],
         efecto: 'Generalmente reconocidas como seguras (GRAS). Posibles residuos de fungicidas adheridos.',
         fuente: 'Aplicadas en manzanas, peras, cítricos y pepinos para mejorar apariencia.',
         recomendacion: 'Lavar con agua caliente y cepillo. Pelar si se desea eliminar completamente.' },
       { nombre: 'Patulina (manzanas dañadas)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['manzana','pera','uva','zumo de manzana','sidra'],
         efecto: 'Nefrotóxico y genotóxico. Presente en zonas con moho (podredumbre marrón).',
         fuente: 'Hongos Penicillium expansum en fruta dañada. Pasa a zumos si hay fruta podrida.',
         recomendacion: 'Desechar zonas con moho (la toxina penetra la pulpa). Usar solo fruta sana para zumos.' },
@@ -133,10 +157,12 @@ export const TOXIN_DB = {
     nombre: 'Mariscos', emoji: '🦐',
     toxinas: [
       { nombre: 'Biotoxinas marinas (PSP, ASP, DSP)', tipo: 'Toxina natural', riesgo: 'alto',
+        aplica_a: ['mejillón','mejillon','ostra','almeja','berberecho','vieira','navaja','bivalvo','molusco'],
         efecto: 'PSP: parálisis muscular potencialmente mortal. ASP: daño neurológico. DSP: diarrea severa.',
         fuente: 'Algas tóxicas filtradas por moluscos bivalvos (mejillones, ostras, almejas).',
         recomendacion: 'Solo consumir de zonas habilitadas con control oficial. No recolectar tras avisos sanitarios.' },
       { nombre: 'Mercurio y Cadmio', tipo: 'Metales pesados', riesgo: 'medio',
+        aplica_a: ['pulpo','calamar','sepia','gamba','langostino','langosta','cangrejo','centollo','nécora','necora','cefalópodo','cefalopodo','crustáceo','crustaceo'],
         efecto: 'Acumulación en hígado y riñones. Neurotóxico (mercurio), nefrotóxico (cadmio).',
         fuente: 'Bioacumulación. Más elevado en cefalópodos (pulpo, calamar) y crustáceos.',
         recomendacion: 'Evitar las vísceras en crustáceos. Limitar consumo en embarazadas y niños.' },
@@ -145,6 +171,7 @@ export const TOXIN_DB = {
         fuente: 'Bacterias naturales en agua marina caliente. Riesgo alto en verano.',
         recomendacion: 'No consumir mariscos crudos en verano o procedentes de agua templada sin certificar.' },
       { nombre: 'Microplásticos y nanoplásticos', tipo: 'Contaminante emergente', riesgo: 'bajo',
+        aplica_a: ['mejillón','mejillon','ostra','almeja','berberecho','vieira','bivalvo','molusco'],
         efecto: 'Los bivalvos filtran agua y concentran plásticos. Efectos crónicos en estudio.',
         fuente: 'Contaminación plástica marina.',
         recomendacion: 'Consumir de zonas con agua certificada. Investigación activa sobre efectos.' },
@@ -158,14 +185,17 @@ export const TOXIN_DB = {
         fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados. Más en trigo y maíz.',
         recomendacion: 'No consumir cereales con moho visible. Almacenar en seco. Diversificar.' },
       { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'medio',
+        aplica_a: ['pan','tostada','galleta','bizcocho','cereales','muesli','crujiente','frito','horneado','tostado'],
         efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma en almidón + calor seco.',
         fuente: 'Pan muy tostado, galletas, cereales de desayuno tostados y patatas fritas.',
         recomendacion: 'Tostar a color dorado, no marrón oscuro. Evitar partes carbonizadas.' },
       { nombre: 'Deoxinivalenol (DON/Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['trigo','pan','pasta','maíz','maiz','harina','sémola','semola','cereales','galleta','espagueti','macarrón','macarron'],
         efecto: 'Náuseas, vómitos y supresión inmune.',
         fuente: 'Fusarium en trigo y maíz húmedos.',
         recomendacion: 'Control de calidad en compra. La cocción reduce pero no elimina completamente.' },
       { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'bajo',
+        aplica_a: ['avena','integral','centeno','salvado','copo','muesli','granola'],
         efecto: 'Cancerígeno acumulativo. Menor que en arroz pero presente.',
         fuente: 'Suelos contaminados. Presente en avena integral y cereales integrales.',
         recomendacion: 'Diversificar cereales. Mayor riesgo en dieta muy basada en un solo cereal.' },
@@ -195,15 +225,18 @@ export const TOXIN_DB = {
   legumbres: {
     nombre: 'Legumbres', emoji: '🫘',
     toxinas: [
-      { nombre: 'Lectinas', tipo: 'Antinutriente natural', riesgo: 'medio',
+      { nombre: 'Lectinas (alubias y judías)', tipo: 'Antinutriente natural', riesgo: 'medio',
+        aplica_a: ['judía','judia','alubia','frijol','bean','poroto','soja','soybean','tofu','tempeh'],
         efecto: 'Crudas: náuseas, vómitos severos y daño intestinal. Especialmente alubias rojas.',
         fuente: 'Proteínas naturales de defensa de la planta. Muy altas en judías rojas crudas.',
         recomendacion: 'NUNCA consumir crudas. Remojar 8-12 h y cocer mínimo 15 min a 100 °C.' },
-      { nombre: 'Aflatoxinas', tipo: 'Micotoxina', riesgo: 'medio',
+      { nombre: 'Aflatoxinas (cacahuetes)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['cacahuete','cacahuate','maní','mani','peanut'],
         efecto: 'Hepatotóxico y cancerígeno (Grupo 1 IARC). Inmunosupresor.',
         fuente: 'Aspergillus en almacenamiento húmedo. Frecuente en cacahuetes.',
         recomendacion: 'Almacenar en fresco y seco. Desechar si hay moho.' },
       { nombre: 'Fitoestrógenos (soja)', tipo: 'Compuesto bioactivo', riesgo: 'bajo',
+        aplica_a: ['soja','soybean','tofu','tempeh','edamame','miso','natto'],
         efecto: 'Debate científico activo. Posible interferencia hormonal en consumo excesivo.',
         fuente: 'Isoflavonas naturales en soja: genisteína, daidzeína.',
         recomendacion: 'Consumo moderado sin problema. Precaución con ciertos tratamientos hormonales.' },
@@ -217,18 +250,22 @@ export const TOXIN_DB = {
     nombre: 'Alimento procesado', emoji: '🍟',
     toxinas: [
       { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'alto',
+        aplica_a: ['frito','chip','patata','galleta','snack','horneado','bollería','tostado','crujiente','nugget','dorito','frita'],
         efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Muy alto en fritos y horneados.',
         fuente: 'Reacción de Maillard: almidón + aminoácidos + calor seco >120 °C.',
         recomendacion: 'Minimizar patatas fritas, snacks de maíz y galletas muy tostadas.' },
       { nombre: 'Nitritos (E249-E252)', tipo: 'Aditivo alimentario', riesgo: 'medio',
+        aplica_a: ['embutido','salchicha','jamón','jamon','bacon','chorizo','salami','mortadela','curado','frankfurt','york','salchichón','salchichon','fuet'],
         efecto: 'Los nitritos forman nitrosaminas cancerígenas (Grupo 1 IARC) en el organismo.',
         fuente: 'Conservantes en embutidos, carnes curadas, bacon y jamón tratado.',
         recomendacion: 'Limitar embutidos procesados. Preferir jamón ibérico curado naturalmente.' },
       { nombre: 'Ácidos grasos trans (AGT)', tipo: 'Grasa industrial', riesgo: 'alto',
+        aplica_a: ['bollería','bolleria','galleta','margarina','bizcocho','dónut','donut','croissant','pizza','frito','industrial','muffin','cupcake'],
         efecto: 'Aumenta LDL, reduce HDL. Factor de riesgo cardiovascular demostrado.',
         fuente: 'Aceites vegetales parcialmente hidrogenados en bollería industrial.',
         recomendacion: "Evitar 'aceite vegetal parcialmente hidrogenado' en etiquetas. La UE los limita al 2%." },
       { nombre: 'PFAS (químicos eternos)', tipo: 'Contaminante emergente', riesgo: 'medio',
+        aplica_a: ['pizza','fast food','envasado','envase','microondas','take away','take-away','envuelto','caja','hamburguesa','burger','palomita','popcorn'],
         efecto: 'Disruptores endocrinos, inmunosupresores y cancerígenos sospechados.',
         fuente: 'Envases con recubrimientos antiadherentes (cajas pizza, envases fast food).',
         recomendacion: 'Evitar calentar en envases de fast food. Preferir vidrio o papel sin recubrimiento.' },
@@ -258,4 +295,32 @@ export function resolveCategory(foodInfo) {
     if (kws.some(kw => name.includes(kw))) return key;
   }
   return null;
+}
+
+// ═══════════════════════════════════════════════════
+//  Filtro por alimento concreto
+//
+//  Reduce la lista de toxinas de un grupo a las que aplican
+//  al alimento detectado por Gemini. Las toxinas SIN campo
+//  `aplica_a` se consideran universales en el grupo y siempre
+//  se devuelven. Las que SÍ lo tienen solo aparecen si alguno
+//  de sus stems está contenido en `alimento_detectado`.
+//
+//  Devuelve además metadatos útiles para la UI:
+//   - total:     nº de toxinas del grupo
+//   - mostradas: nº de toxinas tras el filtro
+//   - filtrado:  true si se descartó al menos una
+// ═══════════════════════════════════════════════════
+export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
+  const food = (alimentoDetectado || '').toLowerCase();
+  const result = toxinas.filter(t => {
+    if (!t.aplica_a || t.aplica_a.length === 0) return true;
+    return t.aplica_a.some(stem => food.includes(stem.toLowerCase()));
+  });
+  return {
+    toxinas: result,
+    total: toxinas.length,
+    mostradas: result.length,
+    filtrado: result.length < toxinas.length,
+  };
 }

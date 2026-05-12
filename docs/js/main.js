@@ -3,7 +3,7 @@
 //  Orquesta init, eventos y flujo principal de análisis.
 // ═══════════════════════════════════════════════════
 
-import { TOXIN_DB, resolveCategory } from './data.js';
+import { TOXIN_DB, resolveCategory, filterToxinasForFood } from './data.js';
 import { callGemini } from './gemini.js';
 import { getApiKey, setApiKey, pushHistory } from './storage.js';
 import {
@@ -33,8 +33,21 @@ async function processImage(file) {
     stopLoadCycle();
 
     if (category) {
-      pushHistory(foodInfo, TOXIN_DB[category]);
-      renderResults(foodInfo, TOXIN_DB[category]);
+      const baseEntry = TOXIN_DB[category];
+      // Filtra las toxinas que solo aplican a alimentos concretos del grupo.
+      // Ej.: para "plátano" descarta patulina (manzana/pera/uva).
+      const f = filterToxinasForFood(baseEntry.toxinas, foodInfo.alimento_detectado);
+      // Fallback de seguridad: si el filtro deja 0 toxinas (alimento detectado
+      // demasiado genérico), mostramos la lista completa del grupo.
+      const toxinasFinal = f.mostradas > 0 ? f.toxinas : baseEntry.toxinas;
+      const filtrado = f.mostradas > 0 ? f.filtrado : false;
+      const entry = {
+        ...baseEntry,
+        toxinas: toxinasFinal,
+        meta: { total: f.total, mostradas: toxinasFinal.length, filtrado },
+      };
+      pushHistory(foodInfo, entry);
+      renderResults(foodInfo, entry);
     } else {
       renderNotFound(foodInfo);
     }
