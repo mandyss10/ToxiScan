@@ -65,6 +65,26 @@ export function renderResults(foodInfo, dbEntry) {
 
   const list = document.getElementById('toxins-list');
   list.innerHTML = '';
+
+  // Nota de filtrado: indica al usuario que la lista se ajusta al alimento
+  // concreto detectado, no al grupo entero (resuelve el caso "plátano → patulina").
+  if (dbEntry.meta?.filtrado) {
+    const note = document.createElement('div');
+    note.className = 'toxin-filter-note';
+    note.style.cssText = `
+      margin-bottom: 1rem; padding: .65rem .9rem;
+      background: rgba(20,184,166,.08); border-left: 3px solid #14B8A6;
+      border-radius: 6px; color: var(--text-muted, #94a3b8);
+      font-size: .8rem; line-height: 1.4;
+    `;
+    note.innerHTML =
+      `Mostrando <strong style="color:#14B8A6">${dbEntry.meta.mostradas} de ${dbEntry.meta.total}</strong> ` +
+      `toxinas del grupo <em>${dbEntry.nombre}</em>, filtradas por relevancia para ` +
+      `<strong>${foodInfo.alimento_detectado || 'el alimento detectado'}</strong>. ` +
+      `Las descartadas solo afectan a otros alimentos del grupo.`;
+    list.appendChild(note);
+  }
+
   dbEntry.toxinas.forEach((t, i) => {
     const color = RISK_COLORS[t.riesgo] || '#64748b';
     const label = RISK_LABELS[t.riesgo] || 'DESCONOCIDO';
