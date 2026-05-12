@@ -70,7 +70,6 @@ Imagen (upload / cámara)
 | Frontend | HTML5 + CSS3 + JavaScript ES Modules (vanilla) |
 | IA / Visión | [Google Gemini Vision API](https://ai.google.dev/) |
 | Persistencia | `localStorage` (sin cuenta de usuario) |
-| Build / Dev | [Vite](https://vite.dev/) v8 |
 | Despliegue | GitHub Pages |
 
 ---
