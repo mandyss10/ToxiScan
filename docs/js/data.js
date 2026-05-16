@@ -54,21 +54,32 @@ export const TOXIN_DB = {
     nombre: 'Arroz', emoji: '🍚',
     toxinas: [
       { nombre: 'Arsénico inorgánico (iAs)', tipo: 'Metaloide tóxico', riesgo: 'alto',
-        efecto: 'Cancerígeno Grupo 1 (IARC). Daño renal, cardiovascular y pulmonar crónico.',
-        fuente: 'El arroz absorbe arsénico del suelo y del agua de riego de forma muy eficiente.',
-        recomendacion: 'Lavar abundantemente antes de cocer. Cocer con agua extra y escurrir. Variar cereales.' },
+        efecto: 'Cancerígeno Grupo 1 (IARC). Daño renal, cardiovascular y pulmonar crónico. Sin umbral seguro de exposición.',
+        fuente: 'El arroz absorbe arsénico del suelo y agua de riego mucho más que otros cereales. El arroz integral tiene 2–3× más que el blanco (el salvado concentra el metal). Tortitas y bebida de arroz alcanzan niveles especialmente altos.',
+        recomendacion: 'Lavar con abundante agua y cocer con exceso de agua (escurrir al final). Limitar tortitas y bebida de arroz en niños <5 años. Alternar con otros cereales.' },
+      { nombre: 'Arsénico en productos de arroz', tipo: 'Metaloide tóxico', riesgo: 'alto',
+        aplica_a: ['tortita','cracker','bebida de arroz','leche de arroz','harina de arroz','integral','inflado','puffed'],
+        efecto: 'Concentración de arsénico inorgánico 2–5× superior al grano cocido. Especialmente preocupante en dieta infantil.',
+        fuente: 'El procesado concentra el salvado (tortitas, harina integral) o elimina la dilución del agua de cocción (bebida de arroz). La EFSA recomienda limitar estos productos en niños.',
+        recomendacion: 'No usar tortitas de arroz como snack habitual en menores de 5 años. Rotar con otras bebidas vegetales (avena, soja) para reducir exposición.' },
       { nombre: 'Cadmio', tipo: 'Metal pesado', riesgo: 'medio',
-        efecto: 'Nefrotóxico crónico. Daño renal acumulativo e irreversible.',
-        fuente: 'Suelos contaminados por fertilizantes fosfatados y residuos industriales.',
-        recomendacion: 'Diversificar la dieta. Preferir arroz de origen certificado con controles de metales.' },
-      { nombre: 'Plomo (Pb)', tipo: 'Metal pesado', riesgo: 'medio',
-        efecto: 'Neurotóxico. Especialmente dañino en el desarrollo infantil y cognitivo.',
-        fuente: 'Suelos agrícolas próximos a zonas industriales o de tráfico intenso.',
-        recomendacion: 'Preferir arroz con etiquetado de trazabilidad y controles de calidad.' },
-      { nombre: 'Aflatoxinas (B1, B2)', tipo: 'Micotoxina', riesgo: 'alto',
+        efecto: 'Nefrotóxico crónico. Daño renal acumulativo e irreversible. Mayor absorción en personas con déficit de hierro.',
+        fuente: 'Suelos contaminados por fertilizantes fosfatados y residuos industriales. Mayor concentración en arroz integral (salvado).',
+        recomendacion: 'Diversificar la dieta. Preferir arroz de origen certificado. El arroz integral tiene más cadmio que el blanco.' },
+      { nombre: 'Plomo (Pb)', tipo: 'Metal pesado', riesgo: 'bajo',
+        efecto: 'Neurotóxico acumulativo. Especialmente dañino en desarrollo infantil y cognitivo.',
+        fuente: 'Suelos agrícolas próximos a zonas industriales. Niveles en arroz generalmente bajos en la UE.',
+        recomendacion: 'Preferir arroz con trazabilidad certificada. El riesgo es bajo con arroz de origen europeo controlado.' },
+      { nombre: 'Aflatoxinas (B1, B2)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['manchado','húmedo','deteriorado','dañado','viejo','mal olor','moho','grano partido'],
         efecto: 'Hepatotóxico y cancerígeno hepático (Grupo 1 IARC). Inmunosupresor.',
-        fuente: 'Hongos Aspergillus en almacenamiento con humedad elevada.',
-        recomendacion: 'Almacenar en lugar fresco, seco y ventilado. Descartar si hay manchas o mal olor.' },
+        fuente: 'Hongos Aspergillus flavus en almacenamiento con humedad >14 % y temperatura elevada. Arroz correctamente almacenado presenta riesgo bajo.',
+        recomendacion: 'Almacenar en recipiente hermético en lugar fresco y seco. Desechar si hay manchas oscuras, mal olor o grano apelmazado.' },
+      { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['manchado','húmedo','deteriorado','dañado','viejo','mal olor','moho','integral'],
+        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor.',
+        fuente: 'Hongos Aspergillus y Penicillium en arroz almacenado en condiciones húmedas. Detectada esporádicamente en arroz integral.',
+        recomendacion: 'Mismo vector que las aflatoxinas: almacenamiento seco y fresco. No consumir arroz con signos de deterioro.' },
     ]
   },
   verduras: {
@@ -333,7 +344,7 @@ export const TOXIN_DB = {
 
 const CATEGORY_KEYWORDS = {
   pescado:  ['pescado','salmón','atún','bacalao','sardina','merluza','trucha','lubina','dorada','boquerón','anchoa','lenguado','pez','fish','salmon','tuna','cod','tilapia','besugo'],
-  arroz:    ['arroz','rice'],
+  arroz:    ['arroz','rice','paella','risotto','tortita de arroz','bebida de arroz','leche de arroz','harina de arroz','arroz con leche','arroz integral','sushi rice'],
   verduras: ['verdura','lechuga','espinaca','brócoli','coliflor','zanahoria','tomate','pepino','pimiento','calabacín','berenjena','apio','vegetable','vegetal','hortaliza','ensalada','rúcula','col','repollo','acelga'],
   carne:    ['carne','ternera','cerdo','pollo','pavo','cordero','buey','beef','chicken','pork','lamb','filete','chuleta','hamburguesa','burger','embutido','salchicha','jamón','chorizo','bacon','meat'],
   lacteos:  ['leche','queso','yogur','mantequilla','nata','lácteo','milk','cheese','yogurt','butter','cream','dairy','kefir'],
@@ -349,12 +360,13 @@ export function resolveCategory(foodInfo) {
   const cat = (foodInfo.categoria || '').toLowerCase().trim();
   const name = (foodInfo.alimento_detectado || '').toLowerCase();
 
-  // Si la IA dice "procesado", comprobar primero si el alimento encaja en una
-  // categoría más específica (hamburguesa → carne, salmón ahumado → pescado…).
-  // Solo se mantiene "procesado" si ninguna categoría específica lo reclama.
-  if (cat === 'procesado' && name) {
+  // Categorías genéricas que la IA tiende a usar en exceso. Si el nombre del
+  // alimento encaja en una categoría más específica, se prefiere esta última.
+  // Ejemplos: hamburguesa → carne, bebida de arroz → arroz.
+  const GENERIC_CATS = new Set(['procesado', 'cereales']);
+  if (GENERIC_CATS.has(cat) && name) {
     for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
-      if (key !== 'procesado' && kws.some(kw => name.includes(kw))) return key;
+      if (!GENERIC_CATS.has(key) && kws.some(kw => name.includes(kw))) return key;
     }
   }
 
