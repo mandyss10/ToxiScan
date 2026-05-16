@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════
 
 import { loadHistory } from './storage.js';
+import { TOXIN_LINKS } from './data.js';
 
 const RISK_COLORS = { alto: '#f43f5e', medio: '#f59e0b', bajo: '#10b981' };
 const RISK_LABELS = { alto: 'RIESGO ALTO', medio: 'RIESGO MEDIO', bajo: 'RIESGO BAJO' };
@@ -89,29 +90,21 @@ export function renderResults(foodInfo, dbEntry) {
     const color = RISK_COLORS[t.riesgo] || '#64748b';
     const label = RISK_LABELS[t.riesgo] || 'DESCONOCIDO';
 
-    // Genera enlaces a fuentes científicas a partir del nombre de la toxina.
-    // Se limpia quitando paréntesis y texto entre corchetes para mejorar las búsquedas.
-    const nombreLimpio = t.nombre.replace(/\s*[\(\[].*?[\)\]]\s*/g, ' ').trim();
-    const efsa = `https://www.efsa.europa.eu/en/search/site/${encodeURIComponent(nombreLimpio)}`;
-    const wiki = `https://es.wikipedia.org/w/index.php?search=${encodeURIComponent(nombreLimpio)}`;
-    const who  = t.nombre.toLowerCase().includes('salmonella') || t.nombre.toLowerCase().includes('listeria') || t.nombre.toLowerCase().includes('campylobacter') || t.nombre.toLowerCase().includes('coli')
-      ? `https://www.who.int/news-room/fact-sheets/detail/${encodeURIComponent(nombreLimpio.toLowerCase().replace(/\s+/g,'-'))}`
-      : null;
+    const tl  = TOXIN_LINKS[t.nombre] || {};
+    const q   = encodeURIComponent(t.nombre.replace(/\s*[\(\[].*?[\)\]]\s*/g, ' ').trim());
+    const urls = {
+      efsa: tl.efsa || `https://www.efsa.europa.eu/en/search?query=${q}`,
+      who:  tl.who  || `https://www.who.int/search?query=${q}`,
+      wiki: tl.wiki || `https://es.wikipedia.org/w/index.php?search=${q}`,
+    };
+
+    const srcIcon = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
 
     const linksHtml = `
       <div class="tc-links">
-        <a href="${efsa}" target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-efsa" title="Buscar en EFSA (Autoridad Europea de Seguridad Alimentaria)">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          EFSA
-        </a>
-        ${who ? `<a href="${who}" target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-who" title="Ficha técnica OMS">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          OMS
-        </a>` : ''}
-        <a href="${wiki}" target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-wiki" title="Buscar en Wikipedia en español">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Wiki
-        </a>
+        <a href="${urls.efsa}" target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-efsa" title="EFSA${tl.efsa ? '' : ' (búsqueda)'}">${srcIcon}EFSA</a>
+        <a href="${urls.who}"  target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-who"  title="OMS${tl.who   ? '' : ' (búsqueda)'}">${srcIcon}OMS</a>
+        <a href="${urls.wiki}" target="_blank" rel="noopener noreferrer" class="tc-src-link tc-src-wiki" title="Wikipedia${tl.wiki ? '' : ' (búsqueda)'}">${srcIcon}Wiki</a>
       </div>`;
 
     const card = document.createElement('div');

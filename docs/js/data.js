@@ -456,6 +456,280 @@ export const TOXIN_DB = {
   },
 };
 
+// ═══════════════════════════════════════════════════
+//  Enlaces específicos por toxina
+//  Claves: wiki · efsa · who  (omitir si no existe página concreta)
+// ═══════════════════════════════════════════════════
+export const TOXIN_LINKS = {
+  'Mercurio (MeHg)': {
+    wiki: 'https://es.wikipedia.org/wiki/Metilmercurio',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/mercury',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/mercury-and-health',
+  },
+  'PCB (Bifenilos Policlorados)': {
+    wiki: 'https://es.wikipedia.org/wiki/Bifenilo_policlorado',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/dioxins-and-pcbs',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/dioxins-and-their-effects-on-human-health',
+  },
+  'Anisakis simplex': {
+    wiki: 'https://es.wikipedia.org/wiki/Anisakis_simplex',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/anisakis',
+  },
+  'HAP del ahumado': {
+    wiki: 'https://es.wikipedia.org/wiki/Hidrocarburo_aromático_policíclico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/polycyclic-aromatic-hydrocarbons',
+  },
+  'Listeria monocytogenes (ahumado en frío)': {
+    wiki: 'https://es.wikipedia.org/wiki/Listeria_monocytogenes',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/listeria',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/listeriosis',
+  },
+  'Microplásticos': {
+    wiki: 'https://es.wikipedia.org/wiki/Microplástico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/microplastics-and-nanoplastics',
+  },
+  'Arsénico inorgánico (iAs)': {
+    wiki: 'https://es.wikipedia.org/wiki/Arsénico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
+  },
+  'Arsénico en productos de arroz': {
+    wiki: 'https://es.wikipedia.org/wiki/Arsénico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
+  },
+  'Arsénico inorgánico': {
+    wiki: 'https://es.wikipedia.org/wiki/Arsénico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
+  },
+  'Cadmio': {
+    wiki: 'https://es.wikipedia.org/wiki/Cadmio',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/cadmium',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/cadmium',
+  },
+  'Plomo (Pb)': {
+    wiki: 'https://es.wikipedia.org/wiki/Plomo',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/lead',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/lead-poisoning-and-health',
+  },
+  'Aflatoxinas (B1, B2)': {
+    wiki: 'https://es.wikipedia.org/wiki/Aflatoxina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/aflatoxins',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/mycotoxins',
+  },
+  'Aflatoxina M1': {
+    wiki: 'https://es.wikipedia.org/wiki/Aflatoxina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/aflatoxins',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/mycotoxins',
+  },
+  'Aflatoxinas': {
+    wiki: 'https://es.wikipedia.org/wiki/Aflatoxina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/aflatoxins',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/mycotoxins',
+  },
+  'Ocratoxina A (OTA)': {
+    wiki: 'https://es.wikipedia.org/wiki/Ocratoxina_A',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/ochratoxin-a',
+  },
+  'Pesticidas organofosforados': {
+    wiki: 'https://es.wikipedia.org/wiki/Organofosforado',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pesticides',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/pesticide-residues-in-food',
+  },
+  'Pesticidas (múltiple residuo)': {
+    wiki: 'https://es.wikipedia.org/wiki/Plaguicida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pesticides',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/pesticide-residues-in-food',
+  },
+  'Residuos de pesticidas': {
+    wiki: 'https://es.wikipedia.org/wiki/Plaguicida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pesticides',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/pesticide-residues-in-food',
+  },
+  'Fungicidas post-cosecha': {
+    wiki: 'https://es.wikipedia.org/wiki/Fungicida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pesticides',
+  },
+  'Residuos de glifosato': {
+    wiki: 'https://es.wikipedia.org/wiki/Glifosato',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/glyphosate',
+    who:  'https://www.who.int/news-room/questions-and-answers/item/food-safety-glyphosate',
+  },
+  'Nitratos (NO₃⁻)': {
+    wiki: 'https://es.wikipedia.org/wiki/Nitrato',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+  },
+  'Solanina': {
+    wiki: 'https://es.wikipedia.org/wiki/Solanina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/glycoalkaloids',
+  },
+  'Oxalatos': {
+    wiki: 'https://es.wikipedia.org/wiki/Ácido_oxálico',
+  },
+  'E. coli STEC (O157:H7)': {
+    wiki: 'https://es.wikipedia.org/wiki/Escherichia_coli_O157:H7',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/e-coli',
+  },
+  'E. coli O157:H7 (carne picada)': {
+    wiki: 'https://es.wikipedia.org/wiki/Escherichia_coli_O157:H7',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/e-coli',
+  },
+  'Listeria monocytogenes': {
+    wiki: 'https://es.wikipedia.org/wiki/Listeria_monocytogenes',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/listeria',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/listeriosis',
+  },
+  'Listeria monocytogenes (lácteos sin pasteurizar)': {
+    wiki: 'https://es.wikipedia.org/wiki/Listeria_monocytogenes',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/listeria',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/listeriosis',
+  },
+  'Hormonas de crecimiento': {
+    wiki: 'https://es.wikipedia.org/wiki/Hormona_de_crecimiento',
+  },
+  'Antibióticos residuales': {
+    wiki: 'https://es.wikipedia.org/wiki/Resistencia_a_los_antibióticos',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/antibiotic-resistance',
+  },
+  'Dioxinas y furanos': {
+    wiki: 'https://es.wikipedia.org/wiki/Dioxina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/dioxins-and-pcbs',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/dioxins-and-their-effects-on-human-health',
+  },
+  'Dioxinas y PCB': {
+    wiki: 'https://es.wikipedia.org/wiki/Dioxina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/dioxins-and-pcbs',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/dioxins-and-their-effects-on-human-health',
+  },
+  'Acrilamida y HCA (carnes procesadas)': {
+    wiki: 'https://es.wikipedia.org/wiki/Acrilamida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/acrylamide',
+  },
+  'Acrilamida': {
+    wiki: 'https://es.wikipedia.org/wiki/Acrilamida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/acrylamide',
+  },
+  'Nitritos (E249–E252) y Nitrosaminas': {
+    wiki: 'https://es.wikipedia.org/wiki/Nitrosamina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+  },
+  'Nitritos (E249-E252)': {
+    wiki: 'https://es.wikipedia.org/wiki/Nitrito',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+  },
+  'Salmonella / Campylobacter': {
+    wiki: 'https://es.wikipedia.org/wiki/Campylobacter',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/campylobacter',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/campylobacter',
+  },
+  'Salmonella spp.': {
+    wiki: 'https://es.wikipedia.org/wiki/Salmonella',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/salmonella',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/salmonella-(non-typhoidal)',
+  },
+  'Campylobacter': {
+    wiki: 'https://es.wikipedia.org/wiki/Campylobacter',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/campylobacter',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/campylobacter',
+  },
+  'Aminas biógenas (histamina, tiramina)': {
+    wiki: 'https://es.wikipedia.org/wiki/Amina_biógena',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/biogenic-amines',
+  },
+  'Radionúclidos (Cs-137, Sr-90)': {
+    wiki: 'https://es.wikipedia.org/wiki/Radionúclido',
+  },
+  'Ceras sintéticas': {
+    wiki: 'https://es.wikipedia.org/wiki/Cera',
+  },
+  'Patulina (manzanas dañadas)': {
+    wiki: 'https://es.wikipedia.org/wiki/Patulina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/patulin',
+  },
+  'Biotoxinas marinas (PSP, ASP, DSP)': {
+    wiki: 'https://es.wikipedia.org/wiki/Intoxicación_paralítica_por_mariscos',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/marine-biotoxins',
+  },
+  'Norovirus': {
+    wiki: 'https://es.wikipedia.org/wiki/Norovirus',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/norovirus',
+  },
+  'Hepatitis A (VHA)': {
+    wiki: 'https://es.wikipedia.org/wiki/Hepatitis_A',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/hepatitis-a',
+  },
+  'Vibrio parahaemolyticus': {
+    wiki: 'https://es.wikipedia.org/wiki/Vibrio_parahaemolyticus',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/vibrio',
+  },
+  'Microplásticos y nanoplásticos': {
+    wiki: 'https://es.wikipedia.org/wiki/Microplástico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/microplastics-and-nanoplastics',
+  },
+  'Deoxinivalenol (DON / Vomitoxina)': {
+    wiki: 'https://es.wikipedia.org/wiki/Deoxinivalenol',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/deoxynivalenol',
+  },
+  'Fitatos (ácido fítico)': {
+    wiki: 'https://es.wikipedia.org/wiki/Ácido_fítico',
+  },
+  'Índice glucémico elevado': {
+    wiki: 'https://es.wikipedia.org/wiki/Índice_glucémico',
+  },
+  'Aditivos y mejorantes (pan industrial)': {
+    wiki: 'https://es.wikipedia.org/wiki/Aditivo_alimentario',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/food-additives',
+  },
+  'Fipronil y otros insecticidas ilegales': {
+    wiki: 'https://es.wikipedia.org/wiki/Fipronil',
+  },
+  'Lectinas (fitohemaglutinina)': {
+    wiki: 'https://es.wikipedia.org/wiki/Lectina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/plant-toxicants',
+  },
+  'Glucósidos cianogénicos': {
+    wiki: 'https://es.wikipedia.org/wiki/Glucósido_cianogénico',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/cyanogenic-compounds',
+  },
+  'Ácido fítico (fitatos)': {
+    wiki: 'https://es.wikipedia.org/wiki/Ácido_fítico',
+  },
+  'Fitoestrógenos (soja)': {
+    wiki: 'https://es.wikipedia.org/wiki/Fitoestrogeno',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/isoflavones',
+  },
+  'Ácidos grasos trans (AGT)': {
+    wiki: 'https://es.wikipedia.org/wiki/Ácido_graso_trans',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/trans-fatty-acids',
+    who:  'https://www.who.int/news-room/questions-and-answers/item/nutrition-trans-fat',
+  },
+  'PFAS (químicos eternos)': {
+    wiki: 'https://es.wikipedia.org/wiki/Sustancias_perfluoroalquiladas_y_polifluoroalquiladas',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pfas',
+  },
+  'Clostridium botulinum (botulismo)': {
+    wiki: 'https://es.wikipedia.org/wiki/Botulismo',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/botulism',
+  },
+  'BPA (Bisfenol A)': {
+    wiki: 'https://es.wikipedia.org/wiki/Bisfenol_A',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/bisphenol',
+  },
+  'Colorantes azoicos (E102, E110, E122, E129…)': {
+    wiki: 'https://es.wikipedia.org/wiki/Colorante_alimentario',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/food-colours',
+  },
+  'Benceno (benzoato + vitamina C)': {
+    wiki: 'https://es.wikipedia.org/wiki/Benceno',
+  },
+  'Aspartamo (E951)': {
+    wiki: 'https://es.wikipedia.org/wiki/Aspartamo',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/aspartame',
+    who:  'https://www.who.int/news-room/questions-and-answers/item/aspartame-ia',
+  },
+};
+
 const CATEGORY_KEYWORDS = {
   pescado:  ['pescado','salmón','atún','bacalao','sardina','merluza','trucha','lubina','dorada','boquerón','anchoa','lenguado','pez','fish','salmon','tuna','cod','tilapia','besugo'],
   arroz:    ['arroz','rice','paella','risotto','tortita de arroz','bebida de arroz','leche de arroz','harina de arroz','arroz con leche','arroz integral','sushi rice'],
