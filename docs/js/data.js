@@ -268,25 +268,50 @@ export const TOXIN_DB = {
     nombre: 'Alimento procesado', emoji: '🍟',
     toxinas: [
       { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'alto',
-        aplica_a: ['frito','chip','patata','galleta','snack','horneado','bollería','tostado','crujiente','nugget','dorito','frita'],
-        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Muy alto en fritos y horneados.',
-        fuente: 'Reacción de Maillard: almidón + aminoácidos + calor seco >120 °C.',
-        recomendacion: 'Minimizar patatas fritas, snacks de maíz y galletas muy tostadas.' },
+        aplica_a: ['frito','chip','patata','galleta','snack','horneado','bollería','bolleria','tostado','crujiente','nugget','dorito','frita'],
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Muy alto en fritos y horneados a >120 °C.',
+        fuente: 'Reacción de Maillard: almidón + aminoácidos + calor seco >120 °C. Máximo en patatas fritas y galletas muy tostadas.',
+        recomendacion: 'Minimizar patatas fritas, snacks de maíz y galletas muy tostadas. Tostar a dorado, no marrón oscuro.' },
       { nombre: 'Nitritos (E249-E252)', tipo: 'Aditivo alimentario', riesgo: 'medio',
-        aplica_a: ['embutido','salchicha','jamón','jamon','bacon','chorizo','salami','mortadela','curado','frankfurt','york','salchichón','salchichon','fuet'],
-        efecto: 'Los nitritos forman nitrosaminas cancerígenas (Grupo 1 IARC) en el organismo.',
-        fuente: 'Conservantes en embutidos, carnes curadas, bacon y jamón tratado.',
-        recomendacion: 'Limitar embutidos procesados. Preferir jamón ibérico curado naturalmente.' },
+        aplica_a: ['embutido','salchicha','jamón','jamon','bacon','chorizo','salami','mortadela','curado','frankfurt','york','salchichón','salchichon','fuet','fiambre'],
+        efecto: 'Los nitritos forman nitrosaminas cancerígenas (Grupo 1 IARC) en el organismo, especialmente al cocinarse a alta temperatura.',
+        fuente: 'Conservantes (E249–E252) en embutidos, carnes curadas, bacon y jamón tratado.',
+        recomendacion: 'Limitar embutidos procesados. Preferir jamón ibérico curado naturalmente sin nitritos añadidos.' },
       { nombre: 'Ácidos grasos trans (AGT)', tipo: 'Grasa industrial', riesgo: 'alto',
-        aplica_a: ['bollería','bolleria','galleta','margarina','bizcocho','dónut','donut','croissant','pizza','frito','industrial','muffin','cupcake'],
-        efecto: 'Aumenta LDL, reduce HDL. Factor de riesgo cardiovascular demostrado.',
-        fuente: 'Aceites vegetales parcialmente hidrogenados en bollería industrial.',
-        recomendacion: "Evitar 'aceite vegetal parcialmente hidrogenado' en etiquetas. La UE los limita al 2%." },
+        aplica_a: ['bollería','bolleria','galleta','margarina','bizcocho','dónut','donut','croissant','pizza','frito','industrial','muffin','cupcake','hojaldre','palomita','popcorn'],
+        efecto: 'Aumenta LDL, reduce HDL. Factor de riesgo cardiovascular demostrado. Sin umbral seguro.',
+        fuente: 'Aceites vegetales parcialmente hidrogenados en bollería industrial y margarinas.',
+        recomendacion: "Leer etiquetas: evitar 'aceite vegetal parcialmente hidrogenado'. La UE limita al 2 % en producto final." },
       { nombre: 'PFAS (químicos eternos)', tipo: 'Contaminante emergente', riesgo: 'medio',
-        aplica_a: ['pizza','fast food','envasado','envase','microondas','take away','take-away','envuelto','caja','hamburguesa','burger','palomita','popcorn'],
-        efecto: 'Disruptores endocrinos, inmunosupresores y cancerígenos sospechados.',
-        fuente: 'Envases con recubrimientos antiadherentes (cajas pizza, envases fast food).',
-        recomendacion: 'Evitar calentar en envases de fast food. Preferir vidrio o papel sin recubrimiento.' },
+        aplica_a: ['pizza','fast food','envasado','envase','microondas','take away','take-away','envuelto','caja','palomita','popcorn','papel grasa'],
+        efecto: 'Disruptores endocrinos, inmunosupresores y posiblemente cancerígenos (IARC 2023: Grupo 1 para PFOA). Persistentes en sangre décadas.',
+        fuente: 'Recubrimientos antiadherentes de cajas de pizza, envases de fast food y bolsas de microondas.',
+        recomendacion: 'No calentar comida en su envase de fast food. Preferir vidrio, acero o papel sin recubrimiento fluorado.' },
+      { nombre: 'Clostridium botulinum (botulismo)', tipo: 'Patógeno bacteriano', riesgo: 'alto',
+        aplica_a: ['conserva','enlatado','enlata','bote','tarro','escabech','paté','pate','foie','anchoa en lata','atún en lata','atun en lata','aceite casero','ajo en aceite'],
+        efecto: 'La toxina botulínica bloquea la transmisión neuromuscular. Parálisis flácida descendente. Mortalidad sin tratamiento ≈ 5–10 %.',
+        fuente: 'Esporas de C. botulinum en conservas mal esterilizadas, caseras o de baja acidez (pH >4,6). Crecen en anaerobiosis.',
+        recomendacion: 'Desechar latas abombadas, con mal olor o que silban al abrirse. Las conservas caseras deben autoclavarse correctamente.' },
+      { nombre: 'BPA (Bisfenol A)', tipo: 'Disruptor endocrino', riesgo: 'medio',
+        aplica_a: ['lata','enlatado','bote','conserva','plástico','plastico','tetrabrik','brick','envase'],
+        efecto: 'Imita al estrógeno. Altera el sistema hormonal. Asociado a infertilidad, obesidad y cáncer hormono-dependiente. Especialmente sensibles fetos y lactantes.',
+        fuente: 'Revestimiento epoxi interior de latas y tapas metálicas. También en plásticos policarbonato (PC) reutilizables.',
+        recomendacion: 'Preferir conservas en tarro de vidrio. Evitar calentar comida en envases plásticos. Buscar "BPA free" aunque los sustitutos (BPS, BPF) también generan controversia.' },
+      { nombre: 'Colorantes azoicos (E102, E110, E122, E129…)', tipo: 'Aditivo alimentario', riesgo: 'medio',
+        aplica_a: ['refresco','chuche','gominola','caramelo','bebida','snack','gelatina','helado','salsas','ketchup','fanta','naranjada'],
+        efecto: 'El "pack de Southampton" (6 colorantes) se asocia a hiperactividad y déficit de atención en niños. Posibles reacciones alérgicas.',
+        fuente: 'Colorantes sintéticos en bebidas, chuches, snacks y salsas de colores intensos.',
+        recomendacion: 'Leer etiquetas. En la UE los productos con estos 6 colorantes deben incluir el aviso "puede afectar a la actividad y atención de los niños".' },
+      { nombre: 'Benceno (benzoato + vitamina C)', tipo: 'Neoformado por reacción química', riesgo: 'medio',
+        aplica_a: ['refresco','zumo','bebida','naranjada','limonada','energética','isotónica','soda'],
+        efecto: 'Cancerígeno Grupo 1 (IARC). Se forma espontáneamente cuando E211 (benzoato sódico) reacciona con ácido ascórbico (vit. C) en presencia de luz o calor.',
+        fuente: 'Refrescos que combinan conservante E211 con vitamina C añadida o zumo de frutas.',
+        recomendacion: 'Revisar etiquetas: si llevan E211 y vitamina C juntos, el riesgo existe. Preferir bebidas sin benzoato.' },
+      { nombre: 'Aspartamo (E951)', tipo: 'Edulcorante artificial', riesgo: 'bajo',
+        aplica_a: ['zero','sin azúcar','sin azucar','light','diet','edulcor','refresco','yogur','postre'],
+        efecto: 'Clasificado como posiblemente cancerígeno (Grupo 2B IARC, 2023). Debate científico activo. Se metaboliza en fenilalanina (contraindicado en fenilcetonuria).',
+        fuente: 'Edulcorante intensivo en bebidas "zero", yogures light y productos sin azúcar.',
+        recomendacion: 'Consumo moderado dentro de la IDA (40 mg/kg/día). Personas con fenilcetonuria deben evitarlo. Seguir las novedades regulatorias.' },
     ]
   },
 };
@@ -302,13 +327,24 @@ const CATEGORY_KEYWORDS = {
   cereales: ['pan','pasta','trigo','maíz','avena','cebada','centeno','bread','wheat','corn','oat','cereal','harina','galleta','tostada','biscuit'],
   huevos:   ['huevo','egg','tortilla','omelette'],
   legumbres:['lenteja','garbanzo','judía','alubia','soja','guisante','haba','legumbre','bean','lentil','chickpea','soybean','pea','tofu','tempeh'],
-  procesado:['procesado','frito','snack','chips','galleta','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva'],
+  procesado:['procesado','frito','snack','chips','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
 };
 
 export function resolveCategory(foodInfo) {
   const cat = (foodInfo.categoria || '').toLowerCase().trim();
-  if (TOXIN_DB[cat]) return cat;
   const name = (foodInfo.alimento_detectado || '').toLowerCase();
+
+  // Si la IA dice "procesado", comprobar primero si el alimento encaja en una
+  // categoría más específica (hamburguesa → carne, salmón ahumado → pescado…).
+  // Solo se mantiene "procesado" si ninguna categoría específica lo reclama.
+  if (cat === 'procesado' && name) {
+    for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
+      if (key !== 'procesado' && kws.some(kw => name.includes(kw))) return key;
+    }
+  }
+
+  if (TOXIN_DB[cat]) return cat;
+
   for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
     if (kws.some(kw => name.includes(kw))) return key;
   }
