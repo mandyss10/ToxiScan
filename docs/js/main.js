@@ -3,7 +3,7 @@
 //  Orquesta init, eventos y flujo principal de análisis.
 // ═══════════════════════════════════════════════════
 
-import { TOXIN_DB, resolveCategory, filterToxinasForFood } from './data.js';
+import { resolveCategories, buildEntryForCategories } from './data.js';
 import { callGemini } from './gemini.js';
 import { getApiKey, setApiKey, pushHistory } from './storage.js';
 import {
@@ -29,23 +29,19 @@ async function processImage(file) {
     const foodInfo = await callGemini(apiKey, base64, file.type || 'image/jpeg');
     foodInfo.confianza = Math.max(0, Math.min(100, parseInt(foodInfo.confianza) || 0));
 
-    const category = resolveCategory(foodInfo);
+    // Detecta todas las categorías presentes (avena + frutos secos + manzana
+    // → ['cereales','frutos_secos','frutas']) y fusiona sus toxinas relevantes
+    // en una única vista para la UI.
+    const categories = resolveCategories(foodInfo);
     stopLoadCycle();
 
-    if (category) {
-      const baseEntry = TOXIN_DB[category];
-      // Filtra las toxinas que solo aplican a alimentos concretos del grupo.
-      // Ej.: para "plátano" descarta patulina (manzana/pera/uva).
-      const f = filterToxinasForFood(baseEntry.toxinas, foodInfo.alimento_detectado);
-      // Fallback de seguridad: si el filtro deja 0 toxinas (alimento detectado
-      // demasiado genérico), mostramos la lista completa del grupo.
-      const toxinasFinal = f.mostradas > 0 ? f.toxinas : baseEntry.toxinas;
-      const filtrado = f.mostradas > 0 ? f.filtrado : false;
-      const entry = {
-        ...baseEntry,
-        toxinas: toxinasFinal,
-        meta: { total: f.total, mostradas: toxinasFinal.length, filtrado },
-      };
+    // El filtro por toxina necesita tanto el nombre como la descripción
+    // para captar ingredientes que solo aparecen en la descripción
+    // (p. ej. patulina/manzana en "puré de manzana" cuando el nombre es
+    // "mezcla de avena y frutos secos").
+    const foodHaystack = `${foodInfo.alimento_detectado || ''} ${foodInfo.descripcion || ''}`;
+    const entry = buildEntryForCategories(categories, foodHaystack);
+    if (entry) {
       pushHistory(foodInfo, entry);
       renderResults(foodInfo, entry);
     } else {

@@ -292,9 +292,9 @@ export const TOXIN_DB = {
  
       { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
         // Sin aplica_a → universal en el grupo
-        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor. El pan integral y el trigo completo concentran más OTA que el pan blanco porque el salvado retiene mayor cantidad del hongo.',
-        fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados con humedad. Más frecuente en trigo, maíz y cebada. El salvado del cereal actúa como reservorio.',
-        recomendacion: 'No consumir cereales con moho visible. Almacenar en lugar fresco y seco. El pan integral tiene mayor carga potencial; diversificar con otros cereales.' },
+        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor. Las versiones integrales del cereal (avena, copos, muesli, granola, pan integral) concentran más OTA que las refinadas, porque el salvado retiene el hongo.',
+        fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados con humedad. Frecuente en trigo, avena, maíz y cebada. El salvado actúa como reservorio del hongo.',
+        recomendacion: 'No consumir cereales con moho visible o sabor extraño. Almacenar en recipiente hermético, lugar fresco y seco. Diversificar entre distintos cereales (trigo, avena, centeno, arroz).' },
  
       { nombre: 'Deoxinivalenol (DON / Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
         aplica_a: ['pan','tostada','galleta','bizcocho','harina','trigo','pasta','maíz','maiz','sémola','semola','cereales','cereal de desayuno','cereales de desayuno','muesli','granola','copo','copos','flakes','corn flakes','espagueti','macarrón','macarron','integral','blanco','baguette','chapata','ciabatta','hogaza','barra','molde','candeal','espelta','kamut'],
@@ -312,21 +312,21 @@ export const TOXIN_DB = {
  
       { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'medio',
         aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
-        efecto: 'Cancerígeno acumulativo (Grupo 1 IARC). Se concentra en la capa exterior del grano (salvado), por lo que el pan y los cereales integrales tienen 2–3× más arsénico que sus equivalentes refinados. En pan blanco el nivel es despreciable.',
-        fuente: 'Suelos contaminados absorbidos por la planta. El proceso de refinado (extracción del salvado) elimina la mayor parte del arsénico, de ahí la diferencia entre blanco e integral.',
-        recomendacion: 'Diversificar cereales integrales. No basar la dieta exclusivamente en un único cereal integral. Mayor precaución en niños y embarazadas.' },
+        efecto: 'Cancerígeno acumulativo (Grupo 1 IARC). Se concentra en la capa exterior del grano (salvado), por lo que los cereales integrales (avena, copos, muesli, granola, pan integral) contienen 2–3× más arsénico que sus equivalentes refinados. En productos refinados (pan blanco, harina blanca) el nivel es despreciable.',
+        fuente: 'Suelo y agua de riego absorbidos por la planta. El refinado (extracción del salvado y germen) elimina la mayor parte del arsénico, de ahí la diferencia entre integral y blanco.',
+        recomendacion: 'Diversificar los cereales integrales que se consumen. No basar la dieta en un único cereal integral. Mayor precaución en niños pequeños y embarazadas.' },
  
       { nombre: 'Cadmio', tipo: 'Metal pesado', riesgo: 'medio',
         aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
-        efecto: 'Nefrotóxico crónico acumulativo. Al igual que el arsénico, el cadmio se concentra preferentemente en el salvado y el germen del cereal. El pan integral contiene entre 2 y 4 veces más cadmio que el pan blanco equivalente. Sin umbral seguro de exposición renal.',
-        fuente: 'Suelos agrícolas contaminados por fertilizantes fosfatados e industria. El refinado del cereal reduce el cadmio significativamente; el pan blanco tiene niveles bajos mientras que el integral concentra el metal en el salvado.',
-        recomendacion: 'Alternar pan integral con pan blanco o con otros cereales. Preferir cereales integrales de origen ecológico o con certificación de metales pesados. Especial precaución en niños pequeños.' },
+        efecto: 'Nefrotóxico crónico acumulativo. Al igual que el arsénico, el cadmio se concentra en el salvado y el germen del cereal. Los cereales integrales (copos de avena, muesli, granola, pan integral) contienen entre 2 y 4 veces más cadmio que sus equivalentes refinados. Sin umbral seguro de exposición renal.',
+        fuente: 'Suelos agrícolas contaminados por fertilizantes fosfatados y residuos industriales. El refinado reduce significativamente el cadmio; en versiones integrales el metal queda concentrado en el salvado.',
+        recomendacion: 'Alternar distintas fuentes de cereal integral (avena, centeno, espelta, trigo) en lugar de basar la dieta en uno solo. Preferir productos ecológicos o con certificación de metales pesados. Especial precaución en niños pequeños.' },
  
       { nombre: 'Fitatos (ácido fítico)', tipo: 'Antinutriente natural', riesgo: 'bajo',
         aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
-        efecto: 'No es tóxico en sentido estricto, pero reduce la absorción de hierro, zinc, calcio y magnesio. En dietas basadas únicamente en cereales integrales puede contribuir a deficiencias minerales, especialmente en niños y embarazadas.',
-        fuente: 'El ácido fítico se localiza casi exclusivamente en el salvado y el germen del cereal. El pan blanco tiene un contenido de fitatos 10–20× inferior al integral. La fermentación con masa madre degrada hasta el 90 % de los fitatos.',
-        recomendacion: 'Preferir pan integral de masa madre (fermentación larga) que reduce fitatos. Acompañar con alimentos ricos en vitamina C para mejorar absorción de hierro. Diversificar la dieta.' },
+        efecto: 'No es tóxico en sentido estricto, pero reduce la absorción de hierro, zinc, calcio y magnesio. En dietas basadas exclusivamente en cereales integrales puede contribuir a deficiencias minerales, especialmente en niños y embarazadas.',
+        fuente: 'El ácido fítico se localiza casi exclusivamente en el salvado y el germen del cereal. Los productos refinados contienen 10–20× menos fitatos que los integrales. La fermentación larga (masa madre) y el remojo prolongado degradan hasta el 90 % de los fitatos.',
+        recomendacion: 'En pan, preferir masa madre de fermentación larga. En copos de avena, muesli o granola, remojar previamente (toda la noche en agua o yogur) reduce los fitatos. Acompañar con alimentos ricos en vitamina C para mejorar la absorción de hierro.' },
  
       // ── EXCLUSIVAS O DE MAYOR RIESGO EN BLANCO / REFINADO ──
  
@@ -402,6 +402,41 @@ export const TOXIN_DB = {
         efecto: 'Posiblemente cancerígeno (Grupo 2A IARC — debate activo). Posible disbiosis intestinal en exposición crónica.',
         fuente: 'Usado como herbicida y desecante pre-cosecha en soja y legumbres convencionales. Los residuos persisten en el grano seco.',
         recomendacion: 'Preferir legumbres ecológicas certificadas. El remojo y la cocción reducen pero no eliminan completamente los residuos.' },
+    ]
+  },
+  frutos_secos: {
+    nombre: 'Frutos secos y semillas', emoji: '🌰',
+    toxinas: [
+      { nombre: 'Aflatoxinas (B1, B2)', tipo: 'Micotoxina', riesgo: 'alto',
+        // Sin aplica_a → universal en el grupo
+        efecto: 'Hepatotóxico y cancerígeno hepático (Grupo 1 IARC). Inmunosupresor. Es la micotoxina más potente conocida; sin umbral seguro de exposición.',
+        fuente: 'Hongos Aspergillus flavus y A. parasiticus que crecen en almendras, avellanas, pistachos y cacahuetes mal almacenados o procedentes de climas cálidos y húmedos. Pistachos, cacahuetes y nuez de Brasil son los frutos con mayor incidencia histórica.',
+        recomendacion: 'Almacenar en envase hermético, en lugar fresco y seco. Desechar frutos con sabor amargo, manchas oscuras o moho. Preferir marcas con controles certificados de aflatoxinas. Limitar consumo continuado de pistachos importados sin trazabilidad.' },
+      { nombre: 'Amigdalina (glucósido cianogénico)', tipo: 'Toxina natural', riesgo: 'alto',
+        aplica_a: ['almendra amarga','silvestre','hueso','semilla de albaricoque','semilla de manzana','semilla de cereza','semilla de melocotón','pepita','laetril','vitamina b17'],
+        efecto: 'Libera cianuro de hidrógeno al masticarse o digerirse. 5–10 almendras amargas pueden ser letales en niños; 30–50 en adultos. Síntomas: vértigo, dolor de cabeza, dificultad respiratoria y convulsiones.',
+        fuente: 'Almendras amargas silvestres, semillas de los huesos de albaricoque, melocotón, manzana y cereza. Las almendras dulces comerciales son seguras (contienen <0,1 mg/kg). Los suplementos de "vitamina B17" o laetril son una concentración peligrosa de amigdalina.',
+        recomendacion: 'No consumir almendras silvestres ni semillas del interior de los huesos de frutas. Evitar suplementos de laetril/B17 (carecen de respaldo científico y han causado intoxicaciones fatales). Mantener fuera del alcance de niños.' },
+      { nombre: 'Sulfitos (E220–E228)', tipo: 'Aditivo alimentario', riesgo: 'medio',
+        aplica_a: ['blanqueado','blanqueada','pelado','pelada','laminado','laminada','desecado','desecada','deshidratado','deshidratada','orejón','orejon','orejones','pasa','pasas','dátil','datil','dátiles','datiles','higo seco','higos secos','ciruela seca','ciruelas secas','albaricoque seco','manzana seca'],
+        efecto: 'Provocan broncoespasmo en asmáticos sulfito-sensibles (5–10 % de los asmáticos). Reacciones alérgicas en personas susceptibles. Destruyen vitamina B1 en el organismo. Sin riesgo para la población general en dosis habituales.',
+        fuente: 'Conservantes añadidos a frutos secos pelados/blanqueados y a frutos deshidratados (orejones, pasas, ciruelas pasas) para mantener color claro e inhibir hongos. Las almendras crudas con piel y las nueces enteras no suelen llevar sulfitos.',
+        recomendacion: 'Asmáticos y personas alérgicas: leer etiquetas y evitar productos con E220–E228. Preferir frutos secos crudos con piel y fruta desecada sin azufrar (suelen ser más oscuros, eso es normal).' },
+      { nombre: 'Pesticidas y fumigantes de almacén', tipo: 'Plaguicida residual', riesgo: 'medio',
+        aplica_a: ['pistacho','anacardo','nuez de brasil','nuez de macadamia','importado','importada','crudo','cruda'],
+        efecto: 'Algunos fumigantes (fosfina, bromuro de metilo) usados en almacenamiento y transporte dejan trazas. Residuos de plaguicidas del cultivo pueden persistir en la cáscara y la pulpa. Efectos crónicos en estudio: posible disrupción endocrina y neurológica.',
+        fuente: 'Tratamientos post-cosecha en frutos secos importados de Oriente Medio, Asia y América (pistachos iraníes, anacardos vietnamitas, nuez de Brasil). Los controles aduaneros UE son estrictos pero no eliminan completamente los residuos.',
+        recomendacion: 'Preferir frutos secos europeos certificados o ecológicos. Lavar los frutos con piel antes de consumir cuando sea posible. Variar las procedencias para reducir exposición acumulada.' },
+      { nombre: 'Oxalatos', tipo: 'Antinutriente natural', riesgo: 'bajo',
+        aplica_a: ['almendra','almendras','sésamo','sesamo','tahini','tahin','pasta de almendra','harina de almendra','crema de almendra'],
+        efecto: 'En personas predispuestas pueden contribuir a la formación de cálculos renales de oxalato cálcico. Reducen la absorción de calcio al unirse a él en el intestino.',
+        fuente: 'Almendras y sésamo destacan entre los frutos secos con mayor contenido de oxalatos. El tahini y la harina de almendra concentran el oxalato del fruto entero.',
+        recomendacion: 'En personas con historial de litiasis renal o hiperoxaluria, moderar el consumo de almendras y sésamo. Acompañar con alimentos ricos en calcio (favorece la eliminación del oxalato por las heces en lugar de orina). Beber agua abundante.' },
+      { nombre: 'Lípidos oxidados (rancidez)', tipo: 'Producto de oxidación', riesgo: 'bajo',
+        aplica_a: ['rancio','rancia','viejo','vieja','molido','molida','triturado','triturada','harina de almendra','crema','manteca','mantequilla de cacahuete','pasta de avellana','aceite'],
+        efecto: 'Los lípidos oxidados (aldehídos, peróxidos) se asocian a inflamación crónica de bajo grado, estrés oxidativo y posible daño endotelial. Sabor amargo y rancio característico.',
+        fuente: 'Los frutos secos son ricos en grasas insaturadas que oxidan rápidamente con luz, calor y aire. Los frutos molidos (harina de almendra, manteca de cacahuete, pasta de avellana) se oxidan mucho más rápido que los enteros.',
+        recomendacion: 'Conservar en envase hermético, en lugar fresco, seco y oscuro. Una vez abierto, refrigerar las cremas y harinas. Desechar si tienen sabor amargo o rancio: no se "curan" cocinándolos.' },
     ]
   },
   procesado: {
@@ -724,6 +759,22 @@ export const TOXIN_LINKS = {
     efsa: 'https://www.efsa.europa.eu/en/topics/topic/aspartame',
     who:  'https://www.who.int/news-room/questions-and-answers/item/aspartame-ia',
   },
+  'Amigdalina (glucósido cianogénico)': {
+    wiki: 'https://es.wikipedia.org/wiki/Amigdalina',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/cyanogenic-compounds',
+  },
+  'Sulfitos (E220–E228)': {
+    wiki: 'https://es.wikipedia.org/wiki/Sulfito',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/sulfites',
+  },
+  'Pesticidas y fumigantes de almacén': {
+    wiki: 'https://es.wikipedia.org/wiki/Plaguicida',
+    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pesticides',
+    who:  'https://www.who.int/news-room/fact-sheets/detail/pesticide-residues-in-food',
+  },
+  'Lípidos oxidados (rancidez)': {
+    wiki: 'https://es.wikipedia.org/wiki/Rancidez',
+  },
 };
 
 const CATEGORY_KEYWORDS = {
@@ -731,35 +782,59 @@ const CATEGORY_KEYWORDS = {
   arroz:    ['arroz','rice','paella','risotto','tortita de arroz','bebida de arroz','leche de arroz','harina de arroz','arroz con leche','arroz integral','sushi rice'],
   verduras: ['verdura','lechuga','espinaca','brócoli','broccoli','coliflor','zanahoria','tomate','pepino','pimiento','calabacín','berenjena','apio','vegetable','vegetal','hortaliza','ensalada','rúcula','col','repollo','acelga','patata','papa','remolacha','germinado','brote','cebolla','ajo','puerro','champiñón','seta','judía verde','alcachofa','rábano','berro','canónigo','kale','col rizada'],
   carne:    ['carne','ternera','cerdo','pollo','pavo','cordero','buey','beef','chicken','pork','lamb','filete','chuleta','hamburguesa','burger','embutido','salchicha','jamón','chorizo','bacon','meat'],
-  lacteos:  ['leche','queso','yogur','mantequilla','nata','lácteo','milk','cheese','yogurt','butter','cream','dairy','kefir'],
+  lacteos:  ['leche','queso','requesón','requeson','yogur','mantequilla','nata','lácteo','milk','cheese','yogurt','butter','cream','dairy','kefir'],
   frutas:   ['fruta','manzana','pera','naranja','plátano','uva','fresa','melocotón','cereza','kiwi','mango','piña','fruit','apple','orange','banana','berry','melón','sandía','ciruela','albaricoque','aguacate'],
   mariscos: ['marisco','gamba','langosta','cangrejo','mejillón','ostra','almeja','calamar','pulpo','sepia','shrimp','lobster','crab','mussel','oyster','clam','squid','octopus','langostino','berberecho','chirla','bogavante','cigala','camarón','percebe','nécora','necora','vieira','navaja','centollo','zamburiña','erizo','bivalvo','molusco','cefalópodo'],
   cereales: ['pan','pasta','trigo','maíz','avena','cebada','centeno','bread','wheat','corn','oat','cereal','cereales de desayuno','cereal de desayuno','muesli','granola','copo','copos','flakes','corn flakes','harina','galleta','tostada','biscuit'],
   huevos:   ['huevo','egg','tortilla','omelette','revuelto','mayonesa','clara','yema','huevo frito','huevo cocido','huevo pasado','huevo poché','mousse','tiramisú','tiramisu'],
   legumbres:['lenteja','garbanzo','judía','alubia','soja','guisante','haba','legumbre','bean','lentil','chickpea','soybean','pea','tofu','tempeh','cacahuete','cacahuate','maní','mani','peanut','edamame','miso','natto','lupino','frijol','poroto','butter bean'],
+  frutos_secos: ['fruto seco','frutos secos','almendra','almendras','avellana','avellanas','nuez','nueces','pistacho','pistachos','anacardo','anacardos','castaña','castañas','piñón','pinon','piñones','pinones','pipa','pipas','semilla de girasol','semillas de girasol','semilla de calabaza','semillas de calabaza','sésamo','sesamo','semilla','semillas','pecán','pecan','pecanes','macadamia','nuez de brasil','nuez del brasil','chufa','chufas','nut','nuts','almond','almonds','hazelnut','hazelnuts','walnut','walnuts','pistachio','pistachios','cashew','cashews','sunflower seed','pumpkin seed','sesame seed','dátil','datil','dátiles','datiles','pasa','pasas','orejón','orejon','higo seco','ciruela seca','muesli','granola'],
   procesado:['procesado','frito','snack','chips','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
 };
 
-export function resolveCategory(foodInfo) {
+// "procesado" es una etiqueta-paraguas que Gemini tiende a aplicar sin más
+// pistas. Si Gemini la sugiere pero el nombre/descripción no contiene ninguna
+// keyword propia de "procesado", la descartamos para evitar mostrar toxinas
+// genéricas irrelevantes (acrilamida, PFAS…) en alimentos como una hamburguesa.
+// "cereales" en cambio SÍ aporta toxinas concretas (OTA, As, Cd) que aplican
+// a la avena, copos, muesli, etc., por lo que la tratamos como categoría real.
+const GEMINI_FALLBACK_ONLY = new Set(['procesado']);
+
+// Devuelve TODAS las categorías presentes en el alimento detectado.
+// Escanea tanto el nombre como la descripción para soportar mezclas:
+// "avena + frutos secos + manzana" → ['cereales', 'frutos_secos', 'frutas'].
+export function resolveCategories(foodInfo) {
   const cat = (foodInfo.categoria || '').toLowerCase().trim();
   const name = (foodInfo.alimento_detectado || '').toLowerCase();
+  const desc = (foodInfo.descripcion || '').toLowerCase();
+  const haystack = `${name} ${desc}`;
 
-  // Categorías genéricas que la IA tiende a usar en exceso. Si el nombre del
-  // alimento encaja en una categoría más específica, se prefiere esta última.
-  // Ejemplos: hamburguesa → carne, bebida de arroz → arroz.
-  const GENERIC_CATS = new Set(['procesado', 'cereales']);
-  if (GENERIC_CATS.has(cat) && name) {
-    for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
-      if (!GENERIC_CATS.has(key) && kws.some(kw => name.includes(kw))) return key;
+  const found = new Set();
+
+  // Scan de keywords sobre nombre + descripción.
+  for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
+    if (kws.some(kw => matchStem(haystack, kw))) found.add(key);
+  }
+
+  // Categoría sugerida por Gemini: se añade solo si tiene respaldo de keywords
+  // (evita falsos positivos de la IA) o si no se detectó nada más (fallback).
+  const geminiCatExists = TOXIN_DB[cat];
+  if (geminiCatExists) {
+    const hasKeywordSupport = found.has(cat);
+    const isFallbackOnly = GEMINI_FALLBACK_ONLY.has(cat);
+    if (hasKeywordSupport || (!isFallbackOnly && found.size === 0)) {
+      found.add(cat);
+    } else if (isFallbackOnly && found.size === 0) {
+      found.add(cat);
     }
   }
 
-  if (TOXIN_DB[cat]) return cat;
+  return [...found];
+}
 
-  for (const [key, kws] of Object.entries(CATEGORY_KEYWORDS)) {
-    if (kws.some(kw => name.includes(kw))) return key;
-  }
-  return null;
+// Compatibilidad: devuelve la primera categoría detectada (o null).
+export function resolveCategory(foodInfo) {
+  return resolveCategories(foodInfo)[0] || null;
 }
 
 // ═══════════════════════════════════════════════════
@@ -781,22 +856,77 @@ export function resolveCategory(foodInfo) {
 // Trata como límite de palabra cualquier carácter que NO sea alfanumérico latino
 // (incluye letras con tilde y la ñ).
 // Acepta plurales españoles/ingleses: salchicha → salchichas, hamburguesa → hamburguesas.
+function normalizeSearchText(value) {
+  return (value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 function matchStem(text, stem) {
-  const escaped = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`(^|[^a-z0-9áéíóúüñ])${escaped}(s|as|es)?([^a-z0-9áéíóúüñ]|$)`, 'i');
-  return re.test(text);
+  const normalizedText = normalizeSearchText(text);
+  const normalizedStem = normalizeSearchText(stem);
+  const escaped = normalizedStem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(^|[^a-z0-9])${escaped}(s|as|es)?([^a-z0-9]|$)`);
+  return re.test(normalizedText);
 }
 
 export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
-  const food = (alimentoDetectado || '').toLowerCase();
+  const food = normalizeSearchText(alimentoDetectado);
   const result = toxinas.filter(t => {
     if (!t.aplica_a || t.aplica_a.length === 0) return true;
-    return t.aplica_a.some(stem => matchStem(food, stem.toLowerCase()));
+    return t.aplica_a.some(stem => matchStem(food, stem));
   });
   return {
     toxinas: result,
     total: toxinas.length,
     mostradas: result.length,
     filtrado: result.length < toxinas.length,
+  };
+}
+
+// ═══════════════════════════════════════════════════
+//  Composición multi-categoría
+//
+//  Cuando un alimento abarca varios grupos (p. ej. muesli con
+//  frutos secos y fruta seca), fusionamos las entradas de TOXIN_DB
+//  en una única "vista" para la UI: concatena las toxinas filtradas
+//  por alimento (deduplicadas por nombre) y compone nombre y emoji.
+//
+//  Si `fallbackToFull` está activo, una categoría cuyo filtro deje 0
+//  toxinas se mantiene con su lista completa (mismo criterio que ya
+//  aplicaba main.js cuando solo había una categoría).
+// ═══════════════════════════════════════════════════
+export function buildEntryForCategories(categories, alimentoDetectado = '', { fallbackToFull = true } = {}) {
+  const entries = categories
+    .map(c => ({ key: c, data: TOXIN_DB[c] }))
+    .filter(e => e.data);
+  if (entries.length === 0) return null;
+
+  let totalSum = 0;
+  let anyFiltered = false;
+  const seenNames = new Set();
+  const mergedToxinas = [];
+
+  for (const { data } of entries) {
+    const f = filterToxinasForFood(data.toxinas, alimentoDetectado);
+    const list = (fallbackToFull && f.mostradas === 0) ? data.toxinas : f.toxinas;
+    const effectiveFiltered = (fallbackToFull && f.mostradas === 0) ? false : f.filtrado;
+
+    totalSum += f.total;
+    if (effectiveFiltered) anyFiltered = true;
+
+    for (const t of list) {
+      if (seenNames.has(t.nombre)) continue;
+      seenNames.add(t.nombre);
+      mergedToxinas.push(t);
+    }
+  }
+
+  return {
+    emoji: entries.map(e => e.data.emoji).join(''),
+    nombre: entries.map(e => e.data.nombre).join(' · '),
+    toxinas: mergedToxinas,
+    meta: { total: totalSum, mostradas: mergedToxinas.length, filtrado: anyFiltered },
   };
 }
