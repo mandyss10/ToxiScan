@@ -561,7 +561,7 @@ export const TOXIN_LINKS = {
   },
   'Ocratoxina A (OTA)': {
     wiki: 'https://es.wikipedia.org/wiki/Ocratoxina_a',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/ochratoxin-a',
+    efsa: 'https://www.efsa.europa.eu/es/news/ochratoxin-food-public-health-risks-assessed',
   },
   'Pesticidas organofosforados': {
     wiki: 'https://es.wikipedia.org/wiki/Organofosforado',
@@ -585,15 +585,15 @@ export const TOXIN_LINKS = {
   'Residuos de glifosato': {
     wiki: 'https://es.wikipedia.org/wiki/Glifosato',
     efsa: 'https://www.efsa.europa.eu/en/topics/topic/glyphosate',
-    who:  'https://www.who.int/news-room/questions-and-answers/item/food-safety-glyphosate',
+    who:  'https://www.who.int/es/news-room/fact-sheets/detail/pesticide-residues-in-food',
   },
   'Nitratos (NO₃⁻)': {
     wiki: 'https://es.wikipedia.org/wiki/Nitrato',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+    efsa: 'https://www.efsa.europa.eu/es/news/public-consultation-nitrosamines-food-draft-opinion-explained',
   },
   'Solanina': {
     wiki: 'https://es.wikipedia.org/wiki/Solanina',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/glycoalkaloids',
+    efsa: 'https://www.efsa.europa.eu/es/news/glycoalkaloids-potatoes-public-health-risks-assessed',
   },
   'Oxalatos': {
     wiki: 'https://es.wikipedia.org/wiki/Ácido_oxálico',
@@ -643,11 +643,11 @@ export const TOXIN_LINKS = {
   },
   'Nitritos (E249–E252) y Nitrosaminas': {
     wiki: 'https://es.wikipedia.org/wiki/Nitrosamina',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+    efsa: 'https://www.efsa.europa.eu/es/news/public-consultation-nitrosamines-food-draft-opinion-explained',
   },
   'Nitritos (E249-E252)': {
     wiki: 'https://es.wikipedia.org/wiki/Nitrito',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/nitrates-and-nitrites',
+    efsa: 'https://www.efsa.europa.eu/es/news/public-consultation-nitrosamines-food-draft-opinion-explained',
   },
   'Salmonella / Campylobacter': {
     wiki: 'https://es.wikipedia.org/wiki/Campylobacter',
@@ -665,8 +665,7 @@ export const TOXIN_LINKS = {
     who:  'https://www.who.int/news-room/fact-sheets/detail/campylobacter',
   },
   'Aminas biógenas (histamina, tiramina)': {
-    wiki: 'https://es.wikipedia.org/wiki/Amina_biógena',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/biogenic-amines',
+    wiki: 'https://es.wikipedia.org/wiki/Amina_biog%C3%A9nica',
   },
   'Radionúclidos (Cs-137, Sr-90)': {
     wiki: 'https://es.wikipedia.org/wiki/Radionúclido',
@@ -676,15 +675,15 @@ export const TOXIN_LINKS = {
   },
   'Patulina (manzanas dañadas)': {
     wiki: 'https://es.wikipedia.org/wiki/Patulina',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/patulin',
+    efsa: 'https://www.efsa.europa.eu/es/topics/topic/mycotoxins',
   },
   'Biotoxinas marinas (PSP, ASP, DSP)': {
-    wiki: 'https://es.wikipedia.org/wiki/Intoxicación_paralítica_por_mariscos',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/marine-biotoxins',
+    wiki: 'https://gl.wikipedia.org/wiki/Biotoxina_mari%C3%B1a',
+    efsa: 'https://www.efsa.europa.eu/es/topics/ciguatoxins-and-other-marine-biotoxins',
   },
   'Norovirus': {
     wiki: 'https://es.wikipedia.org/wiki/Norovirus',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/norovirus',
+    efsa: 'https://www.efsa.europa.eu/es/topics/topic/foodborne-zoonotic-diseases',
   },
   'Hepatitis A (VHA)': {
     wiki: 'https://es.wikipedia.org/wiki/Hepatitis_A',
@@ -692,15 +691,14 @@ export const TOXIN_LINKS = {
   },
   'Vibrio parahaemolyticus': {
     wiki: 'https://es.wikipedia.org/wiki/Vibrio_parahaemolyticus',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/vibrio',
+    efsa: 'https://www.efsa.europa.eu/es/news/vibrio-bacteria-seafood-increased-risk-due-climate-change-and-antimicrobial-resistance',
   },
   'Microplásticos y nanoplásticos': {
     wiki: 'https://es.wikipedia.org/wiki/Microplástico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/microplastics-and-nanoplastics',
+    efsa: 'https://www.efsa.europa.eu/es/topics/microplastics-and-nanoplastics-food',
   },
   'Deoxinivalenol (DON / Vomitoxina)': {
-    wiki: 'https://es.wikipedia.org/wiki/Deoxinivalenol',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/deoxynivalenol',
+    wiki: 'https://ca.wikipedia.org/wiki/Vomitoxina',
   },
   'Fitatos (ácido fítico)': {
     wiki: 'https://es.wikipedia.org/wiki/Ácido_fítico',
@@ -717,27 +715,24 @@ export const TOXIN_LINKS = {
   },
   'Lectinas (fitohemaglutinina)': {
     wiki: 'https://es.wikipedia.org/wiki/Lectina',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/plant-toxicants',
+    efsa: 'https://www.efsa.europa.eu/es/news/lectins-food-undercooked-beans-pose-health-risk-says-efsa',
   },
   'Glucósidos cianogénicos': {
     wiki: 'https://es.wikipedia.org/wiki/Glucósido_cianogénico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/cyanogenic-compounds',
   },
   'Ácido fítico (fitatos)': {
     wiki: 'https://es.wikipedia.org/wiki/Ácido_fítico',
   },
   'Fitoestrógenos (soja)': {
     wiki: 'https://es.wikipedia.org/wiki/Fitoestrogeno',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/isoflavones',
+    efsa: 'https://www.efsa.europa.eu/es/topics/topic/endocrine-active-substances',
   },
   'Ácidos grasos trans (AGT)': {
     wiki: 'https://es.wikipedia.org/wiki/Ácido_graso_trans',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/trans-fatty-acids',
-    who:  'https://www.who.int/news-room/questions-and-answers/item/nutrition-trans-fat',
+    who:  'https://www.who.int/es/news-room/fact-sheets/detail/trans-fat',
   },
   'PFAS (químicos eternos)': {
-    wiki: 'https://es.wikipedia.org/wiki/Sustancias_perfluoroalquiladas_y_polifluoroalquiladas',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/pfas',
+    efsa: 'https://www.efsa.europa.eu/es/topics/per-and-polyfluoroalkyl-substances-pfas',
   },
   'Clostridium botulinum (botulismo)': {
     wiki: 'https://es.wikipedia.org/wiki/Botulismo',
@@ -757,7 +752,6 @@ export const TOXIN_LINKS = {
   'Aspartamo (E951)': {
     wiki: 'https://es.wikipedia.org/wiki/Aspartamo',
     efsa: 'https://www.efsa.europa.eu/en/topics/topic/aspartame',
-    who:  'https://www.who.int/news-room/questions-and-answers/item/aspartame-ia',
   },
   'Amigdalina (glucósido cianogénico)': {
     wiki: 'https://es.wikipedia.org/wiki/Amigdalina',
