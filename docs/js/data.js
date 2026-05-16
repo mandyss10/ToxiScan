@@ -138,10 +138,25 @@ export const TOXIN_DB = {
         fuente: 'Contaminación ambiental industrial. Se acumula en tejido graso animal.',
         recomendacion: 'Retirar grasa visible. Preferir carnes magras. No quemar grasas al cocinar.' },
       { nombre: 'Acrilamida y HCA (carnes procesadas)', tipo: 'Neoformado por calor', riesgo: 'medio',
-        aplica_a: ['embutido','salchicha','jamón','jamon','chorizo','bacon','salami','mortadela','ahumado','frito','parrilla','barbacoa','asado','curado','frankfurt'],
-        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Neurotóxico en dosis altas.',
-        fuente: 'Se forma al cocinar a altas temperaturas: fritura, parrilla y ahumado.',
-        recomendacion: 'Evitar carbonizado. Preferir cocción en agua o vapor. Reducir embutidos ahumados.' },
+        aplica_a: ['embutido','salchicha','jamón','jamon','chorizo','bacon','salami','mortadela','ahumado','frito','parrilla','barbacoa','asado','curado','frankfurt','fuet','loncha','lomo','cecina','hamburguesa','burger'],
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Neurotóxico en dosis altas. Las aminas heterocíclicas (HCA) se forman en la superficie chamuscada de la carne.',
+        fuente: 'Se forma al cocinar a altas temperaturas: fritura, parrilla y ahumado. Máximo en carne muy hecha o carbonizada.',
+        recomendacion: 'Evitar carbonizado. Preferir cocción en agua o vapor. Retirar partes chamuscadas antes de comer.' },
+      { nombre: 'Nitritos (E249–E252) y Nitrosaminas', tipo: 'Aditivo alimentario', riesgo: 'alto',
+        aplica_a: ['embutido','salchicha','jamón','jamon','bacon','chorizo','salami','mortadela','frankfurt','york','salchichón','salchichon','fuet','fiambre','loncha','cecina','curado','curada'],
+        efecto: 'La OMS clasifica las carnes procesadas como cancerígenas Grupo 1 (IARC). Los nitritos forman nitrosaminas en el organismo, especialmente al cocinar a alta temperatura.',
+        fuente: 'Conservantes E249–E252 usados en embutidos y carnes curadas para inhibir Clostridium botulinum y dar el color rosado característico.',
+        recomendacion: 'Limitar el consumo a ocasional. No quemar bacon ni salchichas. Preferir jamón ibérico curado sin nitritos añadidos (buscar "sin conservantes E249-E252").' },
+      { nombre: 'Salmonella / Campylobacter', tipo: 'Patógeno bacteriano', riesgo: 'alto',
+        aplica_a: ['pollo','pavo','chicken','turkey','ave','avícola','pechuga','muslo','alita','ala','gallina','codorniz'],
+        efecto: 'Campylobacter es la zoonosis más frecuente en la UE. Salmonella: gastroenteritis con fiebre alta. Ambas graves en niños, embarazadas y ancianos.',
+        fuente: 'Contaminación fecal en aves de corral. Mayor riesgo en pollo y pavo crudos o poco cocinados. El jugo de pollo crudo contamina superficies y otros alimentos.',
+        recomendacion: 'Cocinar a >75 °C en el punto más grueso. NUNCA lavar el pollo crudo (dispersa bacterias). Usar tablas separadas para carne cruda y cocinada.' },
+      { nombre: 'E. coli O157:H7 (carne picada)', tipo: 'Patógeno bacteriano', riesgo: 'alto',
+        aplica_a: ['hamburguesa','burger','picada','picado','tartar','tartare','molida','molido','kebab','albóndiga','albondiga','filete ruso'],
+        efecto: 'Puede causar Síndrome Urémico Hemolítico (SHU): insuficiencia renal aguda potencialmente mortal, especialmente en niños menores de 5 años. Dosis infectiva muy baja.',
+        fuente: 'La molienda distribuye bacterias superficiales a toda la masa de carne. La contaminación interior no se elimina sin cocción completa.',
+        recomendacion: 'Cocinar hamburguesas hasta que desaparezca el color rosa en el interior (>71 °C). Nunca consumir carne picada cruda o poco hecha, aunque sea de calidad.' },
     ]
   },
   lacteos: {
@@ -398,9 +413,10 @@ export function resolveCategory(foodInfo) {
 // Necesario para evitar falsos positivos como `desnatado`.includes(`nata`) → true.
 // Trata como límite de palabra cualquier carácter que NO sea alfanumérico latino
 // (incluye letras con tilde y la ñ).
+// Acepta plurales españoles/ingleses: salchicha → salchichas, hamburguesa → hamburguesas.
 function matchStem(text, stem) {
   const escaped = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`(^|[^a-z0-9áéíóúüñ])${escaped}([^a-z0-9áéíóúüñ]|$)`, 'i');
+  const re = new RegExp(`(^|[^a-z0-9áéíóúüñ])${escaped}(s|as|es)?([^a-z0-9áéíóúüñ]|$)`, 'i');
   return re.test(text);
 }
 
