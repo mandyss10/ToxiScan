@@ -221,28 +221,89 @@ export const TOXIN_DB = {
         recomendacion: 'Consumir de zonas con agua certificada. Investigación activa sobre efectos.' },
     ]
   },
+  // cereales: {
+  //   nombre: 'Cereales y Pan', emoji: '🌾',
+  //   toxinas: [
+  //     { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
+  //       efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor.',
+  //       fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados. Más en trigo y maíz.',
+  //       recomendacion: 'No consumir cereales con moho visible. Almacenar en seco. Diversificar.' },
+  //     { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'medio',
+  //       aplica_a: ['pan','tostada','galleta','bizcocho','cereales','muesli','crujiente','frito','horneado','tostado'],
+  //       efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma en almidón + calor seco.',
+  //       fuente: 'Pan muy tostado, galletas, cereales de desayuno tostados y patatas fritas.',
+  //       recomendacion: 'Tostar a color dorado, no marrón oscuro. Evitar partes carbonizadas.' },
+  //     { nombre: 'Deoxinivalenol (DON/Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
+  //       aplica_a: ['trigo','pan','pasta','maíz','maiz','harina','sémola','semola','cereales','galleta','espagueti','macarrón','macarron'],
+  //       efecto: 'Náuseas, vómitos y supresión inmune.',
+  //       fuente: 'Fusarium en trigo y maíz húmedos.',
+  //       recomendacion: 'Control de calidad en compra. La cocción reduce pero no elimina completamente.' },
+  //     { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'bajo',
+  //       aplica_a: ['avena','integral','centeno','salvado','copo','muesli','granola'],
+  //       efecto: 'Cancerígeno acumulativo. Menor que en arroz pero presente.',
+  //       fuente: 'Suelos contaminados. Presente en avena integral y cereales integrales.',
+  //       recomendacion: 'Diversificar cereales. Mayor riesgo en dieta muy basada en un solo cereal.' },
+  //   ]
+  // },
+
   cereales: {
     nombre: 'Cereales y Pan', emoji: '🌾',
     toxinas: [
+ 
+      // ── UNIVERSAL (blanco + integral) ──────────────
+ 
       { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
-        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor.',
-        fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados. Más en trigo y maíz.',
-        recomendacion: 'No consumir cereales con moho visible. Almacenar en seco. Diversificar.' },
+        // Sin aplica_a → universal en el grupo
+        efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor. El pan integral y el trigo completo concentran más OTA que el pan blanco porque el salvado retiene mayor cantidad del hongo.',
+        fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados con humedad. Más frecuente en trigo, maíz y cebada. El salvado del cereal actúa como reservorio.',
+        recomendacion: 'No consumir cereales con moho visible. Almacenar en lugar fresco y seco. El pan integral tiene mayor carga potencial; diversificar con otros cereales.' },
+ 
+      { nombre: 'Deoxinivalenol (DON / Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
+        aplica_a: ['pan','tostada','galleta','bizcocho','harina','trigo','pasta','maíz','maiz','sémola','semola','cereales','espagueti','macarrón','macarron','integral','blanco','baguette','chapata','ciabatta','hogaza','barra','molde','candeal','espelta','kamut'],
+        efecto: 'Náuseas, vómitos y supresión inmune. Afecta especialmente a niños. Se produce igualmente en harina blanca y en harina integral; la diferencia es que en integral el DON puede concentrarse más en el salvado.',
+        fuente: 'Fusarium en trigo y maíz húmedos o mal almacenados. Presente tanto en harinas blancas como integrales.',
+        recomendacion: 'Control de calidad en compra. Almacenar harina en recipiente hermético. La cocción reduce pero no elimina completamente el DON.' },
+ 
       { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'medio',
-        aplica_a: ['pan','tostada','galleta','bizcocho','cereales','muesli','crujiente','frito','horneado','tostado'],
-        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma en almidón + calor seco.',
-        fuente: 'Pan muy tostado, galletas, cereales de desayuno tostados y patatas fritas.',
-        recomendacion: 'Tostar a color dorado, no marrón oscuro. Evitar partes carbonizadas.' },
-      { nombre: 'Deoxinivalenol (DON/Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
-        aplica_a: ['trigo','pan','pasta','maíz','maiz','harina','sémola','semola','cereales','galleta','espagueti','macarrón','macarron'],
-        efecto: 'Náuseas, vómitos y supresión inmune.',
-        fuente: 'Fusarium en trigo y maíz húmedos.',
-        recomendacion: 'Control de calidad en compra. La cocción reduce pero no elimina completamente.' },
-      { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'bajo',
-        aplica_a: ['avena','integral','centeno','salvado','copo','muesli','granola'],
-        efecto: 'Cancerígeno acumulativo. Menor que en arroz pero presente.',
-        fuente: 'Suelos contaminados. Presente en avena integral y cereales integrales.',
-        recomendacion: 'Diversificar cereales. Mayor riesgo en dieta muy basada en un solo cereal.' },
+        aplica_a: ['pan','tostada','galleta','bizcocho','muesli','crujiente','horneado','tostado','integral','blanco','baguette','chapata','ciabatta','hogaza','barra','molde','candeal','espelta','kamut','copo','granola'],
+        efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma por reacción de Maillard: almidón + calor seco > 120 °C. El pan integral forma algo más de acrilamida que el blanco al tostarse, debido a la mayor cantidad de asparagina libre en el salvado.',
+        fuente: 'Pan muy tostado, galletas y cereales de desayuno tostados. Máximo en corteza quemada y tostadas muy oscuras, tanto en pan blanco como integral.',
+        recomendacion: 'Tostar a color dorado, no marrón oscuro. Retirar partes carbonizadas. El pan integral requiere especial atención al nivel de tostado.' },
+ 
+      // ── EXCLUSIVAS O DE MAYOR RIESGO EN INTEGRAL ──
+ 
+      { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'medio',
+        aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
+        efecto: 'Cancerígeno acumulativo (Grupo 1 IARC). Se concentra en la capa exterior del grano (salvado), por lo que el pan y los cereales integrales tienen 2–3× más arsénico que sus equivalentes refinados. En pan blanco el nivel es despreciable.',
+        fuente: 'Suelos contaminados absorbidos por la planta. El proceso de refinado (extracción del salvado) elimina la mayor parte del arsénico, de ahí la diferencia entre blanco e integral.',
+        recomendacion: 'Diversificar cereales integrales. No basar la dieta exclusivamente en un único cereal integral. Mayor precaución en niños y embarazadas.' },
+ 
+      { nombre: 'Cadmio', tipo: 'Metal pesado', riesgo: 'medio',
+        aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
+        efecto: 'Nefrotóxico crónico acumulativo. Al igual que el arsénico, el cadmio se concentra preferentemente en el salvado y el germen del cereal. El pan integral contiene entre 2 y 4 veces más cadmio que el pan blanco equivalente. Sin umbral seguro de exposición renal.',
+        fuente: 'Suelos agrícolas contaminados por fertilizantes fosfatados e industria. El refinado del cereal reduce el cadmio significativamente; el pan blanco tiene niveles bajos mientras que el integral concentra el metal en el salvado.',
+        recomendacion: 'Alternar pan integral con pan blanco o con otros cereales. Preferir cereales integrales de origen ecológico o con certificación de metales pesados. Especial precaución en niños pequeños.' },
+ 
+      { nombre: 'Fitatos (ácido fítico)', tipo: 'Antinutriente natural', riesgo: 'bajo',
+        aplica_a: ['integral','salvado','centeno','espelta','kamut','sarraceno','avena','copo','muesli','granola','germen'],
+        efecto: 'No es tóxico en sentido estricto, pero reduce la absorción de hierro, zinc, calcio y magnesio. En dietas basadas únicamente en cereales integrales puede contribuir a deficiencias minerales, especialmente en niños y embarazadas.',
+        fuente: 'El ácido fítico se localiza casi exclusivamente en el salvado y el germen del cereal. El pan blanco tiene un contenido de fitatos 10–20× inferior al integral. La fermentación con masa madre degrada hasta el 90 % de los fitatos.',
+        recomendacion: 'Preferir pan integral de masa madre (fermentación larga) que reduce fitatos. Acompañar con alimentos ricos en vitamina C para mejorar absorción de hierro. Diversificar la dieta.' },
+ 
+      // ── EXCLUSIVAS O DE MAYOR RIESGO EN BLANCO / REFINADO ──
+ 
+      { nombre: 'Índice glucémico elevado', tipo: 'Efecto metabólico', riesgo: 'bajo',
+        aplica_a: ['blanco','baguette','chapata','ciabatta','hogaza','molde','candeal','brioche','tostada blanca','pan de molde'],
+        efecto: 'No es una toxina, pero el pan blanco tiene un índice glucémico (IG) similar al azúcar puro. Picos de glucosa e insulina repetidos se asocian a resistencia insulínica, diabetes tipo 2 y mayor riesgo cardiovascular en consumo crónico elevado.',
+        fuente: 'La eliminación del salvado y el germen en el refinado elimina también la fibra que ralentiza la absorción de glucosa. La harina blanca de trigo tiene IG ≈ 70–75 vs. IG ≈ 50–55 del pan integral.',
+        recomendacion: 'Sustituir parcialmente el pan blanco por pan integral o de masa madre. Combinar con proteína, grasa o fibra en la misma ingesta para reducir el pico glucémico.' },
+ 
+      { nombre: 'Aditivos y mejorantes (pan industrial)', tipo: 'Aditivo alimentario', riesgo: 'bajo',
+        aplica_a: ['molde','industrial','envasado','sandwich','brioche','bimbo','hamburguesa bun','hot dog','pan de molde'],
+        efecto: 'Emulgentes (E471, E472), conservantes (E282 propionato), correctores de acidez y gluten añadido pueden causar irritación digestiva o reacciones en personas sensibles. Los propionatos se han relacionado con comportamiento hiperactivo en estudios preliminares.',
+        fuente: 'Uso extensivo de mejorantes en panificación industrial para acelerar la fermentación, alargar la vida útil y mejorar la textura. El pan artesano usa fermentaciones largas que no requieren estos aditivos.',
+        recomendacion: 'Preferir pan de panadería artesana o pan de masa madre. Revisar la lista de ingredientes: cuantos menos, mejor.' },
+ 
     ]
   },
   huevos: {
