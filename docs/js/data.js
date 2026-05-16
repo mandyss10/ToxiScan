@@ -297,7 +297,7 @@ export const TOXIN_DB = {
         recomendacion: 'No consumir cereales con moho visible. Almacenar en lugar fresco y seco. El pan integral tiene mayor carga potencial; diversificar con otros cereales.' },
  
       { nombre: 'Deoxinivalenol (DON / Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
-        aplica_a: ['pan','tostada','galleta','bizcocho','harina','trigo','pasta','maíz','maiz','sémola','semola','cereales','espagueti','macarrón','macarron','integral','blanco','baguette','chapata','ciabatta','hogaza','barra','molde','candeal','espelta','kamut'],
+        aplica_a: ['pan','tostada','galleta','bizcocho','harina','trigo','pasta','maíz','maiz','sémola','semola','cereales','cereal de desayuno','cereales de desayuno','muesli','granola','copo','copos','flakes','corn flakes','espagueti','macarrón','macarron','integral','blanco','baguette','chapata','ciabatta','hogaza','barra','molde','candeal','espelta','kamut'],
         efecto: 'Náuseas, vómitos y supresión inmune. Afecta especialmente a niños. Se produce igualmente en harina blanca y en harina integral; la diferencia es que en integral el DON puede concentrarse más en el salvado.',
         fuente: 'Fusarium en trigo y maíz húmedos o mal almacenados. Presente tanto en harinas blancas como integrales.',
         recomendacion: 'Control de calidad en compra. Almacenar harina en recipiente hermético. La cocción reduce pero no elimina completamente el DON.' },
@@ -464,7 +464,7 @@ const CATEGORY_KEYWORDS = {
   lacteos:  ['leche','queso','yogur','mantequilla','nata','lácteo','milk','cheese','yogurt','butter','cream','dairy','kefir'],
   frutas:   ['fruta','manzana','pera','naranja','plátano','uva','fresa','melocotón','cereza','kiwi','mango','piña','fruit','apple','orange','banana','berry','melón','sandía','ciruela','albaricoque','aguacate'],
   mariscos: ['marisco','gamba','langosta','cangrejo','mejillón','ostra','almeja','calamar','pulpo','sepia','shrimp','lobster','crab','mussel','oyster','clam','squid','octopus','langostino','berberecho','chirla','bogavante','cigala','camarón','percebe','nécora','necora','vieira','navaja','centollo','zamburiña','erizo','bivalvo','molusco','cefalópodo'],
-  cereales: ['pan','pasta','trigo','maíz','avena','cebada','centeno','bread','wheat','corn','oat','cereal','harina','galleta','tostada','biscuit'],
+  cereales: ['pan','pasta','trigo','maíz','avena','cebada','centeno','bread','wheat','corn','oat','cereal','cereales de desayuno','cereal de desayuno','muesli','granola','copo','copos','flakes','corn flakes','harina','galleta','tostada','biscuit'],
   huevos:   ['huevo','egg','tortilla','omelette','revuelto','mayonesa','clara','yema','huevo frito','huevo cocido','huevo pasado','huevo poché','mousse','tiramisú','tiramisu'],
   legumbres:['lenteja','garbanzo','judía','alubia','soja','guisante','haba','legumbre','bean','lentil','chickpea','soybean','pea','tofu','tempeh','cacahuete','cacahuate','maní','mani','peanut','edamame','miso','natto','lupino','frijol','poroto','butter bean'],
   procesado:['procesado','frito','snack','chips','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
