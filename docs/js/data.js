@@ -120,8 +120,9 @@ export const TOXIN_DB = {
     nombre: 'Lácteos', emoji: '🥛',
     toxinas: [
       { nombre: 'Dioxinas y PCB', tipo: 'Contaminante orgánico persistente', riesgo: 'medio',
-        efecto: 'Disruptores endocrinos. Cancerígenos. Se concentran en la grasa láctea.',
-        fuente: 'Contaminación ambiental en pastos y piensos.',
+        aplica_a: ['queso','mantequilla','nata','crema','crème','helado','leche entera','entera','entero','manchego','cheddar','parmesano','parmigiano','curado','curada','requesón','requeson','mascarpone','mozzarella','ricotta','burrata','edam','raclette','brie','camembert','roquefort','feta','gouda','emmental','gruyère','gruyere','azul'],
+        efecto: 'Disruptores endocrinos. Cancerígenos. Lipófilos: se concentran en la grasa láctea.',
+        fuente: 'Contaminación ambiental en pastos y piensos. Mayor riesgo en quesos curados, mantequilla, nata y leche entera por su contenido graso.',
         recomendacion: 'Preferir lácteos desnatados o semidesnatados. Control de origen.' },
       { nombre: 'Aflatoxina M1', tipo: 'Micotoxina', riesgo: 'medio',
         efecto: 'Metabolito cancerígeno (Grupo 1 IARC) derivado de aflatoxina B1 en piensos.',
@@ -131,11 +132,16 @@ export const TOXIN_DB = {
         efecto: 'Resistencia antimicrobiana. Reacciones alérgicas en personas sensibles.',
         fuente: 'Tratamientos veterinarios en vacas lecheras.',
         recomendacion: 'Los controles europeos son estrictos. Riesgo bajo con productos certificados UE.' },
-      { nombre: 'Listeria monocytogenes (quesos)', tipo: 'Patógeno bacteriano', riesgo: 'medio',
-        aplica_a: ['queso','quesito','brie','camembert','roquefort','feta','mozzarella','fresco','cheese'],
-        efecto: 'Listeriosis: grave en embarazadas, ancianos e inmunodeprimidos. Mortalidad ≈ 20–30 %.',
-        fuente: 'Quesos blandos o frescos sin pasteurizar.',
+      { nombre: 'Listeria monocytogenes (lácteos sin pasteurizar)', tipo: 'Patógeno bacteriano', riesgo: 'medio',
+        aplica_a: ['queso','quesito','brie','camembert','roquefort','feta','mozzarella','fresco','cheese','azul','burrata','leche cruda','sin pasteurizar','ricotta','requesón','requeson'],
+        efecto: 'Listeriosis: grave en embarazadas (cruza placenta), ancianos e inmunodeprimidos. Mortalidad ≈ 20–30 %.',
+        fuente: 'Quesos blandos o frescos sin pasteurizar. Crece a temperatura de nevera.',
         recomendacion: 'Embarazadas: evitar quesos blandos sin pasteurizar. Conservar < 4 °C.' },
+      { nombre: 'Aminas biógenas (histamina, tiramina)', tipo: 'Compuesto bioactivo', riesgo: 'bajo',
+        aplica_a: ['curado','curada','parmesano','parmigiano','manchego','azul','roquefort','cabrales','gorgonzola','stilton','cheddar','gouda','emmental','gruyère','gruyere','viejo','añejo','anejo','reserva'],
+        efecto: 'Cefalea, enrojecimiento y palpitaciones en personas sensibles. Grave si se combinan con IMAOs.',
+        fuente: 'Fermentación prolongada en quesos curados y madurados. Aumentan con el tiempo de maduración.',
+        recomendacion: 'Limitar en migrañas, intolerancia a histamina o tratamiento con IMAOs.' },
       { nombre: 'Radionúclidos (Cs-137, Sr-90)', tipo: 'Contaminante radiactivo', riesgo: 'bajo',
         efecto: 'Riesgo cancerígeno a largo plazo en zonas afectadas por Chernóbil o Fukushima.',
         fuente: 'Pastos contaminados en zonas de fallout nuclear.',
@@ -323,11 +329,21 @@ export function resolveCategory(foodInfo) {
 //   - mostradas: nº de toxinas tras el filtro
 //   - filtrado:  true si se descartó al menos una
 // ═══════════════════════════════════════════════════
+// Comprueba si `stem` aparece como palabra completa dentro de `text`.
+// Necesario para evitar falsos positivos como `desnatado`.includes(`nata`) → true.
+// Trata como límite de palabra cualquier carácter que NO sea alfanumérico latino
+// (incluye letras con tilde y la ñ).
+function matchStem(text, stem) {
+  const escaped = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(^|[^a-z0-9áéíóúüñ])${escaped}([^a-z0-9áéíóúüñ]|$)`, 'i');
+  return re.test(text);
+}
+
 export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
   const food = (alimentoDetectado || '').toLowerCase();
   const result = toxinas.filter(t => {
     if (!t.aplica_a || t.aplica_a.length === 0) return true;
-    return t.aplica_a.some(stem => food.includes(stem.toLowerCase()));
+    return t.aplica_a.some(stem => matchStem(food, stem.toLowerCase()));
   });
   return {
     toxinas: result,
