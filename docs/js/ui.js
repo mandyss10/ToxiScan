@@ -187,13 +187,23 @@ function renderHistoryList() {
     el.innerHTML = `<div class="history-empty"><span class="history-empty-icon">🔬</span>Aún no hay análisis guardados.<br>Escanea tu primer alimento.</div>`;
     return;
   }
-  el.innerHTML = h.map(item => `
-    <div class="history-item">
+  el.innerHTML = h.map((item, idx) => `
+    <div class="history-item${item.foodInfo ? ' history-item--clickable' : ''}" data-idx="${idx}">
       <div class="h-emoji">${item.emoji}</div>
       <div class="h-info">
         <div class="h-name">${item.nombre} <span style="color:var(--text-muted);font-weight:400">(${item.confianza}%)</span></div>
         <div class="h-meta">${item.date} · ${item.detected}</div>
       </div>
+      ${item.foodInfo ? '<div class="h-arrow">›</div>' : ''}
     </div>
   `).join('');
+
+  el.querySelectorAll('.history-item--clickable').forEach(div => {
+    div.addEventListener('click', () => {
+      const item = h[+div.dataset.idx];
+      closeDrawer();
+      renderResults(item.foodInfo, item.dbEntry);
+      showView('view-results');
+    });
+  });
 }

@@ -229,6 +229,9 @@ a { color: var(--accent); }
   background: var(--glass); transition: all 0.15s;
 }
 .history-item:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.1); }
+.history-item--clickable { cursor: pointer; }
+.history-item--clickable:hover { border-color: rgba(0,198,255,0.35); }
+.h-arrow { font-size: 1.4rem; color: var(--text-muted); flex-shrink: 0; line-height: 1; }
 .h-emoji { font-size: 1.7rem; flex-shrink: 0; }
 .h-info  { flex: 1; min-width: 0; }
 .h-name  { font-size: 0.88rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

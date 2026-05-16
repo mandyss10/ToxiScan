@@ -30,6 +30,8 @@ export function pushHistory(foodInfo, dbEntry) {
     emoji: dbEntry.emoji,
     detected: foodInfo.alimento_detectado,
     confianza: foodInfo.confianza,
+    foodInfo: { ...foodInfo },
+    dbEntry:  { ...dbEntry },
   });
   localStorage.setItem(KEY_HISTORY, JSON.stringify(h.slice(0, HISTORY_MAX)));
 }
