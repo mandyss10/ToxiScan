@@ -463,7 +463,7 @@ export const TOXIN_DB = {
 export const TOXIN_LINKS = {
   'Mercurio (MeHg)': {
     wiki: 'https://es.wikipedia.org/wiki/Metilmercurio',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/mercury',
+    efsa: 'https://www.efsa.europa.eu/es/news/fish-and-seafood-consumption-eu-awareness-dietary-advice-mercury',
     who:  'https://www.who.int/news-room/fact-sheets/detail/mercury-and-health',
   },
   'PCB (Bifenilos Policlorados)': {
@@ -472,12 +472,12 @@ export const TOXIN_LINKS = {
     who:  'https://www.who.int/news-room/fact-sheets/detail/dioxins-and-their-effects-on-human-health',
   },
   'Anisakis simplex': {
-    wiki: 'https://es.wikipedia.org/wiki/Anisakis_simplex',
+    wiki: 'https://es.wikipedia.org/wiki/Anisakis',
     efsa: 'https://www.efsa.europa.eu/en/topics/topic/anisakis',
   },
   'HAP del ahumado': {
     wiki: 'https://es.wikipedia.org/wiki/Hidrocarburo_aromático_policíclico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/polycyclic-aromatic-hydrocarbons',
+    efsa: 'https://www.efsa.europa.eu/en/news/efsa-opinion-suitable-indicators-both-occurrence-and-toxicity-polycyclic',
   },
   'Listeria monocytogenes (ahumado en frío)': {
     wiki: 'https://es.wikipedia.org/wiki/Listeria_monocytogenes',
@@ -486,31 +486,27 @@ export const TOXIN_LINKS = {
   },
   'Microplásticos': {
     wiki: 'https://es.wikipedia.org/wiki/Microplástico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/microplastics-and-nanoplastics',
+    efsa: 'https://www.efsa.europa.eu/es/topics/microplastics-and-nanoplastics-food',
   },
   'Arsénico inorgánico (iAs)': {
     wiki: 'https://es.wikipedia.org/wiki/Arsénico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
     who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
   },
   'Arsénico en productos de arroz': {
     wiki: 'https://es.wikipedia.org/wiki/Arsénico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
+    efsa: 'https://www.efsa.europa.eu/es/plain-language-summary/risk-assessment-small-organoarsenic-species-food',
     who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
   },
   'Arsénico inorgánico': {
     wiki: 'https://es.wikipedia.org/wiki/Arsénico',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/arsenic',
     who:  'https://www.who.int/news-room/fact-sheets/detail/arsenic',
   },
   'Cadmio': {
     wiki: 'https://es.wikipedia.org/wiki/Cadmio',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/cadmium',
-    who:  'https://www.who.int/news-room/fact-sheets/detail/cadmium',
+    who:  'https://www.who.int/teams/environment-climate-change-and-health/chemical-safety-and-health/health-impacts/chemicals/cadmium',
   },
   'Plomo (Pb)': {
     wiki: 'https://es.wikipedia.org/wiki/Plomo',
-    efsa: 'https://www.efsa.europa.eu/en/topics/topic/lead',
     who:  'https://www.who.int/news-room/fact-sheets/detail/lead-poisoning-and-health',
   },
   'Aflatoxinas (B1, B2)': {
@@ -529,7 +525,7 @@ export const TOXIN_LINKS = {
     who:  'https://www.who.int/news-room/fact-sheets/detail/mycotoxins',
   },
   'Ocratoxina A (OTA)': {
-    wiki: 'https://es.wikipedia.org/wiki/Ocratoxina_A',
+    wiki: 'https://es.wikipedia.org/wiki/Ocratoxina_a',
     efsa: 'https://www.efsa.europa.eu/en/topics/topic/ochratoxin-a',
   },
   'Pesticidas organofosforados': {
