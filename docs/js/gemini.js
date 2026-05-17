@@ -10,7 +10,7 @@ const PROMPT = `Eres un analizador de seguridad alimentaria. Identifica con prec
 Responde ÚNICAMENTE con un JSON válido, sin texto extra ni bloques markdown.
 {
   "alimento_detectado": "todos los ingredientes principales visibles en español, unidos por 'con' e indicando preparación cuando sea relevante (ej: 'tostada con huevo frito', 'salmón ahumado con arroz', 'yogur con nueces y miel', 'ensalada con lechuga y tomate crudo')",
-  "categoria": "UNA de estas EXACTAS: pescado|arroz|verduras|carne|lacteos|frutas|mariscos|cereales|huevos|legumbres|procesado|desconocido",
+  "categoria": "UNA de estas EXACTAS: pescado|arroz|verduras|carne|lacteos|frutas|mariscos|cereales|huevos|legumbres|procesado|frutos secos|desconocido",
   "confianza": entero_0_a_100,
   "descripcion": "1 frase indicando ingredientes presentes, estado de cocción (crudo/cocinado/frito/ahumado/fermentado/marinado) y grado de procesado (fresco/procesado/ultraprocessado)"
 }
