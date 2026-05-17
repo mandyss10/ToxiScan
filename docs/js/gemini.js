@@ -16,6 +16,13 @@ Responde ÚNICAMENTE con un JSON válido, sin texto extra ni bloques markdown.
 }
 Si la imagen no contiene alimento usa categoria "desconocido" y confianza 0.`;
 
+/**
+ * Parsea la respuesta en texto de Gemini y la convierte en un objeto estructurado.
+ * Intenta varios métodos de parseo: JSON directo, JSON truncado, extracción por regex.
+ * @param {string} text - Texto bruto devuelto por la API de Gemini.
+ * @returns {{ alimento_detectado: string, categoria: string, confianza: number, descripcion: string }}
+ * @throws {Error} Si no se puede interpretar el texto en ningún formato conocido.
+ */
 function parseGeminiText(text) {
   text = text.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
 
@@ -48,6 +55,15 @@ function parseGeminiText(text) {
   throw new Error('No se pudo interpretar la respuesta de Gemini. Revisa la consola (F12).');
 }
 
+/**
+ * Envía una imagen a la API REST de Gemini Vision y devuelve la información
+ * alimentaria detectada.
+ * @param {string} apiKey - Clave de la API de Google AI Studio.
+ * @param {string} base64 - Imagen codificada en base64.
+ * @param {string} [mimeType='image/jpeg'] - Tipo MIME de la imagen.
+ * @returns {Promise<{ alimento_detectado: string, categoria: string, confianza: number, descripcion: string }>}
+ * @throws {Error} Si la petición falla o la API devuelve un error.
+ */
 export async function callGemini(apiKey, base64, mimeType) {
   const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
     method: 'POST',

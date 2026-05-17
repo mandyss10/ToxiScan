@@ -6,6 +6,12 @@ const COUNT    = 70;
 const MAX_DIST = 160;
 const COLORS   = ['rgba(0,198,255,', 'rgba(168,85,247,', 'rgba(99,102,241,'];
 
+/**
+ * Crea un canvas de fondo con una red animada de partículas y lo añade al DOM.
+ * Las partículas se mueven a velocidad constante y se conectan con líneas
+ * cuando están a menos de MAX_DIST píxeles de distancia.
+ * Se adapta automáticamente al redimensionar la ventana.
+ */
 export function initParticles() {
   const canvas = document.createElement('canvas');
   canvas.style.cssText = 'position:fixed;inset:0;z-index:0;pointer-events:none';
@@ -13,11 +19,13 @@ export function initParticles() {
   const ctx = canvas.getContext('2d');
   let pts = [];
 
+  /** Ajusta las dimensiones del canvas al tamaño actual de la ventana. */
   function resize() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
   }
 
+  /** Genera el array de partículas con posición, velocidad, radio y color aleatorios. */
   function spawn() {
     pts = Array.from({ length: COUNT }, () => ({
       x:  Math.random() * canvas.width,
@@ -29,6 +37,7 @@ export function initParticles() {
     }));
   }
 
+  /** Dibuja un fotograma: conexiones entre partículas cercanas, puntos y halo, y actualiza posiciones. */
   function frame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

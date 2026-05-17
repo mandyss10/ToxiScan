@@ -9,6 +9,11 @@ const RISK_COLORS = { alto: '#f43f5e', medio: '#f59e0b', bajo: '#10b981' };
 const RISK_LABELS = { alto: 'RIESGO ALTO', medio: 'RIESGO MEDIO', bajo: 'RIESGO BAJO' };
 
 // ── VIEWS ────────────────────────────────────────────
+/**
+ * Muestra la vista con el id dado y oculta todas las demás.
+ * Añade la clase `active` en el siguiente frame para permitir transiciones CSS.
+ * @param {string} id - Id del elemento `.view` a mostrar (p. ej. `'view-upload'`).
+ */
 export function showView(id) {
   document.querySelectorAll('.view').forEach(v => {
     v.classList.remove('active', 'hidden');
@@ -27,6 +32,10 @@ const LOADING_MSGS = [
 ];
 let loadCycleId;
 
+/**
+ * Inicia el ciclo de mensajes de estado de carga, rotando el texto
+ * del elemento `#load-status` cada 1,8 segundos.
+ */
 export function startLoadCycle() {
   let i = 0;
   const el = document.getElementById('load-status');
@@ -37,11 +46,18 @@ export function startLoadCycle() {
   }, 1800);
 }
 
+/** Detiene el ciclo de mensajes de estado de carga iniciado por {@link startLoadCycle}. */
 export function stopLoadCycle() {
   clearInterval(loadCycleId);
 }
 
 // ── RENDER RESULTS ───────────────────────────────────
+/**
+ * Renderiza la vista de resultados: cabecera con nombre, emoji y barra de precisión,
+ * nota de filtrado (si corresponde) y tarjetas de toxinas.
+ * @param {{ alimento_detectado: string, descripcion: string, confianza: number }} foodInfo - Datos de Gemini.
+ * @param {{ emoji: string, nombre: string, toxinas: Array<Object>, meta?: Object }} dbEntry - Entrada de la BD toxicológica.
+ */
 export function renderResults(foodInfo, dbEntry) {
   document.getElementById('result-hero').innerHTML = `
     <div class="rh-top">
@@ -129,6 +145,11 @@ export function renderResults(foodInfo, dbEntry) {
   });
 }
 
+/**
+ * Renderiza el mensaje de "no identificado" cuando Gemini no reconoce
+ * ningún alimento de la base de datos en la imagen.
+ * @param {{ alimento_detectado?: string }} foodInfo - Datos de Gemini (puede estar vacío).
+ */
 export function renderNotFound(foodInfo) {
   document.getElementById('result-hero').innerHTML = `
     <div class="not-found">
@@ -144,6 +165,12 @@ export function renderNotFound(foodInfo) {
 }
 
 // ── TOAST ────────────────────────────────────────────
+/**
+ * Muestra una notificación flotante (toast) con el mensaje dado y la desvanece
+ * automáticamente tras 4,5 segundos. Solo puede haber un toast visible a la vez.
+ * @param {string} msg - Texto a mostrar en el toast.
+ * @param {string} [color='rgba(0,198,255,0.3)'] - Color del borde del toast en formato CSS.
+ */
 export function toast(msg, color = 'rgba(0,198,255,0.3)') {
   document.getElementById('toast')?.remove();
   const el = document.createElement('div');
@@ -155,6 +182,11 @@ export function toast(msg, color = 'rgba(0,198,255,0.3)') {
 }
 
 // ── API MODAL ────────────────────────────────────────
+/**
+ * Abre el modal de configuración de la API key y rellena el input
+ * con la clave actual (si existe).
+ * @param {string} [currentKey=''] - Valor actual de la API key.
+ */
 export function openApiModal(currentKey = '') {
   const modal = document.getElementById('api-modal');
   modal.classList.remove('hidden');
@@ -162,11 +194,15 @@ export function openApiModal(currentKey = '') {
   document.getElementById('save-key-btn').disabled = currentKey.length < 10;
 }
 
+/** Cierra el modal de configuración de la API key. */
 export function closeApiModal() {
   document.getElementById('api-modal').classList.add('hidden');
 }
 
 // ── HISTORY DRAWER ───────────────────────────────────
+/**
+ * Abre el drawer lateral del historial y renderiza la lista de análisis guardados.
+ */
 export function openDrawer() {
   document.getElementById('history-drawer')
     .classList.replace('drawer-closed', 'drawer-open');
@@ -174,12 +210,18 @@ export function openDrawer() {
   renderHistoryList();
 }
 
+/** Cierra el drawer lateral del historial. */
 export function closeDrawer() {
   document.getElementById('history-drawer')
     .classList.replace('drawer-open', 'drawer-closed');
   document.getElementById('drawer-overlay').classList.remove('open');
 }
 
+/**
+ * Lee el historial de localStorage y renderiza los items en `#history-list`.
+ * Cada item con datos completos es clickable: al pulsarlo, cierra el drawer
+ * y muestra los resultados de ese análisis.
+ */
 function renderHistoryList() {
   const h = loadHistory();
   const el = document.getElementById('history-list');

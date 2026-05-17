@@ -17,6 +17,13 @@ import { initParticles } from './particles.js';
 let apiKey = getApiKey();
 
 // ── PROCESS IMAGE ────────────────────────────────────
+/**
+ * Orquesta el flujo completo de análisis: muestra la vista de carga, llama a Gemini,
+ * resuelve las categorías toxicológicas y renderiza los resultados.
+ * Si no hay API key configurada, abre el modal de configuración en su lugar.
+ * @param {File} file - Archivo de imagen seleccionado o capturado por el usuario.
+ * @returns {Promise<void>}
+ */
 async function processImage(file) {
   if (!apiKey) { openApiModal(apiKey); return; }
 
@@ -55,6 +62,11 @@ async function processImage(file) {
   }
 }
 
+/**
+ * Lee un archivo y lo convierte a una cadena base64 (sin prefijo data URL).
+ * @param {File} file - Archivo de imagen a convertir.
+ * @returns {Promise<string>} Cadena base64 del contenido del archivo.
+ */
 function fileToBase64(file) {
   return new Promise((res, rej) => {
     const r = new FileReader();
@@ -65,6 +77,11 @@ function fileToBase64(file) {
 }
 
 // ── EVENT WIRING ─────────────────────────────────────
+/**
+ * Registra los listeners del modal de configuración de API key:
+ * habilita el botón al escribir, guarda al hacer clic o pulsar Enter,
+ * y alterna la visibilidad de la contraseña.
+ */
 function bindApiModal() {
   const keyInput = document.getElementById('api-key-input');
   const saveBtn  = document.getElementById('save-key-btn');
@@ -87,6 +104,10 @@ function bindApiModal() {
   });
 }
 
+/**
+ * Registra los listeners de navegación global: ajustes, historial, cierre
+ * del drawer y botón de retroceso.
+ */
 function bindNav() {
   document.getElementById('settings-btn').addEventListener('click', () => openApiModal(apiKey));
   document.getElementById('history-btn').addEventListener('click', openDrawer);
@@ -95,6 +116,10 @@ function bindNav() {
   document.getElementById('back-btn').addEventListener('click', () => showView('view-upload'));
 }
 
+/**
+ * Registra los listeners del input de archivo y la zona de arrastrar-y-soltar,
+ * disparando el análisis al recibir una imagen válida.
+ */
 function bindUpload() {
   const fileInput = document.getElementById('file-upload');
   fileInput.addEventListener('change', e => {
@@ -116,6 +141,10 @@ function bindUpload() {
   });
 }
 
+/**
+ * Registra los listeners del modal de cámara: abrir, cerrar, disparador
+ * y cierre al pulsar fuera del vídeo.
+ */
 function bindCamera() {
   document.getElementById('open-camera-btn').addEventListener('click', openCamera);
   document.getElementById('close-camera').addEventListener('click', closeCamera);
@@ -125,6 +154,10 @@ function bindCamera() {
   });
 }
 
+/**
+ * Registra un listener global de teclado que cierra cámara, drawer y modal
+ * de API al pulsar Escape.
+ */
 function bindEscape() {
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
@@ -135,6 +168,10 @@ function bindEscape() {
 }
 
 // ── INIT ─────────────────────────────────────────────
+/**
+ * Punto de entrada de la aplicación. Inicializa el estado del modal de API
+ * y registra todos los listeners de eventos.
+ */
 function init() {
   if (apiKey) closeApiModal(); else openApiModal(apiKey);
   bindApiModal();

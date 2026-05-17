@@ -4,8 +4,14 @@
 
 import { toast } from './ui.js';
 
+/** @type {MediaStream|null} Flujo de vídeo activo de la cámara del dispositivo. */
 let cameraStream = null;
 
+/**
+ * Solicita acceso a la cámara trasera del dispositivo y muestra el modal de cámara.
+ * Muestra un toast de error si el navegador deniega el permiso.
+ * @returns {Promise<void>}
+ */
 export async function openCamera() {
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
@@ -18,12 +24,20 @@ export async function openCamera() {
   }
 }
 
+/**
+ * Detiene todas las pistas del flujo de vídeo activo y oculta el modal de cámara.
+ */
 export function closeCamera() {
   cameraStream?.getTracks().forEach(t => t.stop());
   cameraStream = null;
   document.getElementById('camera-modal').classList.add('hidden');
 }
 
+/**
+ * Captura el fotograma actual del vídeo como JPEG, cierra la cámara
+ * y llama al callback con el archivo resultante.
+ * @param {function(File): void} onCapture - Callback que recibe el archivo JPEG capturado.
+ */
 export function capturePhoto(onCapture) {
   const video  = document.getElementById('camera-video');
   const canvas = document.getElementById('camera-canvas');

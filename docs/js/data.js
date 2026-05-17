@@ -783,6 +783,12 @@ const GEMINI_FALLBACK_ONLY = new Set(['procesado']);
 // Devuelve TODAS las categorías presentes en el alimento detectado.
 // Escanea tanto el nombre como la descripción para soportar mezclas:
 // "avena + frutos secos + manzana" → ['cereales', 'frutos_secos', 'frutas'].
+/**
+ * Determina todas las categorías toxicológicas que aplican a un alimento detectado,
+ * combinando la búsqueda por palabras clave con la categoría sugerida por Gemini.
+ * @param {{ categoria?: string, alimento_detectado?: string, descripcion?: string }} foodInfo - Datos de Gemini.
+ * @returns {string[]} Array de claves de categoría presentes en TOXIN_DB (puede estar vacío).
+ */
 export function resolveCategories(foodInfo) {
   const cat = (foodInfo.categoria || '').toLowerCase().trim();
   const name = (foodInfo.alimento_detectado || '').toLowerCase();
@@ -812,7 +818,12 @@ export function resolveCategories(foodInfo) {
   return [...found];
 }
 
-// Compatibilidad: devuelve la primera categoría detectada (o null).
+/**
+ * Devuelve la primera categoría detectada por {@link resolveCategories}, o `null` si no hay ninguna.
+ * Mantenido para compatibilidad con código que solo gestiona una categoría a la vez.
+ * @param {Object} foodInfo - Datos de Gemini (ver {@link resolveCategories}).
+ * @returns {string|null} Clave de categoría o `null`.
+ */
 export function resolveCategory(foodInfo) {
   return resolveCategories(foodInfo)[0] || null;
 }
@@ -836,6 +847,11 @@ export function resolveCategory(foodInfo) {
 // Trata como límite de palabra cualquier carácter que NO sea alfanumérico latino
 // (incluye letras con tilde y la ñ).
 // Acepta plurales españoles/ingleses: salchicha → salchichas, hamburguesa → hamburguesas.
+/**
+ * Normaliza un texto para comparación: pasa a minúsculas y elimina tildes y diacríticos.
+ * @param {string} value - Texto a normalizar.
+ * @returns {string} Texto normalizado.
+ */
 function normalizeSearchText(value) {
   return (value || '')
     .toLowerCase()
@@ -843,9 +859,13 @@ function normalizeSearchText(value) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
-// Reduce una palabra a su ra\u00edz singular.
-// "huevos"\u2192"huevo", "almendras"\u2192"almendra", "nueces"\u2192"nuez".
-// Se aplica palabra a palabra para cubrir stems multi-palabra ("frutos secos"\u2192"fruto seco").
+/**
+ * Reduce una palabra a su ra\u00edz singular espa\u00f1ola o inglesa b\u00e1sica.
+ * Ejemplos: `"huevos"` \u2192 `"huevo"`, `"nueces"` \u2192 `"nuez"`.
+ * Se aplica palabra a palabra para cubrir stems multi-palabra (`"frutos secos"` \u2192 `"fruto seco"`).
+ * @param {string} word - Palabra ya normalizada (sin tildes, en min\u00fasculas).
+ * @returns {string} Forma singular aproximada.
+ */
 function depluralize(word) {
   if (word.length <= 3) return word;
   if (word.endsWith('ces') && word.length > 4) return word.slice(0, -3) + 'z';
@@ -853,11 +873,25 @@ function depluralize(word) {
   return word;
 }
 
+/**
+ * Construye una expresión regular que detecta `normalizedStem` como palabra completa,
+ * admitiendo plurales básicos (`s`, `as`, `es`) al final.
+ * @param {string} normalizedStem - Stem ya normalizado (sin tildes, en minúsculas).
+ * @returns {RegExp}
+ */
 function buildStemRegex(normalizedStem) {
   const escaped = normalizedStem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return new RegExp(`(^|[^a-z0-9])${escaped}(s|as|es)?([^a-z0-9]|$)`);
 }
 
+/**
+ * Comprueba si `stem` aparece como palabra completa dentro de `text`,
+ * normalizando ambos y aplicando despluralización si es necesario.
+ * Evita falsos positivos del tipo `"desnatado".includes("nata")`.
+ * @param {string} text - Texto haystack en el que buscar.
+ * @param {string} stem - Palabra o frase a buscar como palabra completa.
+ * @returns {boolean}
+ */
 function matchStem(text, stem) {
   const normalizedText = normalizeSearchText(text);
   const normalizedStem = normalizeSearchText(stem);
@@ -873,6 +907,14 @@ function matchStem(text, stem) {
   return false;
 }
 
+/**
+ * Filtra la lista de toxinas de un grupo para mostrar solo las relevantes
+ * para el alimento concreto detectado. Las toxinas sin campo `aplica_a`
+ * se consideran universales y siempre se incluyen.
+ * @param {Array<Object>} toxinas - Lista completa de toxinas de una categoría.
+ * @param {string} [alimentoDetectado=''] - Nombre del alimento detectado por Gemini.
+ * @returns {{ toxinas: Array<Object>, total: number, mostradas: number, filtrado: boolean }}
+ */
 export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
   const food = normalizeSearchText(alimentoDetectado);
   const result = toxinas.filter(t => {
@@ -899,6 +941,16 @@ export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
 //  toxinas se mantiene con su lista completa (mismo criterio que ya
 //  aplicaba main.js cuando solo había una categoría).
 // ═══════════════════════════════════════════════════
+/**
+ * Construye una entrada unificada para la UI a partir de múltiples categorías,
+ * fusionando sus toxinas filtradas y deduplicadas por nombre.
+ * Si una categoría no produce toxinas tras el filtro y `fallbackToFull` está activo,
+ * se usa su lista completa en lugar de descartarla.
+ * @param {string[]} categories - Claves de categorías a fusionar (deben existir en TOXIN_DB).
+ * @param {string} [alimentoDetectado=''] - Texto del alimento detectado usado para filtrar toxinas.
+ * @param {{ fallbackToFull?: boolean }} [options]
+ * @returns {{ emoji: string, nombre: string, toxinas: Array<Object>, meta: Object }|null} Entrada fusionada, o `null` si ninguna categoría existe.
+ */
 export function buildEntryForCategories(categories, alimentoDetectado = '', { fallbackToFull = true } = {}) {
   const entries = categories
     .map(c => ({ key: c, data: TOXIN_DB[c] }))
