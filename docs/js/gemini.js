@@ -5,13 +5,14 @@
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_URL   = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
-const PROMPT = `Eres un experto en seguridad alimentaria. Analiza la imagen.
+const PROMPT = `Eres un analizador de seguridad alimentaria. Identifica con precisión todos los alimentos e ingredientes visibles en la imagen para evaluar sus riesgos toxicológicos.
+
 Responde ÚNICAMENTE con un JSON válido, sin texto extra ni bloques markdown.
 {
-  "alimento_detectado": "nombre específico en español",
+  "alimento_detectado": "todos los ingredientes principales visibles en español, unidos por 'con' e indicando preparación cuando sea relevante (ej: 'tostada con huevo frito', 'salmón ahumado con arroz', 'yogur con nueces y miel', 'ensalada con lechuga y tomate crudo')",
   "categoria": "UNA de estas EXACTAS: pescado|arroz|verduras|carne|lacteos|frutas|mariscos|cereales|huevos|legumbres|procesado|desconocido",
   "confianza": entero_0_a_100,
-  "descripcion": "descripción breve de 1 frase"
+  "descripcion": "1 frase indicando ingredientes presentes, estado de cocción (crudo/cocinado/frito/ahumado/fermentado/marinado) y grado de procesado (fresco/procesado/ultraprocessado)"
 }
 Si la imagen no contiene alimento usa categoria "desconocido" y confianza 0.`;
 
@@ -56,7 +57,7 @@ export async function callGemini(apiKey, base64, mimeType) {
         { text: PROMPT },
         { inline_data: { mime_type: mimeType || 'image/jpeg', data: base64 } },
       ]}],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 2048 },
+      generationConfig: { temperature: 0.1, maxOutputTokens: 512, responseMimeType: 'application/json' },
     }),
   });
 

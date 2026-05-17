@@ -237,18 +237,23 @@ export const TOXIN_DB = {
         efecto: 'Cancerígeno Grupo 1 (IARC). En marisco predomina el arsénico orgánico (menos tóxico), pero la fracción inorgánica está presente y es relevante en consumo elevado.',
         fuente: 'El marisco concentra arsénico del agua marina. La mayoría es arsénico orgánico (arsenobetaína), pero gambas y bivalvos contienen una fracción inorgánica no despreciable.',
         recomendacion: 'Riesgo bajo con consumo moderado. Evitar consumo diario en niños pequeños. Preferir marisco de aguas certificadas.' },
+      { nombre: 'Sulfitos (E220-E228)', tipo: 'Aditivo alimentario', riesgo: 'medio',
+        aplica_a: ['gamba','langostino','camarón','camaron','cigala','gambón','gambon','crustáceo','crustaceo','congelado','pelado','pelada','cocido','cocida','industrial','procesado'],
+        efecto: 'Reacciones alérgicas graves en sensibles (asma, urticaria, anafilaxia). La EFSA establece una IDA de 0,7 mg/kg/día. Los sulfitos destruyen la vitamina B1.',
+        fuente: 'Las gambas y langostinos se tratan de forma habitual con metabisulfito sódico o potásico (E223, E224) para evitar la melanosis, el ennegrecimiento natural que aparece horas después de la captura. Es una práctica tan extendida en la industria que afecta a la gran mayoría de gambas peladas, congeladas o de importación que se venden en supermercados.',
+        recomendacion: 'Revisa la etiqueta: es obligatorio por ley declarar su presencia si superan los 10 mg/kg. Busca los términos "sulfitos", "metabisulfito" o los códigos E220 a E228. Si quieres evitarlos, compra marisco fresco de lonja o con certificación ecológica: no llevan estos aditivos.' },
       { nombre: 'Norovirus', tipo: 'Patógeno vírico', riesgo: 'alto',
         aplica_a: ['ostra','almeja','mejillón','mejillon','berberecho','vieira','chirla','navaja','bivalvo','molusco','crudo','cruda'],
         efecto: 'Gastroenteritis aguda: vómitos explosivos, diarrea y fiebre. Altamente contagioso. Principal causa de intoxicación alimentaria por marisco en España y Europa.',
         fuente: 'Bivalvos filtran y concentran norovirus de aguas contaminadas con aguas residuales. El virus persiste en el marisco y resiste temperaturas de cocción insuficientes.',
-        recomendacion: 'Cocinar bivalvos a >85 °C durante al menos 1 minuto. Evitar ostras crudas en grupos vulnerables. Verificar origen certificado.' },
+        recomendacion: 'Asegurarse de alcanzar >85 °C durante al menos 1 minuto en el centro del bivalvo. Verificar origen certificado. Personas vulnerables deben evitar bivalvos poco cocinados.' },
       { nombre: 'Hepatitis A (VHA)', tipo: 'Patógeno vírico', riesgo: 'alto',
         aplica_a: ['ostra','almeja','mejillón','mejillon','berberecho','vieira','chirla','navaja','bivalvo','molusco','crudo','cruda'],
         efecto: 'Hepatitis aguda: ictericia, fatiga intensa y daño hepático. Incubación 2–6 semanas. Graves consecuencias en personas sin vacuna o con hepatopatía previa.',
         fuente: 'Mismo vector que el norovirus: bivalvos filtran el virus de aguas contaminadas. Brotes documentados por ostras y almejas crudas en España.',
-        recomendacion: 'Cocinar completamente. Vacunación disponible y recomendada. Embarazadas e inmunodeprimidos deben evitar bivalvos crudos.' },
+        recomendacion: 'Cocinar completamente a >85 °C. Vacunación disponible y recomendada. Embarazadas e inmunodeprimidos deben asegurarse de una cocción completa.' },
       { nombre: 'Vibrio parahaemolyticus', tipo: 'Patógeno bacteriano', riesgo: 'alto',
-        aplica_a: ['crudo','cruda','ostra','almeja','mejillón','mejillon','gamba','langostino','chirla','berberecho','sushi','ceviche'],
+        aplica_a: ['crudo','cruda','sushi','ceviche','marinado','marinada','tartar','tartare','ostra'],
         efecto: 'Gastroenteritis aguda severa: diarrea acuosa, calambres y vómitos. Infecciones sistémicas graves en inmunodeprimidos.',
         fuente: 'Bacteria natural en agua marina caliente. Prolifera en verano. Riesgo alto en marisco crudo o poco cocinado procedente de aguas cálidas.',
         recomendacion: 'No consumir marisco crudo en verano. Cocinar a >65 °C. Refrigerar inmediatamente tras la compra.' },
@@ -689,6 +694,10 @@ export const TOXIN_LINKS = {
     wiki: 'https://es.wikipedia.org/wiki/Hepatitis_A',
     who:  'https://www.who.int/news-room/fact-sheets/detail/hepatitis-a',
   },
+  'Sulfitos (E220-E228)': {
+    wiki: 'https://es.wikipedia.org/wiki/Sulfito',
+    efsa: 'https://www.efsa.europa.eu/en/efsajournal/pub/3943',
+  },
   'Vibrio parahaemolyticus': {
     wiki: 'https://es.wikipedia.org/wiki/Vibrio_parahaemolyticus',
     efsa: 'https://www.efsa.europa.eu/es/news/vibrio-bacteria-seafood-increased-risk-due-climate-change-and-antimicrobial-resistance',
@@ -783,7 +792,7 @@ const CATEGORY_KEYWORDS = {
   huevos:   ['huevo','egg','tortilla','omelette','revuelto','mayonesa','clara','yema','huevo frito','huevo cocido','huevo pasado','huevo poché','mousse','tiramisú','tiramisu'],
   legumbres:['lenteja','garbanzo','judía','alubia','soja','guisante','haba','legumbre','bean','lentil','chickpea','soybean','pea','tofu','tempeh','cacahuete','cacahuate','maní','mani','peanut','edamame','miso','natto','lupino','frijol','poroto','butter bean'],
   frutos_secos: ['fruto seco','frutos secos','almendra','almendras','avellana','avellanas','nuez','nueces','pistacho','pistachos','anacardo','anacardos','castaña','castañas','piñón','pinon','piñones','pinones','pipa','pipas','semilla de girasol','semillas de girasol','semilla de calabaza','semillas de calabaza','sésamo','sesamo','semilla','semillas','pecán','pecan','pecanes','macadamia','nuez de brasil','nuez del brasil','chufa','chufas','nut','nuts','almond','almonds','hazelnut','hazelnuts','walnut','walnuts','pistachio','pistachios','cashew','cashews','sunflower seed','pumpkin seed','sesame seed','dátil','datil','dátiles','datiles','pasa','pasas','orejón','orejon','higo seco','ciruela seca','muesli','granola'],
-  procesado:['procesado','frito','snack','chips','bollería','pizza','nuggets','comida rápida','ultraprocesado','processed','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
+  procesado:['frito','snack','chips','bollería','pizza','nuggets','comida rápida','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
 };
 
 // "procesado" es una etiqueta-paraguas que Gemini tiende a aplicar sin más
@@ -857,12 +866,34 @@ function normalizeSearchText(value) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
+// Reduce una palabra a su ra\u00edz singular.
+// "huevos"\u2192"huevo", "almendras"\u2192"almendra", "nueces"\u2192"nuez".
+// Se aplica palabra a palabra para cubrir stems multi-palabra ("frutos secos"\u2192"fruto seco").
+function depluralize(word) {
+  if (word.length <= 3) return word;
+  if (word.endsWith('ces') && word.length > 4) return word.slice(0, -3) + 'z';
+  if (word.endsWith('s') && word.length > 3) return word.slice(0, -1);
+  return word;
+}
+
+function buildStemRegex(normalizedStem) {
+  const escaped = normalizedStem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^a-z0-9])${escaped}(s|as|es)?([^a-z0-9]|$)`);
+}
+
 function matchStem(text, stem) {
   const normalizedText = normalizeSearchText(text);
   const normalizedStem = normalizeSearchText(stem);
-  const escaped = normalizedStem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`(^|[^a-z0-9])${escaped}(s|as|es)?([^a-z0-9]|$)`);
-  return re.test(normalizedText);
+
+  if (buildStemRegex(normalizedStem).test(normalizedText)) return true;
+
+  // Segunda pasada con stem despluralizado: cubre casos como
+  // stem="huevos" vs texto="huevo", stem="frutos secos" vs texto="fruto seco".
+  const depluralizedStem = normalizedStem.split(' ').map(depluralize).join(' ');
+  if (depluralizedStem !== normalizedStem) {
+    return buildStemRegex(depluralizedStem).test(normalizedText);
+  }
+  return false;
 }
 
 export function filterToxinasForFood(toxinas, alimentoDetectado = '') {
