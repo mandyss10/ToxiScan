@@ -264,30 +264,7 @@ export const TOXIN_DB = {
         recomendacion: 'Consumir de zonas certificadas con baja contaminación. Investigación activa sobre efectos a largo plazo.' },
     ]
   },
-  // cereales: {
-  //   nombre: 'Cereales y Pan', emoji: '🌾',
-  //   toxinas: [
-  //     { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
-  //       efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor.',
-  //       fuente: 'Hongos Aspergillus y Penicillium en cereales almacenados. Más en trigo y maíz.',
-  //       recomendacion: 'No consumir cereales con moho visible. Almacenar en seco. Diversificar.' },
-  //     { nombre: 'Acrilamida', tipo: 'Neoformado por calor', riesgo: 'medio',
-  //       aplica_a: ['pan','tostada','galleta','bizcocho','cereales','muesli','crujiente','frito','horneado','tostado'],
-  //       efecto: 'Posiblemente cancerígeno (Grupo 2A IARC). Se forma en almidón + calor seco.',
-  //       fuente: 'Pan muy tostado, galletas, cereales de desayuno tostados y patatas fritas.',
-  //       recomendacion: 'Tostar a color dorado, no marrón oscuro. Evitar partes carbonizadas.' },
-  //     { nombre: 'Deoxinivalenol (DON/Vomitoxina)', tipo: 'Micotoxina', riesgo: 'medio',
-  //       aplica_a: ['trigo','pan','pasta','maíz','maiz','harina','sémola','semola','cereales','galleta','espagueti','macarrón','macarron'],
-  //       efecto: 'Náuseas, vómitos y supresión inmune.',
-  //       fuente: 'Fusarium en trigo y maíz húmedos.',
-  //       recomendacion: 'Control de calidad en compra. La cocción reduce pero no elimina completamente.' },
-  //     { nombre: 'Arsénico inorgánico', tipo: 'Metaloide tóxico', riesgo: 'bajo',
-  //       aplica_a: ['avena','integral','centeno','salvado','copo','muesli','granola'],
-  //       efecto: 'Cancerígeno acumulativo. Menor que en arroz pero presente.',
-  //       fuente: 'Suelos contaminados. Presente en avena integral y cereales integrales.',
-  //       recomendacion: 'Diversificar cereales. Mayor riesgo en dieta muy basada en un solo cereal.' },
-  //   ]
-  // },
+  
 
   cereales: {
     nombre: 'Cereales y Pan', emoji: '🌾',
