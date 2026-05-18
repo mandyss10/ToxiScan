@@ -2,6 +2,8 @@
 
 Proyecto final de la asignatura **Bioinformática y Medicina** — Grado en Inteligencia Artificial, **Universidade da Coruña (UDC)**, curso 2025/2026.
 
+> El enlace a la presentación se encuentra en *enlace_presentacion.md*
+
 ---
 
 ## ¿Qué es ToxiScan?
