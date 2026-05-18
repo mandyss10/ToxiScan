@@ -88,6 +88,7 @@ Imagen (upload / cámara)
 | Cereales | Trigo, maíz, avena |
 | Huevos | Huevo de gallina |
 | Legumbres | Lentejas, garbanzos, soja |
+| Frutos secos | Almendras, nueces, cacahuetes |
 | Alimentos procesados | Embutidos, snacks, conservas |
 
 ---
