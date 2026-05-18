@@ -1,4 +1,4 @@
-﻿// data.js
+﻿// docs/js/data.js
 /**
  * Base de datos toxicológica principal, indexada por categoría de alimento.
  *

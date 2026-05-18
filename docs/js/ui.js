@@ -1,14 +1,14 @@
-// ═══════════════════════════════════════════════════
-//  UI: vistas, render, toast, modal API, drawer historial
-// ═══════════════════════════════════════════════════
-
+//docs/js/ui.js
 import { loadHistory } from './storage.js';
 import { TOXIN_LINKS } from './data.js';
 
+/** Color hexadecimal asociado a cada nivel de riesgo, usado en bordes y badges de las tarjetas. */
 const RISK_COLORS = { alto: '#f43f5e', medio: '#f59e0b', bajo: '#10b981' };
+
+/** Etiqueta visible en la UI para cada nivel de riesgo. */
 const RISK_LABELS = { alto: 'RIESGO ALTO', medio: 'RIESGO MEDIO', bajo: 'RIESGO BAJO' };
 
-// ── VIEWS ────────────────────────────────────────────
+// VIEWS 
 /**
  * Muestra la vista con el id dado y oculta todas las demás.
  * Añade la clase `active` en el siguiente frame para permitir transiciones CSS.
@@ -22,7 +22,9 @@ export function showView(id) {
   requestAnimationFrame(() => document.getElementById(id).classList.add('active'));
 }
 
-// ── LOADING STATUS CYCLE ─────────────────────────────
+// LOADING STATUS CYCLE 
+
+/** Mensajes que se rotan en pantalla mientras se espera la respuesta de Gemini. */
 const LOADING_MSGS = [
   'Enviando imagen a Gemini Vision...',
   'Identificando familia alimentaria...',
@@ -30,6 +32,8 @@ const LOADING_MSGS = [
   'Buscando registros EFSA y OMS...',
   'Compilando perfil de riesgo...',
 ];
+
+/** ID del intervalo activo; se guarda para poder cancelarlo con {@link stopLoadCycle}. */
 let loadCycleId;
 
 /**
@@ -51,7 +55,7 @@ export function stopLoadCycle() {
   clearInterval(loadCycleId);
 }
 
-// ── RENDER RESULTS ───────────────────────────────────
+// RENDER RESULTS 
 /**
  * Renderiza la vista de resultados: cabecera con nombre, emoji y barra de precisión,
  * nota de filtrado (si corresponde) y tarjetas de toxinas.
@@ -73,6 +77,8 @@ export function renderResults(foodInfo, dbEntry) {
       <span class="conf-pct" id="conf-pct">0%</span>
     </div>
   `;
+  // Pequeño retraso para que el navegador pinte el HTML antes de aplicar
+  // el ancho de la barra, lo que permite que la transición CSS sea visible.
   setTimeout(() => {
     const fill = document.getElementById('conf-fill');
     const pct  = document.getElementById('conf-pct');
@@ -107,7 +113,10 @@ export function renderResults(foodInfo, dbEntry) {
     const label = RISK_LABELS[t.riesgo] || 'DESCONOCIDO';
 
     const tl  = TOXIN_LINKS[t.nombre] || {};
+    // Elimina los paréntesis y corchetes del nombre para construir una query
+    // de búsqueda más limpia (p. ej. "Mercurio (MeHg)" → "Mercurio").
     const q   = encodeURIComponent(t.nombre.replace(/\s*[\(\[].*?[\)\]]\s*/g, ' ').trim());
+    // Si TOXIN_LINKS tiene enlace directo se usa ese; si no, se genera una búsqueda.
     const urls = {
       efsa: tl.efsa || `https://www.efsa.europa.eu/en/search?query=${q}`,
       who:  tl.who  || `https://www.who.int/search?query=${q}`,
@@ -125,6 +134,8 @@ export function renderResults(foodInfo, dbEntry) {
 
     const card = document.createElement('div');
     card.className = 'toxin-card';
+    // Cada tarjeta aparece con un pequeño retraso escalonado (stagger) para que
+    // la animación de entrada no ocurra todas a la vez.
     card.style.cssText = `--ind-color:${color}; animation-delay:${i * 0.1}s`;
     card.innerHTML = `
       <div class="tc-head">
@@ -164,7 +175,7 @@ export function renderNotFound(foodInfo) {
   document.getElementById('toxins-list').innerHTML = '';
 }
 
-// ── TOAST ────────────────────────────────────────────
+//  TOAST 
 /**
  * Muestra una notificación flotante (toast) con el mensaje dado y la desvanece
  * automáticamente tras 4,5 segundos. Solo puede haber un toast visible a la vez.
@@ -181,7 +192,7 @@ export function toast(msg, color = 'rgba(0,198,255,0.3)') {
   setTimeout(() => el?.remove(), 4500);
 }
 
-// ── API MODAL ────────────────────────────────────────
+//  API MODAL 
 /**
  * Abre el modal de configuración de la API key y rellena el input
  * con la clave actual (si existe).
@@ -199,7 +210,7 @@ export function closeApiModal() {
   document.getElementById('api-modal').classList.add('hidden');
 }
 
-// ── HISTORY DRAWER ───────────────────────────────────
+//  HISTORY DRAWER 
 /**
  * Abre el drawer lateral del historial y renderiza la lista de análisis guardados.
  */
@@ -240,6 +251,7 @@ function renderHistoryList() {
     </div>
   `).join('');
 
+  // Solo los items guardados con foodInfo completo permiten volver a los resultados.
   el.querySelectorAll('.history-item--clickable').forEach(div => {
     div.addEventListener('click', () => {
       const item = h[+div.dataset.idx];

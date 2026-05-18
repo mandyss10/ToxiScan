@@ -1,4 +1,4 @@
-// camera.js
+// docs/js/camera.js
 
 
 import { toast } from './ui.js';

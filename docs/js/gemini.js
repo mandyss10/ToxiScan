@@ -1,4 +1,4 @@
-// gemini.js
+// docs/js/gemini.js
 
 
 // Usamos gemini-2.5-flash porque es el modelo multimodal más rápido y barato
