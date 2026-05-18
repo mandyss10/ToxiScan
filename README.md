@@ -143,10 +143,10 @@ La aplicación estará disponible en `http://localhost:<puerto>`.
 
 Este repositorio está archivado en [Zenodo](https://zenodo.org).
 
-[![DOI](https://zenodo.org/badge/DOI/PENDIENTE.svg)](https://doi.org/PENDIENTE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20268602.svg)](https://doi.org/10.5281/zenodo.20268602)
 
 ```
-Ivan, Aroa & Lucía. (2026). ToxiScan: aplicación web de análisis toxicológico de alimentos mediante visión artificial (v1.0.0). Zenodo. https://doi.org/PENDIENTE
+Ivan, Aroa & Lucía. (2026). ToxiScan: aplicación web de análisis toxicológico de alimentos mediante visión artificial (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20268602
 ```
 
 ---
