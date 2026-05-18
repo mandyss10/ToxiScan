@@ -1,16 +1,15 @@
-// ═══════════════════════════════════════════════════
-//  Fondo decorativo: red de partículas
-// ═══════════════════════════════════════════════════
-
+// docs/js/particles.js
 const COUNT    = 70;
 const MAX_DIST = 160;
 const COLORS   = ['rgba(0,198,255,', 'rgba(168,85,247,', 'rgba(99,102,241,'];
 
+
 /**
- * Crea un canvas de fondo con una red animada de partículas y lo añade al DOM.
- * Las partículas se mueven a velocidad constante y se conectan con líneas
- * cuando están a menos de MAX_DIST píxeles de distancia.
- * Se adapta automáticamente al redimensionar la ventana.
+ * Crea e inicializa la animación de partículas de fondo.
+ *
+ * Inserta un canvas fijo detrás de todo el contenido de la página y dibuja
+ * partículas de colores que se mueven lentamente y se conectan con líneas
+ * cuando están suficientemente cerca. Se adapta al tamaño de la ventana.
  */
 export function initParticles() {
   const canvas = document.createElement('canvas');
@@ -19,13 +18,18 @@ export function initParticles() {
   const ctx = canvas.getContext('2d');
   let pts = [];
 
-  /** Ajusta las dimensiones del canvas al tamaño actual de la ventana. */
+  /**
+   * Ajusta el tamaño del canvas al de la ventana actual.
+   */
   function resize() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
   }
 
-  /** Genera el array de partículas con posición, velocidad, radio y color aleatorios. */
+  /**
+   * Genera un conjunto nuevo de partículas con posición, velocidad,
+   * tamaño y color aleatorios distribuidos por todo el canvas.
+   */
   function spawn() {
     pts = Array.from({ length: COUNT }, () => ({
       x:  Math.random() * canvas.width,
@@ -37,7 +41,14 @@ export function initParticles() {
     }));
   }
 
-  /** Dibuja un fotograma: conexiones entre partículas cercanas, puntos y halo, y actualiza posiciones. */
+  /**
+   * Dibuja un fotograma de la animación y programa el siguiente.
+   *
+   * Por cada fotograma: limpia el canvas, traza líneas entre partículas que
+   * estén a menos de MAX_DIST píxeles (con opacidad proporcional a la
+   * cercanía), dibuja cada partícula con un halo suave y mueve cada una
+   * según su velocidad, rebotando en los bordes.
+   */
   function frame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
