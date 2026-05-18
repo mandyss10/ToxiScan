@@ -1,7 +1,4 @@
-//  Módulo de cámara
-//  Gestiona el acceso a la cámara del dispositivo usando la Web API getUserMedia,
-//  que permite capturar vídeo en tiempo real desde el navegador sin necesidad
-//  de ninguna librería externa.
+// camera.js
 
 
 import { toast } from './ui.js';
