@@ -1,32 +1,39 @@
-// ═══════════════════════════════════════════════════
-//  Persistencia en localStorage (clave API + historial)
-// ═══════════════════════════════════════════════════
+// docs/js/storage.js
 
 const KEY_APIKEY  = 'toxi_apikey';
 const KEY_HISTORY = 'toxi_history';
 const HISTORY_MAX = 20;
 
+
 /**
- * Devuelve la API key almacenada. Da prioridad a la variable de desarrollo
- * `window.TOXISCAN_DEV_KEY` sobre el valor guardado en localStorage.
- * @returns {string} La API key, o cadena vacía si no hay ninguna guardada.
+ * Devuelve la clave de API guardada.
+ *
+ * Primero comprueba si existe la variable global window.TOXISCAN_DEV_KEY
+ * ,luego busca en localStorage y, si no hay nada,
+ * devuelve una cadena vacía.
+ *
+ * @returns {string} La clave de API, o '' si no hay ninguna guardada.
  */
 export function getApiKey() {
   return window.TOXISCAN_DEV_KEY || localStorage.getItem(KEY_APIKEY) || '';
 }
 
 /**
- * Persiste la API key en localStorage.
- * @param {string} key - La API key a guardar.
+ * Guarda la clave de API en localStorage.
+ *
+ * @param {string} key - Clave de API que se quiere guardar.
  */
 export function setApiKey(key) {
   localStorage.setItem(KEY_APIKEY, key);
 }
 
 /**
- * Carga el historial de análisis desde localStorage.
- * Devuelve un array vacío si no hay datos o si el JSON está corrupto.
- * @returns {Array<Object>} Array de entradas del historial ordenadas de más reciente a más antigua.
+ * Carga el historial de escaneos guardado en localStorage.
+ *
+ * Si el valor almacenado no es JSON válido, devuelve un array vacío
+ * en lugar de lanzar un error.
+ *
+ * @returns {Array} Lista de entradas del historial.
  */
 export function loadHistory() {
   try { return JSON.parse(localStorage.getItem(KEY_HISTORY) || '[]'); }
@@ -34,10 +41,14 @@ export function loadHistory() {
 }
 
 /**
- * Añade una nueva entrada al historial y lo persiste en localStorage,
- * manteniendo un máximo de HISTORY_MAX entradas (las más recientes).
- * @param {{ alimento_detectado: string, confianza: number }} foodInfo - Datos devueltos por Gemini.
- * @param {{ nombre: string, emoji: string }} dbEntry - Entrada de la base de datos toxicológica asociada.
+ * Añade un nuevo escaneo al inicio del historial y lo guarda en localStorage.
+ *
+ * Guarda la fecha, el nombre y emoji del alimento identificado, el alimento
+ * detectado por Gemini, el nivel de confianza y una copia completa de los
+ * datos del análisis. El historial se limita a los últimos HISTORY_MAX registros.
+ *
+ * @param {Object} foodInfo - Datos devueltos por Gemini sobre el alimento.
+ * @param {Object} dbEntry  - Entrada de la base de datos de toxinas que coincidió.
  */
 export function pushHistory(foodInfo, dbEntry) {
   const h = loadHistory();
