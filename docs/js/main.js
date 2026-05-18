@@ -1,7 +1,4 @@
-// ═══════════════════════════════════════════════════
-//  TOXISCAN — Entry point
-//  Orquesta init, eventos y flujo principal de análisis.
-// ═══════════════════════════════════════════════════
+// docs/js/main.js
 
 import { resolveCategories, buildEntryForCategories } from './data.js';
 import { callGemini } from './gemini.js';
@@ -16,13 +13,16 @@ import { initParticles } from './particles.js';
 
 let apiKey = getApiKey();
 
-// ── PROCESS IMAGE ────────────────────────────────────
+
 /**
- * Orquesta el flujo completo de análisis: muestra la vista de carga, llama a Gemini,
- * resuelve las categorías toxicológicas y renderiza los resultados.
- * Si no hay API key configurada, abre el modal de configuración en su lugar.
- * @param {File} file - Archivo de imagen seleccionado o capturado por el usuario.
- * @returns {Promise<void>}
+ * Procesa una imagen de alimento y muestra los resultados en la interfaz.
+ *
+ * Envía la imagen a Gemini, recibe la información del alimento detectado,
+ * busca toxinas relacionadas en la base de datos y navega a la vista de
+ * resultados. Si no hay clave de API guardada, abre primero el modal para pedirla.
+ * En caso de error muestra un aviso y vuelve a la vista de subida de imagen.
+ *
+ * @param {File} file - Imagen seleccionada por el usuario.
  */
 async function processImage(file) {
   if (!apiKey) { openApiModal(apiKey); return; }
@@ -36,16 +36,13 @@ async function processImage(file) {
     const foodInfo = await callGemini(apiKey, base64, file.type || 'image/jpeg');
     foodInfo.confianza = Math.max(0, Math.min(100, parseInt(foodInfo.confianza) || 0));
 
-    // Detecta todas las categorías presentes (avena + frutos secos + manzana
-    // → ['cereales','frutos_secos','frutas']) y fusiona sus toxinas relevantes
+    // Detecta todas las categorías presentes y junta sus toxinas relevantes
     // en una única vista para la UI.
     const categories = resolveCategories(foodInfo);
     stopLoadCycle();
 
     // El filtro por toxina necesita tanto el nombre como la descripción
     // para captar ingredientes que solo aparecen en la descripción
-    // (p. ej. patulina/manzana en "puré de manzana" cuando el nombre es
-    // "mezcla de avena y frutos secos").
     const foodHaystack = `${foodInfo.alimento_detectado || ''} ${foodInfo.descripcion || ''}`;
     const entry = buildEntryForCategories(categories, foodHaystack);
     if (entry) {
@@ -62,10 +59,12 @@ async function processImage(file) {
   }
 }
 
+
 /**
- * Lee un archivo y lo convierte a una cadena base64 (sin prefijo data URL).
+ * Convierte un archivo de imagen a una cadena base64 para su envío a la API.
+ *
  * @param {File} file - Archivo de imagen a convertir.
- * @returns {Promise<string>} Cadena base64 del contenido del archivo.
+ * @returns {Promise<string>} La cadena base64 sin el prefijo del data URL.
  */
 function fileToBase64(file) {
   return new Promise((res, rej) => {
@@ -76,11 +75,13 @@ function fileToBase64(file) {
   });
 }
 
-// ── EVENT WIRING ─────────────────────────────────────
+
 /**
- * Registra los listeners del modal de configuración de API key:
- * habilita el botón al escribir, guarda al hacer clic o pulsar Enter,
- * y alterna la visibilidad de la contraseña.
+ * Registra los eventos del modal de clave de API.
+ *
+ * Habilita el botón de guardar solo cuando el campo tiene al menos 10 caracteres (longitud mínima para una clave válida),
+ * permite confirmar con Enter, guarda la clave al hacer clic en el botón
+ * y alterna la visibilidad del campo entre texto y contraseña.
  */
 function bindApiModal() {
   const keyInput = document.getElementById('api-key-input');
@@ -104,9 +105,12 @@ function bindApiModal() {
   });
 }
 
+
 /**
- * Registra los listeners de navegación global: ajustes, historial, cierre
- * del drawer y botón de retroceso.
+ * Registra los eventos de navegación de la barra superior.
+ *
+ * Conecta los botones de ajustes, historial, cierre del historial y
+ * volver a la pantalla de subida.
  */
 function bindNav() {
   document.getElementById('settings-btn').addEventListener('click', () => openApiModal(apiKey));
@@ -116,9 +120,13 @@ function bindNav() {
   document.getElementById('back-btn').addEventListener('click', () => showView('view-upload'));
 }
 
+
 /**
- * Registra los listeners del input de archivo y la zona de arrastrar-y-soltar,
- * disparando el análisis al recibir una imagen válida.
+ * Registra los eventos de subida de imagen por archivo y arrastrar y soltar.
+ *
+ * Escucha el selector de archivos y la zona de drop. En ambos casos llama a
+ * processImage con el archivo recibido. Solo acepta archivos de tipo imagen
+ * en el drop.
  */
 function bindUpload() {
   const fileInput = document.getElementById('file-upload');
@@ -141,9 +149,12 @@ function bindUpload() {
   });
 }
 
+
 /**
- * Registra los listeners del modal de cámara: abrir, cerrar, disparador
- * y cierre al pulsar fuera del vídeo.
+ * Registra los eventos del modal de cámara.
+ *
+ * Conecta los botones de abrir, cerrar y capturar la foto. También cierra
+ * la cámara si el usuario hace clic fuera del contenido del modal.
  */
 function bindCamera() {
   document.getElementById('open-camera-btn').addEventListener('click', openCamera);
@@ -154,9 +165,12 @@ function bindCamera() {
   });
 }
 
+
 /**
- * Registra un listener global de teclado que cierra cámara, drawer y modal
- * de API al pulsar Escape.
+ * Registra el atajo de teclado Escape para cerrar paneles abiertos.
+ *
+ * Al pulsar Escape cierra la cámara, el historial y, si ya hay una clave
+ * de API guardada, el modal de clave.
  */
 function bindEscape() {
   document.addEventListener('keydown', e => {
@@ -167,10 +181,12 @@ function bindEscape() {
   });
 }
 
-// ── INIT ─────────────────────────────────────────────
+
 /**
- * Punto de entrada de la aplicación. Inicializa el estado del modal de API
- * y registra todos los listeners de eventos.
+ * Inicializa la aplicación al cargar el DOM.
+ *
+ * Decide si mostrar u ocultar el modal de clave de API según si ya hay una
+ * guardada, y registra todos los eventos de la interfaz.
  */
 function init() {
   if (apiKey) closeApiModal(); else openApiModal(apiKey);
