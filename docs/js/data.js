@@ -1,21 +1,39 @@
-// ═══════════════════════════════════════════════════
-//  Base de datos toxicológica y categorización
-//
-//  Estructura de una toxina:
-//   { nombre, tipo, riesgo, efecto, fuente, recomendacion,
-//     aplica_a?: string[]   // opcional. Lista de stems
-//                           //   (en minúsculas, sin tilde no es necesario).
-//                           //   Si NO existe → la toxina aplica a todo
-//                           //   el grupo. Si existe → solo se muestra
-//                           //   cuando alimento_detectado incluye alguno
-//                           //   de esos stems (case-insensitive).
-//   }
-//
-//  Esto resuelve la granularidad "grupo vs alimento concreto":
-//  por ejemplo la patulina solo aparece para manzana/pera/uva, y no
-//  cuando el usuario fotografía un plátano.
-// ═══════════════════════════════════════════════════
-
+﻿// data.js
+/**
+ * Base de datos toxicológica principal, indexada por categoría de alimento.
+ *
+ * Cada clave es un identificador de categoría ('pescado', 'arroz', 'cereales'…)
+ * y su valor contiene nombre, emoji y el array de toxinas de ese grupo.
+ *
+ * Estructura de cada toxina:
+ *  - nombre        — Nombre científico o comercial (p. ej. 'Mercurio (MeHg)').
+ *  - tipo          — Clasificación general (metal pesado, micotoxina, patógeno…).
+ *  - riesgo        — Nivel: 'alto', 'medio' o 'bajo'.
+ *  - efecto        — Qué daño puede causar en el organismo.
+ *  - fuente        — Cómo llega la toxina al alimento.
+ *  - recomendacion — Consejo práctico para reducir la exposición.
+ *  - aplica_a      — (Opcional) Lista de stems en minúsculas.
+ *                    Si existe → la toxina solo aparece cuando el alimento
+ *                    detectado coincide con alguno de esos stems.
+ *                    Si NO existe → la toxina aplica a toda la categoría.
+ *
+ * Este mecanismo resuelve la granularidad "grupo vs. alimento concreto":
+ * por ejemplo la patulina solo aparece para manzana/pera/uva, no para plátano.
+ *
+ * @type {Object.<string, {
+ *   nombre: string,
+ *   emoji: string,
+ *   toxinas: Array<{
+ *     nombre: string,
+ *     tipo: string,
+ *     riesgo: 'alto'|'medio'|'bajo',
+ *     efecto: string,
+ *     fuente: string,
+ *     recomendacion: string,
+ *     aplica_a?: string[]
+ *   }>
+ * }>}
+ */
 export const TOXIN_DB = {
   pescado: {
     nombre: 'Pescado', emoji: '🐟',
@@ -270,8 +288,6 @@ export const TOXIN_DB = {
     nombre: 'Cereales y Pan', emoji: '🌾',
     toxinas: [
  
-      // ── UNIVERSAL (blanco + integral) ──────────────
- 
       { nombre: 'Ocratoxina A (OTA)', tipo: 'Micotoxina', riesgo: 'alto',
         // Sin aplica_a → universal en el grupo
         efecto: 'Nefrotóxico crónico. Posiblemente cancerígeno (Grupo 2B IARC). Inmunosupresor. Las versiones integrales del cereal (avena, copos, muesli, granola, pan integral) concentran más OTA que las refinadas, porque el salvado retiene el hongo.',
@@ -473,10 +489,20 @@ export const TOXIN_DB = {
   },
 };
 
-// ═══════════════════════════════════════════════════
-//  Enlaces específicos por toxina
-//  Claves: wiki · efsa · who  (omitir si no existe página concreta)
-// ═══════════════════════════════════════════════════
+/**
+ * Mapa de enlaces de referencia científica indexados por nombre exacto de toxina.
+ *
+ * Cada clave coincide con el campo `nombre` de una toxina en {@link TOXIN_DB}.
+ * Los valores son un objeto con hasta tres propiedades opcionales:
+ *  - wiki — Artículo de Wikipedia en español.
+ *  - efsa — Página temática de la Autoridad Europea de Seguridad Alimentaria.
+ *  - who  — Ficha informativa de la Organización Mundial de la Salud.
+ *
+ * Se omiten las claves cuya fuente oficial no tiene página concreta sobre
+ * esa toxina (para no enlazar a páginas genéricas poco útiles).
+ *
+ * @type {Object.<string, { wiki?: string, efsa?: string, who?: string }>}
+ */
 export const TOXIN_LINKS = {
   'Mercurio (MeHg)': {
     wiki: 'https://es.wikipedia.org/wiki/Metilmercurio',
@@ -757,6 +783,16 @@ export const TOXIN_LINKS = {
   },
 };
 
+/**
+ * Palabras clave (en español e inglés) asociadas a cada categoría de TOXIN_DB.
+ *
+ * Se usan en {@link resolveCategories} para detectar, a partir del nombre y la
+ * descripción que devuelve Gemini, qué grupos toxicológicos aplican al alimento.
+ * Cuantas más variantes incluya una categoría (sinónimos, plural, inglés…),
+ * menor es el riesgo de que un alimento quede sin categorizar.
+ *
+ * @type {Object.<string, string[]>}
+ */
 const CATEGORY_KEYWORDS = {
   pescado:  ['pescado','salmón','atún','bacalao','sardina','merluza','trucha','lubina','dorada','boquerón','anchoa','lenguado','pez','fish','salmon','tuna','cod','tilapia','besugo'],
   arroz:    ['arroz','rice','paella','risotto','tortita de arroz','bebida de arroz','leche de arroz','harina de arroz','arroz con leche','arroz integral','sushi rice'],
@@ -772,12 +808,23 @@ const CATEGORY_KEYWORDS = {
   procesado:['frito','snack','chips','bollería','pizza','nuggets','comida rápida','instant','precocinado','congelado','conserva','lata','enlatado','bote','refresco','bebida','chuche','gominola','margarina','bolleria','dónut','donut','palomita','popcorn'],
 };
 
-// "procesado" es una etiqueta-paraguas que Gemini tiende a aplicar sin más
-// pistas. Si Gemini la sugiere pero el nombre/descripción no contiene ninguna
-// keyword propia de "procesado", la descartamos para evitar mostrar toxinas
-// genéricas irrelevantes (acrilamida, PFAS…) en alimentos como una hamburguesa.
-// "cereales" en cambio SÍ aporta toxinas concretas (OTA, As, Cd) que aplican
-// a la avena, copos, muesli, etc., por lo que la tratamos como categoría real.
+/**
+ * Categorías que Gemini tiende a asignar de forma genérica sin contexto suficiente.
+ *
+ * 'procesado': Gemini la usa cuando no encaja bien en
+ * otro grupo, pero por sí sola activaría toxinas muy genéricas (acrilamida, PFAS…)
+ * incluso para alimentos normales como una hamburguesa.
+ *
+ * Las categorías de este Set se tratan de forma especial en {@link resolveCategories}:
+ *  - Si las keywords del texto del alimento ya confirmaron la categoría → se añade.
+ *  - Si no hay NINGUNA otra categoría detectada → se añade como último recurso.
+ *  - Si ya hay otras categorías detectadas y el texto no la confirma → se descarta.
+ *
+ * 'cereales' NO está en este Set porque sí aporta toxinas concretas y útiles
+ * (OTA, arsénico, cadmio) para la avena, copos, muesli, etc.
+ *
+ * @type {Set<string>}
+ */
 const GEMINI_FALLBACK_ONLY = new Set(['procesado']);
 
 // Devuelve TODAS las categorías presentes en el alimento detectado.
@@ -802,7 +849,7 @@ export function resolveCategories(foodInfo) {
     if (kws.some(kw => matchStem(haystack, kw))) found.add(key);
   }
 
-  // Categoría sugerida por Gemini: se añade solo si tiene respaldo de keywords
+  // Categoría por Gemini: se añade solo si tiene respaldo de keywords
   // (evita falsos positivos de la IA) o si no se detectó nada más (fallback).
   const geminiCatExists = TOXIN_DB[cat];
   if (geminiCatExists) {
@@ -860,10 +907,11 @@ function normalizeSearchText(value) {
 }
 
 /**
- * Reduce una palabra a su ra\u00edz singular espa\u00f1ola o inglesa b\u00e1sica.
- * Ejemplos: `"huevos"` \u2192 `"huevo"`, `"nueces"` \u2192 `"nuez"`.
- * Se aplica palabra a palabra para cubrir stems multi-palabra (`"frutos secos"` \u2192 `"fruto seco"`).
- * @param {string} word - Palabra ya normalizada (sin tildes, en min\u00fasculas).
+ * Reduce una palabra a su raíz singular española o inglesa básica.
+ * Ejemplos: `"huevos"` → `"huevo"`, `"nueces"` → `"nuez"`.
+ * Se aplica palabra a palabra para cubrir stems multi-palabra
+ * (p. ej. `"frutos secos"` → `"fruto seco"`).
+ * @param {string} word - Palabra ya normalizada (sin tildes, en minúsculas).
  * @returns {string} Forma singular aproximada.
  */
 function depluralize(word) {
